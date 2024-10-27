@@ -13,13 +13,13 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          padding: "8px 24px",
+          padding: "12px 24px",
         },
       },
     },
     MuiContainer: {
       defaultProps: {
-        maxWidth: "xl",
+        maxWidth: "lg",
       },
     },
   },

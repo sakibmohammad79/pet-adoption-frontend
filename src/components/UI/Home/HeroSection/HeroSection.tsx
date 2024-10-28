@@ -2,19 +2,24 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import PetsIcon from "@mui/icons-material/Pets";
 import { Box, Button, Container, Typography } from "@mui/material";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/autoplay";
 
 // Import required modules
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
-const Header = () => {
+const HeroSection = () => {
   return (
-    <Box sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <Box sx={{ width: "100%", height: "100vh", overflow: "hidden" }}>
       <Swiper
         pagination={{ clickable: true }}
-        modules={[Pagination]}
+        autoplay={{
+          delay: 3000, // Set the delay in milliseconds (3000ms = 3 seconds)
+          disableOnInteraction: false, // Continues autoplay after interactions
+        }}
+        modules={[Pagination, Autoplay]} // Ensure Autoplay is included here
+        loop={true} // Allows the slider to loop back to the beginning
         className="mySwiper"
         style={{ width: "100%", height: "100%" }}
       >
@@ -32,8 +37,6 @@ const Header = () => {
             }}
           >
             <Container sx={{ textAlign: "left" }}>
-              {" "}
-              {/* Limits the text box width */}
               <Typography fontWeight="bold" variant="h2" color="white">
                 Best Friend{" "}
                 <Box
@@ -50,7 +53,8 @@ const Header = () => {
               </Typography>
               <Typography variant="h6" color="white" sx={{ mt: 2 }}>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                <br></br> Quas obcaecati iure quam aliquid quisquam
+                <br />
+                Quas obcaecati iure quam aliquid quisquam
               </Typography>
               <Button sx={{ mt: 2 }}>
                 View More <PetsIcon sx={{ pl: 1 }} />
@@ -73,8 +77,6 @@ const Header = () => {
             }}
           >
             <Container sx={{ textAlign: "right" }}>
-              {" "}
-              {/* Limits the text box width */}
               <Typography fontWeight="bold" variant="h2" color="white">
                 Best Friend{" "}
                 <Box
@@ -91,7 +93,8 @@ const Header = () => {
               </Typography>
               <Typography variant="h6" color="white" sx={{ mt: 2 }}>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                <br></br> Quas obcaecati iure quam aliquid quisquam
+                <br />
+                Quas obcaecati iure quam aliquid quisquam
               </Typography>
               <Button sx={{ mt: 2 }}>
                 View More <PetsIcon sx={{ pl: 1 }} />
@@ -114,8 +117,6 @@ const Header = () => {
             }}
           >
             <Container sx={{ textAlign: "left" }}>
-              {" "}
-              {/* Limits the text box width */}
               <Typography fontWeight="bold" variant="h2" color="white">
                 Best Friend{" "}
                 <Box
@@ -132,7 +133,8 @@ const Header = () => {
               </Typography>
               <Typography variant="h6" color="white" sx={{ mt: 2 }}>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                <br></br> Quas obcaecati iure quam aliquid quisquam
+                <br />
+                Quas obcaecati iure quam aliquid quisquam
               </Typography>
               <Button sx={{ mt: 2 }}>
                 View More <PetsIcon sx={{ pl: 1 }} />
@@ -145,4 +147,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeroSection;

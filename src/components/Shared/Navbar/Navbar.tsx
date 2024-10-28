@@ -88,7 +88,11 @@ export default function Navbar() {
                 <Typography>Contact</Typography>
               </Link>
             </Box>
-            <Button sx={{ display: { xs: "none", sm: "block" } }}>Login</Button>
+            <Link href="/login">
+              <Button sx={{ display: { xs: "none", sm: "block" } }}>
+                Login
+              </Button>
+            </Link>
           </Stack>
         </Toolbar>
       </AppBar>
@@ -109,7 +113,14 @@ export default function Navbar() {
           }}
         >
           {drawer}
-          <Button sx={{ width: "50%", mx: "auto" }}>Login</Button>
+
+          <Button
+            component={Link}
+            href="/login"
+            sx={{ width: "50%", mx: "auto" }}
+          >
+            Login
+          </Button>
         </Drawer>
       </nav>
     </Box>

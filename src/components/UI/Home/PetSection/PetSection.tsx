@@ -11,33 +11,35 @@ const PetSection = async () => {
   return (
     <Container sx={{ backgroundColor: "#FFFFFF", py: 16 }}>
       <Box textAlign="center">
-        <PetsIcon
-          sx={{ py: 1, color: "primary.main", height: 40, width: 40 }}
-        />
-        <Typography
-          component="h1"
-          variant="h6"
-          color="primary.main"
-          fontWeight={600}
-        >
-          Meet the animals
-        </Typography>
-        <Typography
-          color="black"
-          component="h1"
-          variant="h4"
-          fontWeight={700}
-          my={1}
-        >
-          Puppies Waiting for Adoption
-        </Typography>
-        <Typography>
-          The best overall dog DNA test is Embark Breed & Health Kit (view at
-          Chewy),
-          <br />
-          which provides you with a breed breakdown and health information on
-          most dogs.
-        </Typography>
+        <Box>
+          <PetsIcon
+            sx={{ py: 1, color: "primary.main", height: 40, width: 40 }}
+          />
+          <Typography
+            component="h1"
+            variant="h6"
+            color="primary.main"
+            fontWeight={600}
+          >
+            Meet the animals
+          </Typography>
+          <Typography
+            color="black"
+            component="h1"
+            variant="h4"
+            fontWeight={700}
+            my={1}
+          >
+            Puppies Waiting for Adoption
+          </Typography>
+          <Typography>
+            The best overall dog DNA test is Embark Breed & Health Kit (view at
+            Chewy),
+            <br />
+            which provides you with a breed breakdown and health information on
+            most dogs.
+          </Typography>
+        </Box>
 
         <Box my={8}>
           <Grid container spacing={6}>

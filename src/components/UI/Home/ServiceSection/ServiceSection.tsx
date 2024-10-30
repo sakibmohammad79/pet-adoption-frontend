@@ -4,7 +4,7 @@ import PetsIcon from "@mui/icons-material/Pets";
 
 const ServiceSection = () => {
   return (
-    <Container sx={{ bgcolor: "#FFFFFF", py: 16 }}>
+    <Container sx={{ bgcolor: "#FFFFFF", pt: 16, pb: 10 }}>
       <Stack
         direction="row"
         justifyContent="center"

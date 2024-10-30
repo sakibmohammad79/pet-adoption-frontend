@@ -15,8 +15,8 @@ const HeroSection = () => {
       <Swiper
         pagination={{ clickable: true }}
         autoplay={{
-          delay: 3000, // Set the delay in milliseconds (3000ms = 3 seconds)
-          disableOnInteraction: false, // Continues autoplay after interactions
+          delay: 3000,
+          disableOnInteraction: false,
         }}
         modules={[Pagination, Autoplay]} // Ensure Autoplay is included here
         loop={true} // Allows the slider to loop back to the beginning

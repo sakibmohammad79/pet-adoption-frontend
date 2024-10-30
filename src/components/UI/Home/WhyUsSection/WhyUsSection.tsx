@@ -38,6 +38,10 @@ const WhyUsSection = () => {
               textAlign: "center",
               borderRadius: 5,
               boxShadow: 1,
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition: "transform 0.3s ease-in-out",
+              },
             }}
           >
             <Typography
@@ -56,6 +60,10 @@ const WhyUsSection = () => {
           </Box>
           <Box
             sx={{
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition: "transform 0.3s ease-in-out",
+              },
               backgroundColor: "white",
               p: 5,
               textAlign: "center",
@@ -79,6 +87,10 @@ const WhyUsSection = () => {
           </Box>
           <Box
             sx={{
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition: "transform 0.3s ease-in-out",
+              },
               backgroundColor: "white",
               p: 5,
               textAlign: "center",
@@ -102,6 +114,10 @@ const WhyUsSection = () => {
           </Box>
           <Box
             sx={{
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition: "transform 0.3s ease-in-out",
+              },
               backgroundColor: "white",
               p: 5,
               textAlign: "center",

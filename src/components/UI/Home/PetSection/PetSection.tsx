@@ -1,6 +1,6 @@
 "use server";
 
-import { Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import PetsIcon from "@mui/icons-material/Pets";
 import PetCard from "./PetCard";
 
@@ -8,7 +8,6 @@ const PetSection = async () => {
   const res = await fetch("http://localhost:3000/api/v1/pet");
   const result = await res.json();
   const pets = result.data;
-  console.log(pets);
   return (
     <Container sx={{ backgroundColor: "#FFFFFF", py: 16 }}>
       <Box textAlign="center">

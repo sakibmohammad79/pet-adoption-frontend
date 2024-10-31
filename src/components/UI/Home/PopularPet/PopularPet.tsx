@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Box, Typography, Button, Container } from "@mui/material";
 import Image from "next/image";
-import { Pagination, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 
 const PopularPet = () => {
   const pets = [

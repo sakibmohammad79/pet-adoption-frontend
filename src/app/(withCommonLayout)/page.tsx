@@ -1,4 +1,5 @@
 import HeroSection from "@/components/UI/Home/HeroSection/HeroSection";
+import NewsLetter from "@/components/UI/Home/NewsLetter/NewsLetter";
 import PetSection from "@/components/UI/Home/PetSection/PetSection";
 import PopularPet from "@/components/UI/Home/PopularPet/PopularPet";
 import ServiceSection from "@/components/UI/Home/ServiceSection/ServiceSection";
@@ -15,6 +16,7 @@ const Home = () => {
       <ServiceSection></ServiceSection>
       <PopularPet></PopularPet>
       <Testimonials></Testimonials>
+      <NewsLetter></NewsLetter>
     </>
   );
 };

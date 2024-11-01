@@ -12,12 +12,12 @@ import { Autoplay } from "swiper/modules";
 const PopularPet = () => {
   const pets = [
     {
-      name: "Golden Retriever",
+      name: "Retriever",
       image: "https://i.postimg.cc/vBQtnT63/pexels-pixabay-45201.jpg",
       bgColor: "#FAD4D4",
     },
     {
-      name: "German Shepherd",
+      name: "Bulldog",
       image: "https://i.postimg.cc/vBQtnT63/pexels-pixabay-45201.jpg",
       bgColor: "#F6E4C6",
     },
@@ -35,7 +35,7 @@ const PopularPet = () => {
   ];
 
   return (
-    <Container sx={{ pb: 18 }}>
+    <Container sx={{ pb: 16 }}>
       <Box textAlign="center" pb={8}>
         <PetsIcon
           sx={{ py: 1, color: "primary.main", height: 40, width: 40 }}
@@ -88,6 +88,7 @@ const PopularPet = () => {
                   textAlign: "center",
                   overflow: "hidden",
                   height: "100%",
+                  position: "relative",
                 }}
               >
                 <Image
@@ -102,14 +103,26 @@ const PopularPet = () => {
                     transition: "transform 0.3s",
                   }}
                 />
-                <Typography
-                  p={1}
-                  variant="h5"
-                  fontWeight="bold"
-                  color="primary.main"
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 30,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                  }}
                 >
-                  {pet.name}
-                </Typography>
+                  <Button
+                    sx={{
+                      backgroundColor: "white",
+                      color: "primary.main",
+                      fontWeight: "bold",
+                      fontSize: 18,
+                      borderRadius: 0,
+                    }}
+                  >
+                    {pet.name}
+                  </Button>
+                </Box>
               </Box>
             </SwiperSlide>
           ))}

@@ -4,7 +4,6 @@ import {
   Button,
   Container,
   FormControl,
-  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -13,29 +12,43 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface IRegisterFormData {
+  password: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: string;
+  role: string;
+  birthDate: string;
+  contactNumber: string;
+  address: string;
+}
 const RegisterPage = () => {
-  const [role, setRole] = useState("");
-
-  const handleRoleChange = (value: any) => {
-    setRole(value);
-  };
-  const [gender, setGender] = useState("");
-
-  const handleGenderChange = (value: any) => {
-    setGender(value);
-  };
-
-  const [birthdate, setBirthdate] = useState<string>("");
-
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = event.target.value;
-    // Convert the selected date to ISO format
-    const date = new Date(selectedDate);
-    setBirthdate(date.toISOString());
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IRegisterFormData>();
+  const onSubmit: SubmitHandler<IRegisterFormData> = (data) => {
+    const userData = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      gender: data.gender,
+      birthDate: data.birthDate,
+      contactNumber: data.contactNumber,
+      address: data.address,
+    };
+    const adopterData = {
+      password: data.password,
+      adopter: userData,
+    };
+    console.log(adopterData);
   };
 
   return (
@@ -71,7 +84,7 @@ const RegisterPage = () => {
           </Stack>
 
           <Box sx={{ py: 2 }}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <TextField
@@ -79,6 +92,7 @@ const RegisterPage = () => {
                     variant="outlined"
                     fullWidth={true}
                     size="small"
+                    {...register("firstName")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -87,6 +101,7 @@ const RegisterPage = () => {
                     variant="outlined"
                     fullWidth={true}
                     size="small"
+                    {...register("lastName")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -96,6 +111,7 @@ const RegisterPage = () => {
                     fullWidth={true}
                     size="small"
                     type="email"
+                    {...register("email")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -105,30 +121,36 @@ const RegisterPage = () => {
                     fullWidth={true}
                     size="small"
                     type="password"
+                    {...register("password")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <FormControl fullWidth>
                     <InputLabel>Role*</InputLabel>
                     <Select
-                      value={role}
                       label="Role*"
-                      onChange={handleRoleChange}
+                      defaultValue=""
                       size="small"
+                      {...register("role", { required: "Role is required" })}
                     >
                       <MenuItem value="PET_PUBLISHER">PET_PUBLISHER</MenuItem>
-                      <MenuItem value="FEMAPET_ADOPTERLE">PET_ADOPTER</MenuItem>
+                      <MenuItem value="PET_ADOPTER">PET_ADOPTER</MenuItem>
                     </Select>
+                    {errors.role && (
+                      <Typography color="error">
+                        {errors.role.message}
+                      </Typography>
+                    )}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <FormControl fullWidth>
-                    <InputLabel>Gender</InputLabel>
+                    <InputLabel>Gender*</InputLabel>
                     <Select
-                      value={gender}
-                      label="Gender"
-                      onChange={handleGenderChange}
+                      label="Gender*"
+                      defaultValue=""
                       size="small"
+                      {...register("gender")}
                     >
                       <MenuItem value="MALE">MALE</MenuItem>
                       <MenuItem value="FEMALE">FEMALE</MenuItem>
@@ -143,6 +165,7 @@ const RegisterPage = () => {
                     fullWidth={true}
                     size="small"
                     type="tel"
+                    {...register("contactNumber")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -151,17 +174,17 @@ const RegisterPage = () => {
                     variant="outlined"
                     fullWidth={true}
                     size="small"
+                    {...register("address")}
                   />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
                   <FormControl variant="outlined" fullWidth>
                     <TextField
+                      defaultValue=""
                       type="date"
-                      value={birthdate ? birthdate.slice(0, 10) : ""}
-                      onChange={handleDateChange}
-                      // label="Birthdate"
                       size="small"
+                      {...register("birthDate")}
                     />
                   </FormControl>
                 </Grid>

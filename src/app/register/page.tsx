@@ -167,6 +167,7 @@ const RegisterPage = () => {
                 </Grid>
               </Grid>
               <Button
+                type="submit"
                 fullWidth={true}
                 sx={{ backgroundColor: "orange", mt: 3, mb: 2 }}
               >

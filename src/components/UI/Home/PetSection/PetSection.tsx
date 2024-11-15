@@ -5,7 +5,7 @@ import PetsIcon from "@mui/icons-material/Pets";
 import PetCard from "./PetCard";
 
 const PetSection = async () => {
-  const res = await fetch("http://localhost:3000/api/v1/pet");
+  const res = await fetch("http://localhost:5000/api/v1/pet");
   const result = await res.json();
   const pets = result.data;
   return (

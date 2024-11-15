@@ -3,12 +3,7 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
-  FormHelperText,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -16,7 +11,7 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+
 const LoginPage = () => {
   return (
     <Container>
@@ -72,12 +67,17 @@ const LoginPage = () => {
                   />
                 </Grid>
               </Grid>
+              <Link href="/forget-password">
+                <Typography align="right" mt={1}>
+                  Forget Password?
+                </Typography>
+              </Link>
               <Button
                 type="submit"
                 fullWidth={true}
                 sx={{ backgroundColor: "orange", mt: 3, mb: 2 }}
               >
-                Please Register
+                Please Login
               </Button>
             </form>
             <Typography align="center">

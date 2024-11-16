@@ -92,8 +92,15 @@ const RegisterPage = () => {
                     variant="outlined"
                     fullWidth={true}
                     size="small"
-                    {...register("firstName")}
+                    {...register("firstName", {
+                      required: "First name is required",
+                    })}
                   />
+                  {errors.firstName && (
+                    <Typography color="error">
+                      {errors.firstName.message}
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <TextField
@@ -101,8 +108,15 @@ const RegisterPage = () => {
                     variant="outlined"
                     fullWidth={true}
                     size="small"
-                    {...register("lastName")}
+                    {...register("lastName", {
+                      required: "Last name is required",
+                    })}
                   />
+                  {errors.lastName && (
+                    <Typography color="error">
+                      {errors.lastName.message}
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <TextField
@@ -111,8 +125,15 @@ const RegisterPage = () => {
                     fullWidth={true}
                     size="small"
                     type="email"
-                    {...register("email")}
+                    {...register("email", {
+                      required: "Email is required",
+                    })}
                   />
+                  {errors.email && (
+                    <Typography color="error">
+                      {errors.email.message}
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <TextField
@@ -121,8 +142,15 @@ const RegisterPage = () => {
                     fullWidth={true}
                     size="small"
                     type="password"
-                    {...register("password")}
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
                   />
+                  {errors.password && (
+                    <Typography color="error">
+                      {errors.password.message}
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <FormControl fullWidth>
@@ -145,7 +173,7 @@ const RegisterPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <FormControl fullWidth>
-                    <InputLabel>Gender*</InputLabel>
+                    <InputLabel>Gender</InputLabel>
                     <Select
                       label="Gender*"
                       defaultValue=""

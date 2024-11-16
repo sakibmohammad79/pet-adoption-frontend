@@ -8,11 +8,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
 import Image from "next/image";
 import Link from "next/link";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface ILoginFormData {
+  email: string;
+  password: string;
+}
 
 const LoginPage = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ILoginFormData>();
+  const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
+    console.log(data);
+  };
   return (
     <Container>
       <Stack
@@ -46,7 +60,7 @@ const LoginPage = () => {
           </Stack>
 
           <Box sx={{ py: 2 }}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <TextField
@@ -55,6 +69,7 @@ const LoginPage = () => {
                     fullWidth={true}
                     size="small"
                     type="email"
+                    {...register("email")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -64,6 +79,7 @@ const LoginPage = () => {
                     fullWidth={true}
                     size="small"
                     type="password"
+                    {...register("password")}
                   />
                 </Grid>
               </Grid>

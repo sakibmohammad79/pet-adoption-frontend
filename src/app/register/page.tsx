@@ -1,5 +1,6 @@
 "use client";
 import { AdopterRegister } from "@/services/actions/registerAdopter";
+import { PublisherRegister } from "@/services/actions/registerPublisher";
 import { modifyPayload } from "@/utils/modifyPayload";
 import {
   Box,
@@ -16,7 +17,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -32,6 +33,7 @@ interface IRegisterFormData {
   address: string;
 }
 const RegisterPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -47,18 +49,40 @@ const RegisterPage = () => {
       contactNumber: data.contactNumber,
       address: data.address,
     };
-    const adopterData = {
-      password: data.password,
-      adopter: userData,
-    };
-    const modifyData = modifyPayload(adopterData);
-    try {
-      const res = await AdopterRegister(modifyData);
-      if (res.data.id) {
-        toast("Adopter register successfully!");
+
+    if (data.role === "PET_ADOPTER") {
+      const adopterData = {
+        password: data.password,
+        adopter: userData,
+      };
+      const modifyData = modifyPayload(adopterData);
+      try {
+        const res = await AdopterRegister(modifyData);
+        console.log(res);
+        if (res?.data?.id) {
+          router.push("/login");
+          toast.success(res?.message);
+        }
+      } catch (err: any) {
+        console.log(err.message);
       }
-    } catch (err: any) {
-      console.log(err.message);
+    }
+    if (data.role === "PET_PUBLISHER") {
+      const publisherData = {
+        password: data.password,
+        publisher: userData,
+      };
+      const modifyData = modifyPayload(publisherData);
+      try {
+        const res = await PublisherRegister(modifyData);
+        console.log(res);
+        if (res?.data?.id) {
+          router.push("/login");
+          toast.success(res?.message);
+        }
+      } catch (err: any) {
+        console.log(err.message);
+      }
     }
   };
 

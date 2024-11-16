@@ -1,4 +1,6 @@
 "use client";
+import { AdopterRegister } from "@/services/actions/registerAdopter";
+import { modifyPayload } from "@/utils/modifyPayload";
 import {
   Box,
   Button,
@@ -14,8 +16,9 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 interface IRegisterFormData {
   password: string;
@@ -34,7 +37,7 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IRegisterFormData>();
-  const onSubmit: SubmitHandler<IRegisterFormData> = (data) => {
+  const onSubmit: SubmitHandler<IRegisterFormData> = async (data) => {
     const userData = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -48,7 +51,15 @@ const RegisterPage = () => {
       password: data.password,
       adopter: userData,
     };
-    console.log(adopterData);
+    const modifyData = modifyPayload(adopterData);
+    try {
+      const res = await AdopterRegister(modifyData);
+      if (res.data.id) {
+        toast("Adopter register successfully!");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
 
   return (

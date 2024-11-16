@@ -15,11 +15,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Button, Stack } from "@mui/material";
 import Link from "next/link";
+import { getUserInfo, isLoggedIn } from "@/services/auth.services";
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
 
 export default function Navbar() {
+  const userInfo = getUserInfo();
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -88,11 +91,17 @@ export default function Navbar() {
                 <Typography>Contact</Typography>
               </Link>
             </Box>
-            <Link href="/login">
+            {userInfo?.userId ? (
               <Button sx={{ display: { xs: "none", sm: "block" } }}>
-                Login
+                Logout
               </Button>
-            </Link>
+            ) : (
+              <Link href="/login">
+                <Button sx={{ display: { xs: "none", sm: "block" } }}>
+                  Login
+                </Button>
+              </Link>
+            )}
           </Stack>
         </Toolbar>
       </AppBar>
@@ -114,13 +123,19 @@ export default function Navbar() {
         >
           {drawer}
 
-          <Button
-            component={Link}
-            href="/login"
-            sx={{ width: "50%", mx: "auto" }}
-          >
-            Login
-          </Button>
+          {userInfo?.userId ? (
+            <Button color="error" sx={{ width: "50%", mx: "auto" }}>
+              Logout
+            </Button>
+          ) : (
+            <Button
+              component={Link}
+              href="/login"
+              sx={{ width: "50%", mx: "auto" }}
+            >
+              Login
+            </Button>
+          )}
         </Drawer>
       </nav>
     </Box>

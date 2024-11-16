@@ -1,5 +1,6 @@
 "use client";
 import { UserLogin } from "@/services/actions/loginUser";
+import { storeUserInfo } from "@/services/auth.services";
 import {
   Box,
   Button,
@@ -31,7 +32,8 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<ILoginFormData> = async (data) => {
     try {
       const res = await UserLogin(data);
-      if (res?.success === true) {
+      if (res?.data?.accessToken) {
+        storeUserInfo(res?.data?.accessToken);
         router.push("/");
         toast.success(res?.message);
       }

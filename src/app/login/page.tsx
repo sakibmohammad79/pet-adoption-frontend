@@ -1,4 +1,5 @@
 "use client";
+import { UserLogin } from "@/services/actions/loginUser";
 import {
   Box,
   Button,
@@ -10,22 +11,33 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
-interface ILoginFormData {
+export interface ILoginFormData {
   email: string;
   password: string;
 }
 
 const LoginPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<ILoginFormData>();
-  const onSubmit: SubmitHandler<ILoginFormData> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<ILoginFormData> = async (data) => {
+    try {
+      const res = await UserLogin(data);
+      if (res?.success === true) {
+        router.push("/");
+        toast.success(res?.message);
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
   return (
     <Container>

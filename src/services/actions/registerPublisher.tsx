@@ -9,6 +9,6 @@ export const PublisherRegister = async (formValue: FormData) => {
     }
   );
 
-  const adopterInfo = await res.json();
-  return adopterInfo;
+  const publisherInfo = await res.json();
+  return publisherInfo;
 };

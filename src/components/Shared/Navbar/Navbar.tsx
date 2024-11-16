@@ -13,16 +13,23 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Link from "next/link";
-import { getUserInfo, isLoggedIn } from "@/services/auth.services";
+
+import dynamic from "next/dynamic";
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
 
 export default function Navbar() {
-  const userInfo = getUserInfo();
-
+  const AuthButtonLg = dynamic(
+    () => import("@/components/UI/AuthButton/AuthButtonLg"),
+    { ssr: false }
+  );
+  const AuthButtonSm = dynamic(
+    () => import("@/components/UI/AuthButton/AuthButtonSm"),
+    { ssr: false }
+  );
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -91,17 +98,7 @@ export default function Navbar() {
                 <Typography>Contact</Typography>
               </Link>
             </Box>
-            {userInfo?.userId ? (
-              <Button sx={{ display: { xs: "none", sm: "block" } }}>
-                Logout
-              </Button>
-            ) : (
-              <Link href="/login">
-                <Button sx={{ display: { xs: "none", sm: "block" } }}>
-                  Login
-                </Button>
-              </Link>
-            )}
+            <AuthButtonLg></AuthButtonLg>
           </Stack>
         </Toolbar>
       </AppBar>
@@ -123,19 +120,7 @@ export default function Navbar() {
         >
           {drawer}
 
-          {userInfo?.userId ? (
-            <Button color="error" sx={{ width: "50%", mx: "auto" }}>
-              Logout
-            </Button>
-          ) : (
-            <Button
-              component={Link}
-              href="/login"
-              sx={{ width: "50%", mx: "auto" }}
-            >
-              Login
-            </Button>
-          )}
+          <AuthButtonSm></AuthButtonSm>
         </Drawer>
       </nav>
     </Box>

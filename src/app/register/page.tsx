@@ -1,6 +1,8 @@
 "use client";
+import { UserLogin } from "@/services/actions/loginUser";
 import { AdopterRegister } from "@/services/actions/registerAdopter";
 import { PublisherRegister } from "@/services/actions/registerPublisher";
+import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
 import {
   Box,
@@ -57,11 +59,18 @@ const RegisterPage = () => {
       };
       const modifyData = modifyPayload(adopterData);
       try {
-        const res = await AdopterRegister(modifyData);
-        console.log(res);
-        if (res?.data?.id) {
-          router.push("/login");
-          toast.success(res?.message);
+        const registerRes = await AdopterRegister(modifyData);
+
+        if (registerRes?.data?.id) {
+          const loginRes = await UserLogin({
+            email: data.email,
+            password: data.password,
+          });
+          if (loginRes?.data?.accessToken) {
+            storeUserInfo(loginRes?.data?.accessToken);
+            router.push("/");
+          }
+          toast.success(registerRes?.message);
         }
       } catch (err: any) {
         console.log(err.message);
@@ -74,18 +83,20 @@ const RegisterPage = () => {
       };
       const modifyData = modifyPayload(publisherData);
       try {
-        const res = await PublisherRegister(modifyData);
-        console.log(res);
-        if (res?.data?.id) {
-          router.push("/login");
-          toast.success(res?.message);
+        const registerRes = await PublisherRegister(modifyData);
+        if (registerRes?.data?.id) {
+          const loginRes = await UserLogin(data);
+          if (loginRes?.data?.accessToken) {
+            storeUserInfo(loginRes?.data?.accessToken);
+            router.push("/");
+          }
+          toast.success(registerRes?.message);
         }
       } catch (err: any) {
         console.log(err.message);
       }
     }
   };
-
   return (
     <Container>
       <Stack

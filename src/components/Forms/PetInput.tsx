@@ -1,11 +1,14 @@
-import { TextField } from "@mui/material";
+import { SxProps, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 interface IInputProps {
   name: string;
   label?: string;
   type?: string;
   size?: "small" | "medium";
+  sx?: SxProps;
   fullWidth?: boolean;
+  placeHolder?: string;
+  required: boolean;
 }
 const PetInput = ({
   name,
@@ -13,6 +16,9 @@ const PetInput = ({
   size = "small",
   type = "text",
   label,
+  sx,
+  placeHolder,
+  required,
 }: IInputProps) => {
   const { control } = useFormContext();
   return (
@@ -22,11 +28,14 @@ const PetInput = ({
       render={({ field }) => (
         <TextField
           {...field}
+          sx={{ ...sx }}
           label={label}
           variant="outlined"
           fullWidth={fullWidth}
           size={size}
           type={type}
+          placeholder={label}
+          required={required}
         />
       )}
     />

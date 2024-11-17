@@ -70,29 +70,21 @@ const LoginPage = () => {
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
-                    label="Email*"
+                    label="Email"
                     fullWidth={true}
                     type="email"
                     name="email"
+                    required={true}
                   />
-                  {/* {errors.email && (
-                    <Typography color="error">
-                      {errors.email.message}
-                    </Typography>
-                  )} */}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
-                    label="Password*"
+                    label="Password"
                     fullWidth={true}
                     type="password"
                     name="password"
+                    required={true}
                   />
-                  {/* {errors.password && (
-                    <Typography color="error">
-                      {errors.password.message}
-                    </Typography>
-                  )} */}
                 </Grid>
               </Grid>
               <Link href="/forget-password">

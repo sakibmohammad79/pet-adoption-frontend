@@ -1,4 +1,10 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SxProps,
+} from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
 interface ISelectOption {
@@ -11,7 +17,9 @@ interface ISelectProps {
   label?: string;
   size?: "small" | "medium";
   fullWidth?: boolean;
+  sx?: SxProps;
   options: ISelectOption[];
+  required: boolean;
 }
 
 const PetSelect = ({
@@ -20,6 +28,8 @@ const PetSelect = ({
   size = "small",
   fullWidth = true,
   options,
+  sx,
+  required,
 }: ISelectProps) => {
   const { control } = useFormContext();
 
@@ -28,7 +38,12 @@ const PetSelect = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormControl fullWidth={fullWidth} size={size}>
+        <FormControl
+          fullWidth={fullWidth}
+          size={size}
+          required={required}
+          sx={{ ...sx }}
+        >
           {label && <InputLabel>{label}</InputLabel>}
           <Select {...field} label={label}>
             {options.map((option) => (

@@ -47,6 +47,7 @@ const RegisterPage = () => {
       const modifyData = modifyPayload(adopterData);
       try {
         const registerRes = await AdopterRegister(modifyData);
+        console.log(registerRes);
 
         if (registerRes?.data?.id) {
           const loginRes = await UserLogin({
@@ -121,42 +122,52 @@ const RegisterPage = () => {
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
-                    label="First Name*"
+                    label="First Name"
                     name="firstName"
                     fullWidth={true}
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
-                    label="Last Name*"
+                    label="Last Name"
                     name="lastName"
                     fullWidth={true}
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
-                    label="Email*"
+                    label="Email"
                     name="email"
                     fullWidth={true}
                     type="email"
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
-                    label="Password*"
+                    label="Password"
                     name="password"
                     fullWidth={true}
                     type="password"
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetSelect name="role" label="Role*" options={optionsRole} />
+                  <PetSelect
+                    name="role"
+                    label="Role"
+                    options={optionsRole}
+                    required={true}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetSelect
                     name="gender"
                     label="Gender"
                     options={optionsGender}
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -165,17 +176,28 @@ const RegisterPage = () => {
                     name="contactNumber"
                     fullWidth={true}
                     type="tel"
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetInput label="Address" name="address" fullWidth={true} />
+                  <PetInput
+                    label="Address"
+                    name="address"
+                    fullWidth={true}
+                    required={true}
+                  />
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6}>
+                {/* <Grid item xs={12} sm={12} md={6}>
                   <FormControl variant="outlined" fullWidth>
-                    <PetInput type="date" size="small" name="birthDate" />
+                    <PetInput
+                      type="date"
+                      size="small"
+                      name="birthDate"
+                      required={false}
+                    />
                   </FormControl>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Button
                 type="submit"

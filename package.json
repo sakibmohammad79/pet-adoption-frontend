@@ -17,6 +17,7 @@
     "@mui/material": "^6.1.7",
     "@mui/material-nextjs": "^6.1.5",
     "@reduxjs/toolkit": "^2.3.0",
+    "axios": "^1.7.7",
     "jwt-decode": "^4.0.0",
     "next": "14.0.3",
     "react": "^18",

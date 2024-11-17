@@ -1,4 +1,8 @@
 "use client";
+import PetForm from "@/components/Forms/PetForm";
+import PetInput from "@/components/Forms/PetInput";
+import PetSelect from "@/components/Forms/PetSelect";
+import { optionsGender, optionsRole } from "@/constants/selectOptions";
 import { UserLogin } from "@/services/actions/loginUser";
 import { AdopterRegister } from "@/services/actions/registerAdopter";
 import { PublisherRegister } from "@/services/actions/registerPublisher";
@@ -10,9 +14,6 @@ import {
   Container,
   FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -20,28 +21,14 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-interface IRegisterFormData {
-  password: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: string;
-  role: string;
-  birthDate: string;
-  contactNumber: string;
-  address: string;
-}
 const RegisterPage = () => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IRegisterFormData>();
-  const onSubmit: SubmitHandler<IRegisterFormData> = async (data) => {
+
+  const handleRegister = async (data: FieldValues) => {
+    console.log(data);
     const userData = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -130,136 +117,63 @@ const RegisterPage = () => {
           </Stack>
 
           <Box sx={{ py: 2 }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <PetForm onSubmit={handleRegister}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="First Name*"
-                    variant="outlined"
+                    name="firstName"
                     fullWidth={true}
-                    size="small"
-                    {...register("firstName", {
-                      required: "First name is required",
-                    })}
                   />
-                  {errors.firstName && (
-                    <Typography color="error">
-                      {errors.firstName.message}
-                    </Typography>
-                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="Last Name*"
-                    variant="outlined"
+                    name="lastName"
                     fullWidth={true}
-                    size="small"
-                    {...register("lastName", {
-                      required: "Last name is required",
-                    })}
                   />
-                  {errors.lastName && (
-                    <Typography color="error">
-                      {errors.lastName.message}
-                    </Typography>
-                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="Email*"
-                    variant="outlined"
+                    name="email"
                     fullWidth={true}
-                    size="small"
                     type="email"
-                    {...register("email", {
-                      required: "Email is required",
-                    })}
                   />
-                  {errors.email && (
-                    <Typography color="error">
-                      {errors.email.message}
-                    </Typography>
-                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="Password*"
-                    variant="outlined"
+                    name="password"
                     fullWidth={true}
-                    size="small"
                     type="password"
-                    {...register("password", {
-                      required: "Password is required",
-                    })}
                   />
-                  {errors.password && (
-                    <Typography color="error">
-                      {errors.password.message}
-                    </Typography>
-                  )}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel>Role*</InputLabel>
-                    <Select
-                      label="Role*"
-                      defaultValue=""
-                      size="small"
-                      {...register("role", { required: "Role is required" })}
-                    >
-                      <MenuItem value="PET_PUBLISHER">PET_PUBLISHER</MenuItem>
-                      <MenuItem value="PET_ADOPTER">PET_ADOPTER</MenuItem>
-                    </Select>
-                    {errors.role && (
-                      <Typography color="error">
-                        {errors.role.message}
-                      </Typography>
-                    )}
-                  </FormControl>
+                  <PetSelect name="role" label="Role*" options={optionsRole} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel>Gender</InputLabel>
-                    <Select
-                      label="Gender*"
-                      defaultValue=""
-                      size="small"
-                      {...register("gender")}
-                    >
-                      <MenuItem value="MALE">MALE</MenuItem>
-                      <MenuItem value="FEMALE">FEMALE</MenuItem>
-                      <MenuItem value="OTHER">OTHER</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <PetSelect
+                    name="gender"
+                    label="Gender"
+                    options={optionsGender}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="Contact Number"
-                    variant="outlined"
+                    name="contactNumber"
                     fullWidth={true}
-                    size="small"
                     type="tel"
-                    {...register("contactNumber")}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
-                    label="Address"
-                    variant="outlined"
-                    fullWidth={true}
-                    size="small"
-                    {...register("address")}
-                  />
+                  <PetInput label="Address" name="address" fullWidth={true} />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
                   <FormControl variant="outlined" fullWidth>
-                    <TextField
-                      defaultValue=""
-                      type="date"
-                      size="small"
-                      {...register("birthDate")}
-                    />
+                    <PetInput type="date" size="small" name="birthDate" />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -270,7 +184,7 @@ const RegisterPage = () => {
               >
                 Please Register
               </Button>
-            </form>
+            </PetForm>
             <Typography align="center">
               Alrady have an acount? please{" "}
               <Link href="/login">

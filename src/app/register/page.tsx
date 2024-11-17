@@ -8,25 +8,37 @@ import { AdopterRegister } from "@/services/actions/registerAdopter";
 import { PublisherRegister } from "@/services/actions/registerPublisher";
 import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const registerValidationSchema = z.object({
+  firstName: z.string().min(1, { message: "First name is required!" }),
+  lastName: z.string().min(1, { message: "Last name is required!" }),
+  email: z.string().email({ message: "Enter valid email address!" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long." }),
+  gender: z.enum(["MALE", "FEMALE", "OTHER"], {
+    message: "Gender is required!",
+  }),
+  role: z.enum(["PET_ADOPTER", "PET_PUBLISHER"], {
+    message: "Role is required!",
+  }),
+  contactNumber: z
+    .string()
+    .min(11, { message: "Contact number must be at least 11 digits." })
+    .max(11, { message: "Contact number can't exceed 11 digits." }),
+  address: z.string().min(1, { message: "Address is required!" }),
+});
 
 const RegisterPage = () => {
   const router = useRouter();
-
   const handleRegister = async (data: FieldValues) => {
     console.log(data);
     const userData = {
@@ -118,14 +130,26 @@ const RegisterPage = () => {
           </Stack>
 
           <Box sx={{ py: 2 }}>
-            <PetForm onSubmit={handleRegister}>
+            <PetForm
+              onSubmit={handleRegister}
+              resolver={zodResolver(registerValidationSchema)}
+              defaultValues={{
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                role: "",
+                gender: "",
+                contactNumber: "",
+                address: "",
+              }}
+            >
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
                     label="First Name"
                     name="firstName"
                     fullWidth={true}
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -133,7 +157,6 @@ const RegisterPage = () => {
                     label="Last Name"
                     name="lastName"
                     fullWidth={true}
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -142,7 +165,6 @@ const RegisterPage = () => {
                     name="email"
                     fullWidth={true}
                     type="email"
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -151,23 +173,16 @@ const RegisterPage = () => {
                     name="password"
                     fullWidth={true}
                     type="password"
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetSelect
-                    name="role"
-                    label="Role"
-                    options={optionsRole}
-                    required={true}
-                  />
+                  <PetSelect name="role" label="Role" options={optionsRole} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetSelect
                     name="gender"
                     label="Gender"
                     options={optionsGender}
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -176,28 +191,11 @@ const RegisterPage = () => {
                     name="contactNumber"
                     fullWidth={true}
                     type="tel"
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetInput
-                    label="Address"
-                    name="address"
-                    fullWidth={true}
-                    required={true}
-                  />
+                  <PetInput label="Address" name="address" fullWidth={true} />
                 </Grid>
-
-                {/* <Grid item xs={12} sm={12} md={6}>
-                  <FormControl variant="outlined" fullWidth>
-                    <PetInput
-                      type="date"
-                      size="small"
-                      name="birthDate"
-                      required={false}
-                    />
-                  </FormControl>
-                </Grid> */}
               </Grid>
               <Button
                 type="submit"

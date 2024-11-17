@@ -4,6 +4,7 @@ import {
   MenuItem,
   Select,
   SxProps,
+  FormHelperText,
 } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -19,7 +20,7 @@ interface ISelectProps {
   fullWidth?: boolean;
   sx?: SxProps;
   options: ISelectOption[];
-  required: boolean;
+  required?: boolean;
 }
 
 const PetSelect = ({
@@ -37,12 +38,12 @@ const PetSelect = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <FormControl
           fullWidth={fullWidth}
           size={size}
-          required={required}
           sx={{ ...sx }}
+          error={!!error?.message} // Apply error styling here
         >
           {label && <InputLabel>{label}</InputLabel>}
           <Select {...field} label={label}>
@@ -52,6 +53,9 @@ const PetSelect = ({
               </MenuItem>
             ))}
           </Select>
+          {error?.message && (
+            <FormHelperText>{error.message}</FormHelperText> // Display error message here
+          )}
         </FormControl>
       )}
     />

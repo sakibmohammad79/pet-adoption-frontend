@@ -3,20 +3,21 @@ import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import { UserLogin } from "@/services/actions/loginUser";
 import { storeUserInfo } from "@/services/auth.services";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const loginValidationSchema = z.object({
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long." }),
+  email: z.string().email({ message: "Please enter a valid email address!" }),
+});
 
 const LoginPage = () => {
   const router = useRouter();
@@ -66,7 +67,14 @@ const LoginPage = () => {
           </Stack>
 
           <Box sx={{ py: 2 }}>
-            <PetForm onSubmit={handleLogin}>
+            <PetForm
+              onSubmit={handleLogin}
+              resolver={zodResolver(loginValidationSchema)}
+              defaultValues={{
+                password: "",
+                email: "",
+              }}
+            >
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
@@ -74,7 +82,6 @@ const LoginPage = () => {
                     fullWidth={true}
                     type="email"
                     name="email"
-                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
@@ -83,7 +90,6 @@ const LoginPage = () => {
                     fullWidth={true}
                     type="password"
                     name="password"
-                    required={true}
                   />
                 </Grid>
               </Grid>

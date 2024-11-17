@@ -8,7 +8,7 @@ interface IInputProps {
   sx?: SxProps;
   fullWidth?: boolean;
   placeHolder?: string;
-  required: boolean;
+  required?: boolean;
 }
 const PetInput = ({
   name,
@@ -25,7 +25,7 @@ const PetInput = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           sx={{ ...sx }}
@@ -36,6 +36,8 @@ const PetInput = ({
           type={type}
           placeholder={label}
           required={required}
+          error={!!error?.message}
+          helperText={error?.message}
         />
       )}
     />

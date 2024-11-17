@@ -1,5 +1,6 @@
 "use client";
 import PetForm from "@/components/Forms/PetForm";
+import PetInput from "@/components/Forms/PetInput";
 import { UserLogin } from "@/services/actions/loginUser";
 import { storeUserInfo } from "@/services/auth.services";
 import {
@@ -68,38 +69,30 @@ const LoginPage = () => {
             <PetForm onSubmit={handleLogin}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="Email*"
-                    variant="outlined"
                     fullWidth={true}
-                    size="small"
                     type="email"
-                    {...register("email", {
-                      required: "Email is required",
-                    })}
+                    name="email"
                   />
-                  {errors.email && (
+                  {/* {errors.email && (
                     <Typography color="error">
                       {errors.email.message}
                     </Typography>
-                  )}
+                  )} */}
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <TextField
+                  <PetInput
                     label="Password*"
-                    variant="outlined"
                     fullWidth={true}
-                    size="small"
                     type="password"
-                    {...register("password", {
-                      required: "Password is required",
-                    })}
+                    name="password"
                   />
-                  {errors.password && (
+                  {/* {errors.password && (
                     <Typography color="error">
                       {errors.password.message}
                     </Typography>
-                  )}
+                  )} */}
                 </Grid>
               </Grid>
               <Link href="/forget-password">

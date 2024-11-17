@@ -13,11 +13,11 @@ interface IFormProps {
 
 const PetForm = ({ children, onSubmit }: IFormProps) => {
   const methods = useForm();
-  const { handleSubmit } = methods;
+  const { handleSubmit, reset } = methods;
 
   const formSubmit: SubmitHandler<FieldValues> = (data: FieldValues) => {
-    console.log(data);
     onSubmit(data);
+    reset();
   };
   return (
     <FormProvider {...methods}>

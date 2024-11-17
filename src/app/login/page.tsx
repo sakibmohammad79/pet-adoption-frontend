@@ -3,6 +3,7 @@ import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import { UserLogin } from "@/services/actions/loginUser";
 import { storeUserInfo } from "@/services/auth.services";
+import { loginValidationSchema } from "@/validation/formValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
@@ -10,14 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const loginValidationSchema = z.object({
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long." }),
-  email: z.string().email({ message: "Please enter a valid email address!" }),
-});
 
 const LoginPage = () => {
   const router = useRouter();
@@ -29,6 +22,8 @@ const LoginPage = () => {
         storeUserInfo(res?.data?.accessToken);
         router.push("/");
         toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
       }
     } catch (err: any) {
       console.log(err.message);

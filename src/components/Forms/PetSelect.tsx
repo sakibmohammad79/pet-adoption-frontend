@@ -43,7 +43,7 @@ const PetSelect = ({
           fullWidth={fullWidth}
           size={size}
           sx={{ ...sx }}
-          error={!!error?.message} // Apply error styling here
+          error={!!error?.message}
         >
           {label && <InputLabel>{label}</InputLabel>}
           <Select {...field} label={label}>
@@ -53,9 +53,7 @@ const PetSelect = ({
               </MenuItem>
             ))}
           </Select>
-          {error?.message && (
-            <FormHelperText>{error.message}</FormHelperText> // Display error message here
-          )}
+          {error?.message && <FormHelperText>{error.message}</FormHelperText>}
         </FormControl>
       )}
     />

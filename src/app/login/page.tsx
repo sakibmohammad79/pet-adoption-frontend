@@ -1,4 +1,5 @@
 "use client";
+import PetForm from "@/components/Forms/PetForm";
 import { UserLogin } from "@/services/actions/loginUser";
 import { storeUserInfo } from "@/services/auth.services";
 import {
@@ -13,23 +14,13 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-
-export interface ILoginFormData {
-  email: string;
-  password: string;
-}
 
 const LoginPage = () => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<ILoginFormData>();
-  const onSubmit: SubmitHandler<ILoginFormData> = async (data) => {
+
+  const handleLogin = async (data: FieldValues) => {
     try {
       const res = await UserLogin(data);
       if (res?.data?.accessToken) {
@@ -74,7 +65,7 @@ const LoginPage = () => {
           </Stack>
 
           <Box sx={{ py: 2 }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <PetForm onSubmit={handleLogin}>
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
                   <TextField
@@ -123,7 +114,7 @@ const LoginPage = () => {
               >
                 Please Login
               </Button>
-            </form>
+            </PetForm>
             <Typography align="center">
               Don&apos;t have an account? please{" "}
               <Link href="/register">

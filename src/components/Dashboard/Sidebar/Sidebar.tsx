@@ -8,23 +8,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import { Box, Divider, Stack, Toolbar, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { DrawerItems } from "@/utils/drawerItems";
+import { UserRole } from "@/types";
+import SidebarItem from "./SidebarItem";
 const Sidebar = () => {
-  const drawer = (
-    <div>
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
   return (
     <Box>
       <Stack
@@ -46,7 +33,11 @@ const Sidebar = () => {
           Pet Adoption
         </Typography>
       </Stack>
-      {drawer}
+      <List>
+        {DrawerItems("pet_adopter" as UserRole).map((item, index) => (
+          <SidebarItem key={index} index={index} item={item} />
+        ))}
+      </List>
     </Box>
   );
 };

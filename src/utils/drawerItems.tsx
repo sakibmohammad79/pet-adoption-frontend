@@ -20,6 +20,16 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Manage Users",
           path: `${role}/manage-users`,
           icon: ManageAccountsIcon,
+        },
+        {
+          title: "Profile",
+          path: `${role}/profile`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Password Change",
+          path: `${role}/password-change`,
+          icon: ManageAccountsIcon,
         }
       );
       break;
@@ -34,6 +44,16 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "My Adopt",
           path: `${role}/my-adopt`,
           icon: AddHomeWorkIcon,
+        },
+        {
+          title: "Profile",
+          path: `${role}/profile`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Password Change",
+          path: `${role}/password-change`,
+          icon: ManageAccountsIcon,
         }
       );
       break;
@@ -48,6 +68,16 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "My Published",
           path: `${role}/my-published`,
           icon: PublishedWithChangesIcon,
+        },
+        {
+          title: "Profile",
+          path: `${role}/profile`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Password Change",
+          path: `${role}/password-change`,
+          icon: ManageAccountsIcon,
         }
       );
       break;

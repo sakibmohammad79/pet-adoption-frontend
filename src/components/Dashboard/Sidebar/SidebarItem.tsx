@@ -1,24 +1,36 @@
 import Link from "next/link";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+
 import { DrawerItem } from "@/types";
+import { usePathname } from "next/navigation";
 
 interface ISideBarItemProps {
   item: DrawerItem;
-  index: number;
 }
-const SidebarItem = ({ index, item }: ISideBarItemProps) => {
+const SidebarItem = ({ item }: ISideBarItemProps) => {
+  const pathLink = `/dashboard/${item.path}`;
+  const pathName = usePathname();
   return (
-    <Link href="/">
-      <ListItem key={index} disablePadding>
+    <Link href={pathLink}>
+      <ListItem
+        disablePadding
+        sx={{
+          ...(pathName === pathLink
+            ? {
+                borderRight: "2px solid #F04336",
+                "& svg": {
+                  color: "#F04336",
+                },
+              }
+            : {}),
+          mb: 1,
+        }}
+      >
         <ListItemButton>
-          <ListItemIcon>
-            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-          </ListItemIcon>
+          <ListItemIcon>{item.icon && <item.icon></item.icon>}</ListItemIcon>
           <ListItemText primary={item.title} />
         </ListItemButton>
       </ListItem>

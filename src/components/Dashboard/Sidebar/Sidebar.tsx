@@ -35,7 +35,7 @@ const Sidebar = () => {
       </Stack>
       <List>
         {DrawerItems("pet_adopter" as UserRole).map((item, index) => (
-          <SidebarItem key={index} index={index} item={item} />
+          <SidebarItem key={index} item={item} />
         ))}
       </List>
     </Box>

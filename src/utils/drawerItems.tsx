@@ -17,12 +17,27 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
-          title: "Manage Users",
-          path: `${role}/manage-users`,
+          title: "Manage admin",
+          path: `${role}/admins`,
           icon: ManageAccountsIcon,
         },
         {
-          title: "Profile",
+          title: "Manage User",
+          path: `${role}/users`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Manage Pet",
+          path: `${role}/pets`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Manage Adoption",
+          path: `${role}/adoptions`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "My Profile",
           path: `${role}/profile`,
           icon: ManageAccountsIcon,
         },
@@ -41,8 +56,13 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
-          title: "My Adopt",
-          path: `${role}/my-adopt`,
+          title: "My Book Request",
+          path: `${role}/pet-book`,
+          icon: AddHomeWorkIcon,
+        },
+        {
+          title: "My Adopted Pet",
+          path: `${role}/pet-adopt`,
           icon: AddHomeWorkIcon,
         },
         {
@@ -53,6 +73,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "Password Change",
           path: `${role}/password-change`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Give Review",
+          path: `${role}/review`,
           icon: ManageAccountsIcon,
         }
       );
@@ -65,10 +90,21 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
-          title: "My Published",
+          title: "Create New Pet",
+          path: `${role}/pet-create`,
+          icon: PublishedWithChangesIcon,
+        },
+        {
+          title: "My Published Pet",
           path: `${role}/my-published`,
           icon: PublishedWithChangesIcon,
         },
+        {
+          title: "My Requested Pet",
+          path: `${role}/pet-published`,
+          icon: PublishedWithChangesIcon,
+        },
+
         {
           title: "Profile",
           path: `${role}/profile`,
@@ -77,6 +113,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "Password Change",
           path: `${role}/password-change`,
+          icon: ManageAccountsIcon,
+        },
+        {
+          title: "Give Review",
+          path: `${role}/review`,
           icon: ManageAccountsIcon,
         }
       );

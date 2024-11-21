@@ -1,17 +1,19 @@
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+
 import { Box, Divider, Stack, Toolbar, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { DrawerItems } from "@/utils/drawerItems";
 import { UserRole } from "@/types";
 import SidebarItem from "./SidebarItem";
+import { getUserInfo } from "@/services/auth.services";
+import { useEffect, useState } from "react";
 const Sidebar = () => {
+  const [userRole, setUserRole] = useState("");
+  useEffect(() => {
+    const { role } = getUserInfo();
+    setUserRole(role);
+  }, []);
   return (
     <Box>
       <Stack
@@ -34,7 +36,7 @@ const Sidebar = () => {
         </Typography>
       </Stack>
       <List>
-        {DrawerItems("pet_adopter" as UserRole).map((item, index) => (
+        {DrawerItems(userRole as UserRole).map((item, index) => (
           <SidebarItem key={index} item={item} />
         ))}
       </List>

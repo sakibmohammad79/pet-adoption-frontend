@@ -57,7 +57,7 @@ const RegisterPage = () => {
           });
           if (loginRes?.data?.accessToken) {
             storeUserInfo(loginRes?.data?.accessToken);
-            router.push("/");
+            router.push("/dashboard");
           }
           toast.success(registerRes?.message);
         } else {
@@ -79,7 +79,7 @@ const RegisterPage = () => {
           const loginRes = await UserLogin(data);
           if (loginRes?.data?.accessToken) {
             storeUserInfo(loginRes?.data?.accessToken);
-            router.push("/");
+            router.push("/dashboard");
           }
           toast.success(registerRes?.message);
         } else {

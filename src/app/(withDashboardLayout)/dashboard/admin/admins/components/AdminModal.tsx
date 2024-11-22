@@ -86,7 +86,7 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
             <PetInput label="Address" name="address" fullWidth={true} />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
-            <PetFile />
+            <PetFile name="file" label="Upload File" />
           </Grid>
         </Grid>
         <Button

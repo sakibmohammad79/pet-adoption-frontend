@@ -1,8 +1,15 @@
 import { USER_ROLE } from "@/constants/role";
 import { DrawerItem, UserRole } from "@/types";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import PetsIcon from "@mui/icons-material/Pets";
 import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import KeyIcon from "@mui/icons-material/Key";
+import StarIcon from "@mui/icons-material/Star";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
 export const DrawerItems = (role: UserRole): DrawerItem[] => {
@@ -19,32 +26,32 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "Manage admin",
           path: `${role}/admins`,
-          icon: ManageAccountsIcon,
+          icon: AdminPanelSettingsIcon,
         },
         {
           title: "Manage User",
           path: `${role}/users`,
-          icon: ManageAccountsIcon,
+          icon: SupervisorAccountIcon,
         },
         {
           title: "Manage Pet",
           path: `${role}/pets`,
-          icon: ManageAccountsIcon,
+          icon: PetsIcon,
         },
         {
           title: "Manage Adoption",
           path: `${role}/adoptions`,
-          icon: ManageAccountsIcon,
+          icon: AddHomeWorkIcon,
         },
         {
           title: "My Profile",
           path: `${role}/profile`,
-          icon: ManageAccountsIcon,
+          icon: AccountCircleIcon,
         },
         {
           title: "Password Change",
           path: `${role}/password-change`,
-          icon: ManageAccountsIcon,
+          icon: KeyIcon,
         }
       );
       break;
@@ -68,17 +75,17 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "Profile",
           path: `${role}/profile`,
-          icon: ManageAccountsIcon,
+          icon: AccountCircleIcon,
         },
         {
           title: "Password Change",
           path: `${role}/password-change`,
-          icon: ManageAccountsIcon,
+          icon: KeyIcon,
         },
         {
           title: "Give Review",
           path: `${role}/review`,
-          icon: ManageAccountsIcon,
+          icon: StarIcon,
         }
       );
       break;
@@ -108,17 +115,17 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "Profile",
           path: `${role}/profile`,
-          icon: ManageAccountsIcon,
+          icon: AccountCircleIcon,
         },
         {
           title: "Password Change",
           path: `${role}/password-change`,
-          icon: ManageAccountsIcon,
+          icon: KeyIcon,
         },
         {
           title: "Give Review",
           path: `${role}/review`,
-          icon: ManageAccountsIcon,
+          icon: StarIcon,
         }
       );
       break;

@@ -28,9 +28,9 @@ export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function PetModal({
-  open,
+  open = false,
   setOpen,
-  title,
+  title = "",
   children,
   sx,
 }: IPetModalProps) {
@@ -62,11 +62,6 @@ export default function PetModal({
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>{children}</DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </React.Fragment>
   );

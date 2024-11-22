@@ -4,44 +4,69 @@ import PetInput from "@/components/Forms/PetInput";
 import PetSelect from "@/components/Forms/PetSelect";
 import PetModal from "@/components/Shared/PetModal/PetModal";
 import { optionsGender } from "@/constants/selectOptions";
+import { useCreateAdminMutation } from "@/redux/api/adminApi";
 import { toISODate } from "@/utils/isoFormateDate";
+import { modifyPayload } from "@/utils/modifyPayload";
+import { modifyPayloadWithFile } from "@/utils/modifyPlayloadWithFile";
 import { createAdminValidationSchema } from "@/validation/formValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid } from "@mui/material";
 import React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
-const defaultValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  gender: "",
-  contactNumber: "",
-  address: "",
-  birthDate: "",
-};
+// const defaultValues = {
+//   firstName: "",
+//   lastName: "",
+//   email: "",
+//   password: "",
+//   gender: "",
+//   contactNumber: "",
+//   address: "",
+//   birthDate: "",
+//   file: "",
+// };
 interface IModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const handleRegister = (value: FieldValues) => {
-  // const isoFormateBirthDate = toISODate(value.birthDate);
-  const adminData = {
-    admin: {
-      ...value,
-      birthDate: toISODate(value.birthDate),
-    },
-  };
-  console.log(adminData);
-};
-
 const AdminModal = ({ open, setOpen }: IModalProps) => {
+  const [createAdmin] = useCreateAdminMutation();
+
+  const handleCreateAdmin = async (value: FieldValues) => {
+    const adminData = {
+      password: value.password,
+      admin: {
+        firstName: value.firstName,
+        lastName: value.lastName,
+        email: value.email,
+        address: value.address,
+        contactNumber: value.contactNumber,
+        birthDate: toISODate(value.birthDate),
+        gender: value.gender,
+        file: value.file,
+      },
+    };
+
+    const data = modifyPayloadWithFile(adminData);
+    // console.log(data);
+    try {
+      const res = await createAdmin(data).unwrap();
+      console.log(res);
+      if (res?.id) {
+        toast.success("Admin created successfully!");
+        setOpen(false);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
   return (
     <PetModal open={open} setOpen={setOpen} title="Create a new admin">
       <PetForm
-        onSubmit={handleRegister}
+        onSubmit={handleCreateAdmin}
         // resolver={zodResolver(createAdminValidationSchema)}
         // defaultValues={defaultValues}
       >

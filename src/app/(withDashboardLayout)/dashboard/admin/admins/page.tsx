@@ -5,7 +5,11 @@ import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import AdminModal from "./components/AdminModal";
 import { useState } from "react";
-import { useGetAdminsQuery } from "@/redux/api/adminApi";
+import Swal from "sweetalert2";
+import {
+  useDeleteAdminMutation,
+  useGetAdminsQuery,
+} from "@/redux/api/adminApi";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -13,9 +17,30 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const AdminsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data, isLoading, error } = useGetAdminsQuery({});
+  const [deleteAdmin] = useDeleteAdminMutation();
 
-  const handleDelete = (id: string) => {
-    console.log(id);
+  const handleDelete = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteAdmin(id).unwrap();
+      } catch (err: any) {
+        console.error(err);
+      }
+      Swal.fire("Deleted!", "Your item has been deleted.", "success");
+    } else {
+      Swal.fire("Cancelled", "Your item is safe :)", "info");
+    }
   };
 
   // Handle different states

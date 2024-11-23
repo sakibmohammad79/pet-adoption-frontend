@@ -1,10 +1,16 @@
 "use client";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import AdminModal from "./components/AdminModal";
 import { useState } from "react";
+import { useGetAdminsQuery } from "@/redux/api/adminApi";
 
 const AdminsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data, isLoading } = useGetAdminsQuery({});
+
+  if (isLoading) {
+    <Typography>Loaidng</Typography>;
+  }
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -14,6 +20,7 @@ const AdminsPage = () => {
         <AdminModal open={isModalOpen} setOpen={setIsModalOpen} />
         <TextField placeholder="Search Admin"></TextField>
       </Stack>
+      <Box>{data?.length}</Box>
     </Box>
   );
 };

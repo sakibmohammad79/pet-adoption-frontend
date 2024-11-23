@@ -1,3 +1,4 @@
+import { tagTypes, tagTypesList } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 const adminApi = baseApi.injectEndpoints({
@@ -9,8 +10,16 @@ const adminApi = baseApi.injectEndpoints({
         contentType: "multipart/form-data",
         data,
       }),
+      invalidatesTags: [tagTypes.admin],
+    }),
+    getAdmins: build.query({
+      query: () => ({
+        url: "/admin",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.admin],
     }),
   }),
 });
 
-export const { useCreateAdminMutation } = adminApi;
+export const { useCreateAdminMutation, useGetAdminsQuery } = adminApi;

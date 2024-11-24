@@ -43,6 +43,6 @@ export const createAdminValidationSchema = z.object({
     .min(11, { message: "Contact number must be at least 11 digits." })
     .max(11, { message: "Contact number can't exceed 11 digits." }),
   address: z.string().min(1, { message: "Address is required!" }),
-  birthDate: z.date({ message: "Date of birth is required!" }),
+  birthDate: z.string({ message: "Date of birth is required!" }),
   file: z.string({ message: "Photo is required!" }),
 });

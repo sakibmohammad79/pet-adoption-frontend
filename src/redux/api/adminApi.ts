@@ -1,3 +1,4 @@
+import { TMeta } from "@/types";
 import { tagTypes, tagTypesList } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -13,10 +14,17 @@ const adminApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.admin],
     }),
     getAdmins: build.query({
-      query: () => ({
+      query: (arg: Record<string, any>) => ({
         url: "/admin",
         method: "GET",
+        params: arg,
       }),
+      transformResponse: (response: any, meta: TMeta) => {
+        return {
+          admins: response,
+          meta,
+        };
+      },
       providesTags: [tagTypes.admin],
     }),
     deleteAdmin: build.mutation({

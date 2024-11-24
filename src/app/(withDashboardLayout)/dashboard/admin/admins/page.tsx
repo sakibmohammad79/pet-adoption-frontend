@@ -13,10 +13,21 @@ import {
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDebounced } from "@/redux/hooks";
 
 const AdminsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data, isLoading, error } = useGetAdminsQuery({});
+  const query: Record<string, any> = {};
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedValue = useDebounced({ searchQuery: searchQuery, delay: 900 });
+  if (!!debouncedValue) {
+    query["searchTerm"] = debouncedValue;
+  }
+  const { data, isLoading } = useGetAdminsQuery({ ...query });
+  const admins = data?.admins;
+  const meta = data?.meta;
+  console.log(admins);
+
   const [deleteAdmin] = useDeleteAdminMutation();
 
   const handleDelete = async (id: string) => {
@@ -52,7 +63,7 @@ const AdminsPage = () => {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (!data || admins?.length === 0) {
     return (
       <Box>
         <Typography variant="h6">No admins found!</Typography>
@@ -159,12 +170,15 @@ const AdminsPage = () => {
           Create Admin
         </Button>
         <AdminModal open={isModalOpen} setOpen={setIsModalOpen} />
-        <TextField placeholder="Search Admin"></TextField>
+        <TextField
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search Admin"
+        ></TextField>
       </Stack>
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={data}
+            rows={admins}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}

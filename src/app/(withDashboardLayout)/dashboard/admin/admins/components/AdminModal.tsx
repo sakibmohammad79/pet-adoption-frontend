@@ -17,17 +17,17 @@ import React from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-// const defaultValues = {
-//   firstName: "",
-//   lastName: "",
-//   email: "",
-//   password: "",
-//   gender: "",
-//   contactNumber: "",
-//   address: "",
-//   birthDate: "",
-//   file: "",
-// };
+const defaultValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  gender: "",
+  contactNumber: "",
+  address: "",
+  birthDate: "",
+  file: "",
+};
 interface IModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,7 +74,7 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
       <PetForm
         onSubmit={handleCreateAdmin}
         // resolver={zodResolver(createAdminValidationSchema)}
-        // defaultValues={defaultValues}
+        defaultValues={defaultValues}
       >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={4}>

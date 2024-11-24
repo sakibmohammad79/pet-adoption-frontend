@@ -52,25 +52,6 @@ export default function PetFullScreenModal({
         TransitionComponent={Transition}
         sx={{ ...sx }}
       >
-        {/* <AppBar sx={{ position: "relative" }}> */}
-        {/* <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-              sx={{ ...sx }}
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {title}
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
-          </Toolbar> */}
-        {/* </AppBar> */}
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           {title}
         </DialogTitle>
@@ -86,18 +67,7 @@ export default function PetFullScreenModal({
         >
           <CloseIcon />
         </IconButton>
-        {/* <List>
-          <ListItemButton>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItemButton>
-          <Divider />
-          <ListItemButton>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItemButton>
-        </List> */}
+
         <DialogContent dividers>{children}</DialogContent>
       </BootstrapDialog>
     </React.Fragment>

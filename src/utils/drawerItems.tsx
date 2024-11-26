@@ -107,25 +107,20 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: PublishedWithChangesIcon,
         },
         {
-          title: "My Requested Pet",
-          path: `${role}/pet-published`,
-          icon: PublishedWithChangesIcon,
-        },
-
-        {
           title: "Profile",
           path: `${role}/profile`,
           icon: AccountCircleIcon,
+        },
+
+        {
+          title: "Give Review",
+          path: `${role}/review`,
+          icon: StarIcon,
         },
         {
           title: "Password Change",
           path: `${role}/password-change`,
           icon: KeyIcon,
-        },
-        {
-          title: "Give Review",
-          path: `${role}/review`,
-          icon: StarIcon,
         }
       );
       break;

@@ -1,3 +1,4 @@
+import PetDatePicker from "@/components/Forms/PetDatePicker";
 import PetFile from "@/components/Forms/PetFileUploader";
 import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
@@ -44,7 +45,7 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
         email: value.email,
         address: value.address,
         contactNumber: value.contactNumber,
-        birthDate: toISODate(value.birthDate),
+        birthDate: value.birthDate,
         gender: value.gender,
         file: value.file,
       },
@@ -129,12 +130,7 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              name="birthDate"
-              fullWidth={true}
-              type="date"
-              size="medium"
-            />
+            <PetDatePicker name="birthDate" fullWidth={true} size="medium" />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput

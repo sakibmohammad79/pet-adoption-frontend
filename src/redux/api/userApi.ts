@@ -4,15 +4,19 @@ import { baseApi } from "./baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // createAdmin: build.mutation({
-    //   query: (data) => ({
-    //     url: "/user/create-admin",
-    //     method: "POST",
-    //     contentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.admin],
-    // }),
+    getMyProfile: build.query({
+      query: () => ({
+        url: "/user/my-profile",
+        method: "GET",
+      }),
+      transformResponse: (response: any, meta: TMeta) => {
+        return {
+          profile: response,
+          meta,
+        };
+      },
+      providesTags: [tagTypes.user],
+    }),
     getUsers: build.query({
       query: (arg: Record<string, any>) => ({
         url: "/user",
@@ -37,4 +41,4 @@ const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetUsersQuery } = userApi;
+export const { useGetUsersQuery, useGetMyProfileQuery } = userApi;

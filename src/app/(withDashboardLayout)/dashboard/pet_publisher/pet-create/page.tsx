@@ -6,52 +6,60 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { useState } from "react";
 import Swal from "sweetalert2";
-import {
-  useDeleteAdminMutation,
-  useGetAdminsQuery,
-} from "@/redux/api/adminApi";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDebounced } from "@/redux/hooks";
-import { useDeletePetMutation, useGetPetsQuery } from "@/redux/api/petApi";
+import PublisherModal from "./components/PublisherModal";
+import { useGetMyCreatredPetQuery } from "@/redux/api/publisherApi";
+import { getUserInfo } from "@/services/auth.services";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 
-const PetPage = () => {
+const PetCreatePage = () => {
+  const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
+  const profileData = profile?.profile;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const query: Record<string, any> = {};
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedValue = useDebounced({ searchQuery: searchQuery, delay: 900 });
   if (!!debouncedValue) {
     query["searchTerm"] = debouncedValue;
   }
-  const { data, isLoading } = useGetPetsQuery({ ...query });
+
+  if (profileLoading) {
+    <Typography>loading...</Typography>;
+  }
+
+  const { data, isLoading } = useGetMyCreatredPetQuery(
+    profileData?.publisher?.id
+  );
   const pets = data?.pets;
-  const meta = data?.meta;
 
-  const [deletePet] = useDeletePetMutation();
+  //   const [deleteAdmin] = useDeleteAdminMutation();
+  //   const handleDelete = async (id: string) => {
+  //     const result = await Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#d33",
+  //       cancelButtonColor: "#3085d6",
+  //       confirmButtonText: "Yes, delete it!",
+  //       cancelButtonText: "Cancel",
+  //     });
 
-  const handleDelete = async (id: string) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        await deletePet(id).unwrap();
-      } catch (err: any) {
-        console.error(err);
-      }
-      Swal.fire("Deleted!", "Pet has been deleted.", "success");
-    } else {
-      Swal.fire("Cancelled", "Pet is safe :)", "info");
-    }
-  };
+  //     if (result.isConfirmed) {
+  //       try {
+  //         await deleteAdmin(id).unwrap();
+  //       } catch (err: any) {
+  //         console.error(err);
+  //       }
+  //       Swal.fire("Deleted!", "Your item has been deleted.", "success");
+  //     } else {
+  //       Swal.fire("Cancelled", "Your item is safe :)", "info");
+  //     }
+  //   };
 
   // Handle different states
   if (isLoading) {
@@ -65,7 +73,7 @@ const PetPage = () => {
   if (!data || pets?.length === 0) {
     return (
       <Box>
-        <Typography variant="h6">No pets found!</Typography>
+        <Typography variant="h6">No pet found!</Typography>
       </Box>
     );
   }
@@ -84,8 +92,7 @@ const PetPage = () => {
               src={
                 row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
               }
-              alt="
-            pet-image"
+              alt="profile"
               height={30}
               width={30}
             />
@@ -108,6 +115,13 @@ const PetPage = () => {
       flex: 1,
     },
     {
+      field: "age",
+      headerName: "Age",
+      align: "center",
+      headerAlign: "center",
+      flex: 1,
+    },
+    {
       field: "breed",
       headerName: "Breed",
       align: "center",
@@ -115,8 +129,8 @@ const PetPage = () => {
       flex: 1,
     },
     {
-      field: "age",
-      headerName: "Age",
+      field: "size",
+      headerName: "Size",
       align: "center",
       headerAlign: "center",
       flex: 1,
@@ -149,8 +163,15 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }) => {
+        if (row.isAdopt || row.isBooked || row.isPublished) {
+          return (
+            <IconButton disabled aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          );
+        }
         return (
-          <IconButton onClick={() => handleDelete(row?.id)} aria-label="delete">
+          <IconButton aria-label="delete">
             <DeleteIcon sx={{ color: "red" }} />
           </IconButton>
         );
@@ -158,7 +179,7 @@ const PetPage = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
 
   return (
     <Box>
@@ -166,16 +187,19 @@ const PetPage = () => {
         <Typography
           variant="h4"
           component="h1"
-          color="primary.main"
           fontWeight={600}
+          color="primary.main"
         >
-          ALL PET
+          MY CREATED PET
         </Typography>
-
-        <TextField
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search Pet"
-        ></TextField>
+        <Button sx={{ py: 2 }} onClick={() => setIsModalOpen(true)}>
+          Create New Pet
+        </Button>
+        <PublisherModal
+          open={isModalOpen}
+          setOpen={setIsModalOpen}
+          publisherId={profileData?.publisher?.id}
+        />
       </Stack>
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
@@ -193,4 +217,4 @@ const PetPage = () => {
   );
 };
 
-export default PetPage;
+export default PetCreatePage;

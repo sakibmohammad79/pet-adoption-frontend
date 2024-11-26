@@ -3,6 +3,17 @@ export const optionsGender = [
   { value: "FEMALE", label: "Female" },
   { value: "OTHER", label: "Other" },
 ];
+export const optionsSize = [
+  { value: "LARGE", label: "LARGE" },
+  { value: "MEDIUM", label: "MEDIUM" },
+  { value: "SMALL", label: "SMALL" },
+];
+export const optionsHealthStatus = [
+  { value: "UNKNOWN", label: "UNKNOWN" },
+  { value: "SPECIAL_NEEDS", label: "SPECIAL_NEEDS" },
+  { value: "SPAYED_NEUTERED", label: "SPAYED_NEUTERED" },
+  { value: "VACCINATED", label: "VACCINATED" },
+];
 
 export const optionsRole = [
   { value: "PET_PUBLISHER", label: "Pet Publisher" },

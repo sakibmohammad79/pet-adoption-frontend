@@ -13,20 +13,19 @@ const publisherApi = baseApi.injectEndpoints({
     //   }),
     //   invalidatesTags: [tagTypes.admin],
     // }),
-    // getAdmins: build.query({
-    //   query: (arg: Record<string, any>) => ({
-    //     url: "/admin",
-    //     method: "GET",
-    //     params: arg,
-    //   }),
-    //   transformResponse: (response: any, meta: TMeta) => {
-    //     return {
-    //       admins: response,
-    //       meta,
-    //     };
-    //   },
-    //   providesTags: [tagTypes.admin],
-    // }),
+    getMyCreatredPet: build.query({
+      query: (id: string) => ({
+        url: `/publisher/pet/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (response: any, meta: TMeta) => {
+        return {
+          pets: response,
+          meta,
+        };
+      },
+      providesTags: [tagTypes.pet],
+    }),
     deletePublisher: build.mutation({
       query: (id) => ({
         url: `/publisher/${id}`,
@@ -37,4 +36,5 @@ const publisherApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useDeletePublisherMutation } = publisherApi;
+export const { useDeletePublisherMutation, useGetMyCreatredPetQuery } =
+  publisherApi;

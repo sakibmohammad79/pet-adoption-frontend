@@ -4,15 +4,15 @@ import { baseApi } from "./baseApi";
 
 const petApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // createAdmin: build.mutation({
-    //   query: (data) => ({
-    //     url: "/user/create-admin",
-    //     method: "POST",
-    //     contentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.admin],
-    // }),
+    createPet: build.mutation({
+      query: (data) => ({
+        url: "/pet",
+        method: "POST",
+        contentType: "application/json",
+        data,
+      }),
+      invalidatesTags: [tagTypes.pet],
+    }),
     getPets: build.query({
       query: (arg: Record<string, any>) => ({
         url: "/pet",
@@ -37,4 +37,5 @@ const petApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetPetsQuery, useDeletePetMutation } = petApi;
+export const { useGetPetsQuery, useDeletePetMutation, useCreatePetMutation } =
+  petApi;

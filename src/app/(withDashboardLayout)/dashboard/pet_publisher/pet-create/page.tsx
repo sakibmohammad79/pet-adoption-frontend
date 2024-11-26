@@ -14,8 +14,10 @@ import PublisherModal from "./components/PublisherModal";
 import { useGetMyCreatredPetQuery } from "@/redux/api/publisherApi";
 import { getUserInfo } from "@/services/auth.services";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
+import { useDeletePetMutation } from "@/redux/api/petApi";
 
 const PetCreatePage = () => {
+  const [deletePet] = useDeletePetMutation();
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
   const profileData = profile?.profile;
 
@@ -36,30 +38,29 @@ const PetCreatePage = () => {
   );
   const pets = data?.pets;
 
-  //   const [deleteAdmin] = useDeleteAdminMutation();
-  //   const handleDelete = async (id: string) => {
-  //     const result = await Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "You won't be able to revert this!",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#d33",
-  //       cancelButtonColor: "#3085d6",
-  //       confirmButtonText: "Yes, delete it!",
-  //       cancelButtonText: "Cancel",
-  //     });
+  const handleDelete = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
 
-  //     if (result.isConfirmed) {
-  //       try {
-  //         await deleteAdmin(id).unwrap();
-  //       } catch (err: any) {
-  //         console.error(err);
-  //       }
-  //       Swal.fire("Deleted!", "Your item has been deleted.", "success");
-  //     } else {
-  //       Swal.fire("Cancelled", "Your item is safe :)", "info");
-  //     }
-  //   };
+    if (result.isConfirmed) {
+      try {
+        const res = await deletePet(id);
+      } catch (err: any) {
+        console.error(err);
+      }
+      Swal.fire("Deleted!", "Pet has been deleted.", "success");
+    } else {
+      Swal.fire("Cancelled", "Pet is safe :)", "info");
+    }
+  };
 
   // Handle different states
   if (isLoading) {
@@ -171,7 +172,7 @@ const PetCreatePage = () => {
           );
         }
         return (
-          <IconButton aria-label="delete">
+          <IconButton onClick={() => handleDelete(row?.id)} aria-label="delete">
             <DeleteIcon sx={{ color: "red" }} />
           </IconButton>
         );
@@ -179,7 +180,7 @@ const PetCreatePage = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 10 };
+  const paginationModel = { page: 0, pageSize: 5 };
 
   return (
     <Box>

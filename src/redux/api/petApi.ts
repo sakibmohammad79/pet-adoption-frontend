@@ -32,12 +32,7 @@ const petApi = baseApi.injectEndpoints({
         url: `/pet/${id}`,
         method: "GET",
       }),
-      // transformResponse: (response: any, meta: TMeta) => {
-      //   return {
-      //     pets: response,
-      //     meta,
-      //   };
-      // },
+
       providesTags: [tagTypes.pet],
     }),
     deletePet: build.mutation({

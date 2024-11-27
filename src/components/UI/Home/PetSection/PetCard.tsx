@@ -4,7 +4,6 @@ import React from "react";
 
 const PetCard = ({ pet }: { pet: any }) => {
   return (
-    
     <Box
       sx={{
         backgroundColor: "#F4F1EA",
@@ -26,8 +25,11 @@ const PetCard = ({ pet }: { pet: any }) => {
       <Image
         height={400}
         width={380}
-        src="https://i.postimg.cc/8k016xsJ/pexels-kevinbidwell-1398185.jpg"
-        alt="pet"
+        src={
+          pet?.image ||
+          "https://i.postimg.cc/8k016xsJ/pexels-kevinbidwell-1398185.jpg"
+        }
+        alt="pet-image"
         style={{
           transition: "opacity 0.3s ease", // Smooth transition for opacity
         }}

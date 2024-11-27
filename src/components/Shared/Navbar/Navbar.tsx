@@ -91,6 +91,9 @@ export default function Navbar() {
               <Link href="/">
                 <Typography>Home</Typography>
               </Link>
+              <Link href="/pet-list">
+                <Typography>Pet List</Typography>
+              </Link>
               <Link href="/">
                 <Typography>About</Typography>
               </Link>

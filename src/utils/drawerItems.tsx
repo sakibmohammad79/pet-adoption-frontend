@@ -8,7 +8,6 @@ import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyIcon from "@mui/icons-material/Key";
 import StarIcon from "@mui/icons-material/Star";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
@@ -63,8 +62,8 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
-          title: "My Book Request",
-          path: `${role}/pet-book`,
+          title: "All Pet",
+          path: `${role}/all-pet`,
           icon: AddHomeWorkIcon,
         },
         {
@@ -101,11 +100,7 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/pet-create`,
           icon: PublishedWithChangesIcon,
         },
-        {
-          title: "My Published Pet",
-          path: `${role}/my-published`,
-          icon: PublishedWithChangesIcon,
-        },
+
         {
           title: "Profile",
           path: `${role}/profile`,

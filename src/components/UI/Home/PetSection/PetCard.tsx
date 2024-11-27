@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Rating, Typography } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const PetCard = ({ pet }: { pet: any }) => {
@@ -82,21 +83,23 @@ const PetCard = ({ pet }: { pet: any }) => {
       </Box>
 
       {/* Adoption Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        className="adoption-button"
-        sx={{
-          position: "absolute",
-          top: "50%", // Center vertically
-          left: "50%", // Center horizontally
-          transform: "translate(-50%, -50%)", // Adjust to center
-          display: "none", // Hide button by default
-          zIndex: 10, // Ensure the button is above other elements
-        }}
-      >
-        Adopt Now
-      </Button>
+      <Link href={`/pet-list/${pet.id}`}>
+        <Button
+          variant="contained"
+          color="primary"
+          className="adoption-button"
+          sx={{
+            position: "absolute",
+            top: "50%", // Center vertically
+            left: "50%", // Center horizontally
+            transform: "translate(-50%, -50%)", // Adjust to center
+            display: "none", // Hide button by default
+            zIndex: 10, // Ensure the button is above other elements
+          }}
+        >
+          Adopt Now
+        </Button>
+      </Link>
     </Box>
   );
 };

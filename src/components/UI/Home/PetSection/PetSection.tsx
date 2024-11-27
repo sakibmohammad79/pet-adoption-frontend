@@ -1,15 +1,21 @@
-"use server";
-
+"use client";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import PetsIcon from "@mui/icons-material/Pets";
 import PetCard from "./PetCard";
 import Link from "next/link";
+import { useGetPetsQuery } from "@/redux/api/petApi";
 
-const PetSection = async () => {
-  const res = await fetch("http://localhost:5000/api/v1/pet");
-  const result = await res.json();
-  const pets = result.data;
+const PetSection = () => {
+  const { data, isLoading } = useGetPetsQuery({});
+  const pets = data?.pets;
   const publishedPets = pets?.filter((pet: any) => pet.isPublished);
+
+  if (isLoading) {
+    <Box sx={{ display: "flex" }}>
+      <CircularProgress />
+    </Box>;
+  }
   return (
     <Container sx={{ backgroundColor: "#FFFFFF", pt: 16, pb: 8 }}>
       <Box textAlign="center">

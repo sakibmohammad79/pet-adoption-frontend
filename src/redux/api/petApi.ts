@@ -27,6 +27,19 @@ const petApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.pet],
     }),
+    getSinglePets: build.query({
+      query: (id: string) => ({
+        url: `/pet/${id}`,
+        method: "GET",
+      }),
+      // transformResponse: (response: any, meta: TMeta) => {
+      //   return {
+      //     pets: response,
+      //     meta,
+      //   };
+      // },
+      providesTags: [tagTypes.pet],
+    }),
     deletePet: build.mutation({
       query: (id) => ({
         url: `/pet/soft/${id}`,
@@ -34,8 +47,20 @@ const petApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.pet],
     }),
+    publishPet: build.mutation({
+      query: (id) => ({
+        url: `/admin/pet-publish/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.pet],
+    }),
   }),
 });
 
-export const { useGetPetsQuery, useDeletePetMutation, useCreatePetMutation } =
-  petApi;
+export const {
+  useGetPetsQuery,
+  useDeletePetMutation,
+  useCreatePetMutation,
+  usePublishPetMutation,
+  useGetSinglePetsQuery,
+} = petApi;

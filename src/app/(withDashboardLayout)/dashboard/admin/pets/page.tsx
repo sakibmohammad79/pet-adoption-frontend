@@ -1,22 +1,23 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useState } from "react";
 import Swal from "sweetalert2";
-import {
-  useDeleteAdminMutation,
-  useGetAdminsQuery,
-} from "@/redux/api/adminApi";
 import Image from "next/image";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDebounced } from "@/redux/hooks";
-import { useDeletePetMutation, useGetPetsQuery } from "@/redux/api/petApi";
+import {
+  useDeletePetMutation,
+  useGetPetsQuery,
+  usePublishPetMutation,
+} from "@/redux/api/petApi";
 
 const PetPage = () => {
+  const [publishPet] = usePublishPetMutation();
   const query: Record<string, any> = {};
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedValue = useDebounced({ searchQuery: searchQuery, delay: 900 });
@@ -25,9 +26,16 @@ const PetPage = () => {
   }
   const { data, isLoading } = useGetPetsQuery({ ...query });
   const pets = data?.pets;
-  const meta = data?.meta;
 
   const [deletePet] = useDeletePetMutation();
+
+  const handlePublishPet = async (id: string) => {
+    try {
+      const res = await publishPet(id);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
 
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
@@ -127,6 +135,20 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        if (row.isPublished) {
+          return <Chip label="published" color="success" />;
+        }
+        return (
+          <Button
+            onClick={() => handlePublishPet(row.id)}
+            size="small"
+            variant="contained"
+          >
+            Publish
+          </Button>
+        );
+      },
     },
     {
       field: "isBooked",
@@ -149,6 +171,13 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }) => {
+        if (row.isAdopt || row.isBooked) {
+          return (
+            <IconButton disabled aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          );
+        }
         return (
           <IconButton onClick={() => handleDelete(row?.id)} aria-label="delete">
             <DeleteIcon sx={{ color: "red" }} />

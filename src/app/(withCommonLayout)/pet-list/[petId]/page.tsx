@@ -12,9 +12,48 @@ import {
 import PetsIcon from "@mui/icons-material/Pets";
 import CircularProgress from "@mui/material/CircularProgress";
 import Image from "next/image";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
+import { useBookPetMutation } from "@/redux/api/adopterApi";
+import Swal from "sweetalert2";
 const PetDetailsPage = ({ params }: any) => {
   const { data, isLoading } = useGetSinglePetsQuery(params.petId);
+  const { data: userData } = useGetMyProfileQuery({});
+  const profileData = userData?.profile;
+  console.log(profileData);
+  const adopterId = profileData?.adopter?.id;
+  const [bookPet] = useBookPetMutation();
 
+  const handleBookPet = async (petId: string) => {
+    if (!adopterId) {
+      Swal.fire({
+        icon: "error",
+        title: "Registration Required!",
+        text: "Please register as an adopter to book a pet.",
+      });
+      return;
+    }
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Are you sure to book this pet?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, book it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await bookPet({ adopterId: adopterId, petId: petId });
+      } catch (err: any) {
+        console.log(err);
+      }
+      Swal.fire("Booked!", "Pet Book!.", "success");
+    } else {
+      Swal.fire("Cancelled", "Pet not booked! :)", "info");
+    }
+  };
   if (isLoading) {
     <Box sx={{ display: "flex" }}>
       <CircularProgress />
@@ -181,7 +220,11 @@ const PetDetailsPage = ({ params }: any) => {
               </Grid>
             </Box>
           </Box>
-          <Button sx={{ mt: 4 }}>
+          <Button
+            disabled={data?.isAdopt || data?.isBooked}
+            sx={{ mt: 4 }}
+            onClick={() => handleBookPet(data?.id)}
+          >
             Apply Today <PetsIcon sx={{ pl: 1 }}></PetsIcon>
           </Button>
         </Box>

@@ -36,7 +36,7 @@ const petApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.pet],
     }),
     deletePet: build.mutation({
-      query: (id) => ({
+      query: (id: string) => ({
         url: `/pet/soft/${id}`,
         method: "DELETE",
       }),
@@ -46,6 +46,7 @@ const petApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/admin/pet-publish/${id}`,
         method: "PATCH",
+        contentType: "application/json",
       }),
       invalidatesTags: [tagTypes.pet],
     }),

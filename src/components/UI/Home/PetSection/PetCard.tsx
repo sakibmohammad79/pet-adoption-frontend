@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Button, Divider, Rating, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -88,6 +90,7 @@ const PetCard = ({ pet }: { pet: any }) => {
           variant="contained"
           color="primary"
           className="adoption-button"
+          disabled={pet.isAdopt || pet.isBooked} // Disable button based on conditions
           sx={{
             position: "absolute",
             top: "50%", // Center vertically
@@ -97,7 +100,7 @@ const PetCard = ({ pet }: { pet: any }) => {
             zIndex: 10, // Ensure the button is above other elements
           }}
         >
-          Adopt Now
+          {pet.isAdopt || pet.isBooked ? "Not Available" : "Adopt Now"}
         </Button>
       </Link>
     </Box>

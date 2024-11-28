@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -27,6 +27,7 @@ const UserPage = () => {
   const { data, isLoading } = useGetUsersQuery({ ...query });
   const users = data?.users;
   const meta = data?.meta;
+  console.log(users);
 
   const [deleteAdopter] = useDeleteAdopterMutation();
   const [deletePublisher] = useDeletePublisherMutation();
@@ -178,17 +179,15 @@ const UserPage = () => {
       headerAlign: "center",
       flex: 1,
       renderCell: ({ row }) => {
-        if (row?.adopter) {
-          return (
-            <Box>
-              <Typography>{row?.adopter?.gender}</Typography>
-            </Box>
-          );
-        }
         return (
-          <Box>
-            <Typography>{row?.publisher?.gender}</Typography>
-          </Box>
+          <Chip
+            label={
+              row?.role === "PET_ADOPTER"
+                ? row?.adopter?.gender
+                : row?.publisher?.gender
+            }
+            color="default"
+          />
         );
       },
     },
@@ -198,6 +197,14 @@ const UserPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <Chip
+            label={row?.role}
+            color={row?.role === "PET_ADOPTER" ? "secondary" : "info"}
+          />
+        );
+      },
     },
     {
       field: "status",
@@ -205,6 +212,14 @@ const UserPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <Chip
+            label={row?.status}
+            color={row?.status === "ACTIVE" ? "success" : "error"}
+          />
+        );
+      },
     },
     {
       field: "action",

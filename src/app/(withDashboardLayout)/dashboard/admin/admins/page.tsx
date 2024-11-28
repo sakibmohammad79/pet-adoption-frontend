@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -25,10 +25,25 @@ const AdminsPage = () => {
   }
   const { data, isLoading } = useGetAdminsQuery({ ...query });
   const admins = data?.admins;
-  const meta = data?.meta;
   console.log(admins);
-
+  const meta = data?.meta;
   const [deleteAdmin] = useDeleteAdminMutation();
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!data || admins?.length === 0) {
+    return (
+      <Box>
+        <Typography variant="h6">No admins found!</Typography>
+      </Box>
+    );
+  }
 
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
@@ -53,23 +68,6 @@ const AdminsPage = () => {
       Swal.fire("Cancelled", "Your item is safe :)", "info");
     }
   };
-
-  // Handle different states
-  if (isLoading) {
-    return (
-      <Box sx={{ display: "flex" }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (!data || admins?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No admins found!</Typography>
-      </Box>
-    );
-  }
 
   const columns: GridColDef[] = [
     {
@@ -130,6 +128,9 @@ const AdminsPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        return <Chip label={row?.gender} color="default" />;
+      },
     },
     {
       field: "contactNumber",
@@ -144,6 +145,23 @@ const AdminsPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+    },
+    {
+      field: "staus",
+      headerName: "Status",
+      align: "center",
+      headerAlign: "center",
+      flex: 1,
+      renderCell: ({ row }) => {
+        if (row?.user) {
+          return (
+            <Chip
+              label={row?.user?.status}
+              color={row?.user.status === "ACTIVE" ? "success" : "error"}
+            />
+          );
+        }
+      },
     },
     {
       field: "action",

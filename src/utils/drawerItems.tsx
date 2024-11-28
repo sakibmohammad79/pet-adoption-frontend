@@ -68,7 +68,7 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         },
         {
           title: "My Adopted Pet",
-          path: `${role}/pet-adopt`,
+          path: `${role}/my-adopt`,
           icon: AddHomeWorkIcon,
         },
         {

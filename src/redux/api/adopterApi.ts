@@ -4,29 +4,21 @@ import { baseApi } from "./baseApi";
 
 const adopterApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // createAdmin: build.mutation({
-    //   query: (data) => ({
-    //     url: "/user/create-admin",
-    //     method: "POST",
-    //     contentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.admin],
-    // }),
-    // getAdmins: build.query({
-    //   query: (arg: Record<string, any>) => ({
-    //     url: "/admin",
-    //     method: "GET",
-    //     params: arg,
-    //   }),
-    //   transformResponse: (response: any, meta: TMeta) => {
-    //     return {
-    //       admins: response,
-    //       meta,
-    //     };
-    //   },
-    //   providesTags: [tagTypes.admin],
-    // }),
+    getSingleAdopter: build.query({
+      query: (id) => ({
+        url: `/adopter/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.adopter],
+    }),
+    getMyAdoptedPets: build.query({
+      query: (id) => ({
+        url: `/adopter/adopt-pet/${id}`,
+        method: "GET",
+      }),
+
+      providesTags: [tagTypes.pet],
+    }),
     deleteAdopter: build.mutation({
       query: (id) => ({
         url: `/adopter/${id}`,
@@ -34,7 +26,20 @@ const adopterApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+    bookPet: build.mutation({
+      query: (data) => ({
+        url: `/adopter/pet-booked`,
+        method: "PATCH",
+        data,
+      }),
+      invalidatesTags: [tagTypes.pet],
+    }),
   }),
 });
 
-export const { useDeleteAdopterMutation } = adopterApi;
+export const {
+  useDeleteAdopterMutation,
+  useBookPetMutation,
+  useGetSingleAdopterQuery,
+  useGetMyAdoptedPetsQuery,
+} = adopterApi;

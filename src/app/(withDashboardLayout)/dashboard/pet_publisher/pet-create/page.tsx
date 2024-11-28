@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -142,13 +142,26 @@ const PetCreatePage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        if (row?.isPublished) {
+          return <Chip label="Published" color="success" />;
+        }
+        return <Chip label="Not Publish" color="primary" />;
+      },
     },
+
     {
       field: "isBooked",
       headerName: "Booked",
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        if (row?.isBooked) {
+          return <Chip label="Booked" color="success" />;
+        }
+        return <Chip label="Not Book" color="primary" />;
+      },
     },
     {
       field: "isAdopt",
@@ -156,6 +169,12 @@ const PetCreatePage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        if (row?.isAdopt) {
+          return <Chip label="Adopted" color="success" />;
+        }
+        return <Chip label="Not Adopted" color="primary" />;
+      },
     },
     {
       field: "action",
@@ -180,7 +199,7 @@ const PetCreatePage = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
 
   return (
     <Box>
@@ -208,7 +227,7 @@ const PetCreatePage = () => {
             rows={pets}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
           />

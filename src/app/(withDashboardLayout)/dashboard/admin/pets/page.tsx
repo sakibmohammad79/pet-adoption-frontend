@@ -136,17 +136,15 @@ const PetPage = () => {
       headerAlign: "center",
       flex: 1,
       renderCell: ({ row }) => {
-        if (row.isPublished) {
+        if (row?.isPublished) {
           return <Chip label="published" color="success" />;
         }
         return (
-          <Button
-            onClick={() => handlePublishPet(row.id)}
-            size="small"
-            variant="contained"
-          >
-            Publish
-          </Button>
+          <Chip
+            label="Publish"
+            color="primary"
+            onClick={() => handlePublishPet(row?.id)}
+          />
         );
       },
     },
@@ -156,6 +154,12 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        if (row?.isBooked) {
+          return <Chip label="Booked" color="success" />;
+        }
+        return <Chip label="Not Book" color="primary" />;
+      },
     },
     {
       field: "isAdopt",
@@ -163,6 +167,12 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      renderCell: ({ row }) => {
+        if (row?.isAdopt) {
+          return <Chip label="Adopted" color={"success"} />;
+        }
+        return <Chip label="Not Adopt" color="primary" />;
+      },
     },
     {
       field: "action",
@@ -187,7 +197,7 @@ const PetPage = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
 
   return (
     <Box>
@@ -212,7 +222,7 @@ const PetPage = () => {
             rows={pets}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
           />

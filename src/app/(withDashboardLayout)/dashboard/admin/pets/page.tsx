@@ -14,6 +14,7 @@ import {
   useDeletePetMutation,
   useGetPetsQuery,
   usePublishPetMutation,
+  useUnpublishedPetMutation,
 } from "@/redux/api/petApi";
 
 const PetPage = () => {
@@ -26,12 +27,20 @@ const PetPage = () => {
   }
   const { data, isLoading } = useGetPetsQuery({ ...query });
   const pets = data?.pets;
-
+  const [unpublishedPet] = useUnpublishedPetMutation();
   const [deletePet] = useDeletePetMutation();
 
   const handlePublishPet = async (id: string) => {
     try {
       const res = await publishPet(id);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+  const handleUnpublishPet = async (id: string) => {
+    try {
+      const res = await unpublishedPet(id);
+      console.log(res);
     } catch (err: any) {
       console.log(err);
     }
@@ -66,14 +75,6 @@ const PetPage = () => {
     return (
       <Box sx={{ display: "flex" }}>
         <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (!data || pets?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No pets found!</Typography>
       </Box>
     );
   }
@@ -137,15 +138,24 @@ const PetPage = () => {
       flex: 1,
       renderCell: ({ row }) => {
         if (row?.isPublished) {
-          return <Chip label="published" color="success" />;
+          return (
+            <Chip
+              disabled={row?.isAdopt || row?.isBooked ? true : false}
+              label="UNPUBLISH"
+              color="error"
+              onClick={() => handleUnpublishPet(row?.id)}
+            />
+          );
         }
-        return (
-          <Chip
-            label="Publish"
-            color="primary"
-            onClick={() => handlePublishPet(row?.id)}
-          />
-        );
+        if (!row?.isPublished)
+          return (
+            <Chip
+              disabled={row?.isAdopt || row?.isBooked ? true : false}
+              label="Publish"
+              color="success"
+              onClick={() => handlePublishPet(row?.id)}
+            />
+          );
       },
     },
     {
@@ -156,9 +166,9 @@ const PetPage = () => {
       flex: 1,
       renderCell: ({ row }) => {
         if (row?.isBooked) {
-          return <Chip label="Booked" color="success" />;
+          return <Chip label="BOOKED" color="default" />;
         }
-        return <Chip label="Not Book" color="primary" />;
+        return <Chip label="NOT BOOK" color="default" />;
       },
     },
     {
@@ -169,9 +179,9 @@ const PetPage = () => {
       flex: 1,
       renderCell: ({ row }) => {
         if (row?.isAdopt) {
-          return <Chip label="Adopted" color={"success"} />;
+          return <Chip label="ADOPTED" color={"default"} />;
         }
-        return <Chip label="Not Adopt" color="primary" />;
+        return <Chip label="NOT ADOPT" color="default" />;
       },
     },
     {
@@ -219,13 +229,18 @@ const PetPage = () => {
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={pets}
+            rows={pets || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
           />
+          {(!pets || pets.length === 0) && (
+            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+              No pets found!
+            </Typography>
+          )}
         </Paper>
       </Box>
     </Box>

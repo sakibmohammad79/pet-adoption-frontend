@@ -2,7 +2,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetMyAdoptedPetsQuery } from "@/redux/api/adopterApi";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
-import { getUserInfo } from "@/services/auth.services";
 import { Box, Chip, Paper, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -11,9 +10,8 @@ import Link from "next/link";
 const MyAdoptPage = () => {
   const { data: profileData, isLoading: loading } = useGetMyProfileQuery({});
   const adopterId = profileData?.profile?.adopter?.id;
-  console.log(adopterId);
   const { data: myPets, isLoading } = useGetMyAdoptedPetsQuery(adopterId);
-  console.log(myPets);
+
   if (isLoading) {
     return (
       <Box sx={{ display: "flex" }}>
@@ -21,15 +19,9 @@ const MyAdoptPage = () => {
       </Box>
     );
   }
-  if (!myPets || myPets?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No pet found!</Typography>
-      </Box>
-    );
-  }
+
   const pets: any = [];
-  myPets.forEach((petData: any) => {
+  myPets?.forEach((petData: any) => {
     pets.push(petData.pet);
   });
 
@@ -133,23 +125,24 @@ const MyAdoptPage = () => {
           fontWeight={600}
           color="primary.main"
         >
-          MY ADOPTED PET
+          MY BOOKED PET
         </Typography>
-        {/* <TextField
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search Pet"
-        ></TextField> */}
       </Stack>
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={pets}
+            rows={pets || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
             checkboxSelection
             sx={{ border: 0 }}
           />
+          {(!pets || pets.length === 0) && (
+            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+              No adopted pet found!
+            </Typography>
+          )}
         </Paper>
       </Box>
     </Box>

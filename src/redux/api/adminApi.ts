@@ -46,6 +46,20 @@ const adminApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.admin],
     }),
+    approveAdoption: build.mutation({
+      query: (id: string) => ({
+        url: `/admin/pet-adoption-approved/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.adoption],
+    }),
+    rejectAdoption: build.mutation({
+      query: (id: string) => ({
+        url: `/admin/pet-adoption-rejected/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.adoption],
+    }),
   }),
 });
 
@@ -54,4 +68,6 @@ export const {
   useGetAdminsQuery,
   useDeleteAdminMutation,
   useGetAdoptionRequestQuery,
+  useApproveAdoptionMutation,
+  useRejectAdoptionMutation,
 } = adminApi;

@@ -4,11 +4,17 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { useGetAdoptionRequestQuery } from "@/redux/api/adminApi";
+import {
+  useApproveAdoptionMutation,
+  useGetAdoptionRequestQuery,
+  useRejectAdoptionMutation,
+} from "@/redux/api/adminApi";
 
 const ManageAdoptionPage = () => {
   const { data, isLoading } = useGetAdoptionRequestQuery({});
   const adoptions = data?.adoptionRequest;
+  const [approveAdoption] = useApproveAdoptionMutation();
+  const [rejectAdoption] = useRejectAdoptionMutation();
   // Handle different states
   if (isLoading) {
     return (
@@ -18,15 +24,20 @@ const ManageAdoptionPage = () => {
     );
   }
 
-  if (!adoptions || adoptions?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No Adoption Request!</Typography>
-      </Box>
-    );
-  }
-
-  const handleAdoption = () => {};
+  const handleApprovedAdoption = async (id: string) => {
+    try {
+      await approveAdoption(id);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+  const handleRejectAdoption = async (id: string) => {
+    try {
+      await rejectAdoption(id);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -59,21 +70,6 @@ const ManageAdoptionPage = () => {
       flex: 1,
     },
     {
-      field: "adoptionStatus",
-      headerName: "adoption Status",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: ({ row }) => {
-        if (row?.adoptionStatus == "PENDING") {
-          return <Chip label={row?.adoptionStatus} color="secondary" />;
-        } else if (row?.adoptionStatus == "APPROVED") {
-          return <Chip label={row?.adoptionStatus} color="success" />;
-        }
-        return <Chip label={row?.adoptionStatus} color="error" />;
-      },
-    },
-    {
       field: "action",
       headerName: "Action",
       flex: 1,
@@ -82,21 +78,24 @@ const ManageAdoptionPage = () => {
       renderCell: ({ row }) => {
         if (row?.adoptionStatus == "PENDING") {
           return (
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" justifyContent="center" spacing={1}>
               <Chip
-                label="APPROVED"
-                color="secondary"
+                label="APPROVE"
+                color="info"
                 clickable
-                onClick={() => handleAdoption}
+                onClick={() => handleApprovedAdoption(row?.id)}
               />
               <Chip
                 label="REJECT"
                 color="error"
                 clickable
-                onClick={() => handleAdoption}
+                onClick={() => handleRejectAdoption(row?.id)}
               />
             </Stack>
           );
+        }
+        if (row?.adoptionStatus == "APPROVED") {
+          return <Chip label={row?.adoptionStatus} color="success" />;
         }
       },
     },
@@ -119,13 +118,18 @@ const ManageAdoptionPage = () => {
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={adoptions}
+            rows={adoptions || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
           />
+          {(!adoptions || adoptions.length === 0) && (
+            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+              No adoption found!
+            </Typography>
+          )}
         </Paper>
       </Box>
     </Box>

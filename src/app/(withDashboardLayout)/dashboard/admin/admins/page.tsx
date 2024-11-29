@@ -25,7 +25,6 @@ const AdminsPage = () => {
   }
   const { data, isLoading } = useGetAdminsQuery({ ...query });
   const admins = data?.admins;
-  console.log(admins);
   const meta = data?.meta;
   const [deleteAdmin] = useDeleteAdminMutation();
 
@@ -33,14 +32,6 @@ const AdminsPage = () => {
     return (
       <Box sx={{ display: "flex" }}>
         <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (!data || admins?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No admins found!</Typography>
       </Box>
     );
   }
@@ -196,13 +187,18 @@ const AdminsPage = () => {
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={admins}
+            rows={admins || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
             checkboxSelection
             sx={{ border: 0 }}
           />
+          {(!admins || admins.length === 0) && (
+            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+              No Admin found!
+            </Typography>
+          )}
         </Paper>
       </Box>
     </Box>

@@ -50,6 +50,13 @@ const petApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.pet],
     }),
+    unpublishedPet: build.mutation({
+      query: (id: string) => ({
+        url: `/admin/pet-unpublish/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.pet],
+    }),
   }),
 });
 
@@ -59,4 +66,5 @@ export const {
   useCreatePetMutation,
   usePublishPetMutation,
   useGetSinglePetsQuery,
+  useUnpublishedPetMutation,
 } = petApi;

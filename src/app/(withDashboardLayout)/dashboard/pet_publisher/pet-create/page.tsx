@@ -71,14 +71,6 @@ const PetCreatePage = () => {
     );
   }
 
-  if (!data || pets?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No pet found!</Typography>
-      </Box>
-    );
-  }
-
   const columns: GridColDef[] = [
     {
       field: "image",
@@ -224,13 +216,18 @@ const PetCreatePage = () => {
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={pets}
+            rows={pets || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
           />
+          {(!pets || pets.length === 0) && (
+            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+              No pets found!
+            </Typography>
+          )}
         </Paper>
       </Box>
     </Box>

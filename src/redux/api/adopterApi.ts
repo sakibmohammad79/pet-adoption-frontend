@@ -11,9 +11,17 @@ const adopterApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.adopter],
     }),
+    getMyBookedPets: build.query({
+      query: (id) => ({
+        url: `/adopter/booked-pet/${id}`,
+        method: "GET",
+      }),
+
+      providesTags: [tagTypes.pet],
+    }),
     getMyAdoptedPets: build.query({
       query: (id) => ({
-        url: `/adopter/adopt-pet/${id}`,
+        url: `/adopter/adopted-pet/${id}`,
         method: "GET",
       }),
 
@@ -41,5 +49,6 @@ export const {
   useDeleteAdopterMutation,
   useBookPetMutation,
   useGetSingleAdopterQuery,
+  useGetMyBookedPetsQuery,
   useGetMyAdoptedPetsQuery,
 } = adopterApi;

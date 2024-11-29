@@ -26,9 +26,6 @@ const UserPage = () => {
   }
   const { data, isLoading } = useGetUsersQuery({ ...query });
   const users = data?.users;
-  const meta = data?.meta;
-  console.log(users);
-
   const [deleteAdopter] = useDeleteAdopterMutation();
   const [deletePublisher] = useDeletePublisherMutation();
 
@@ -76,14 +73,6 @@ const UserPage = () => {
     );
   }
 
-  if (!data || users?.length === 0) {
-    return (
-      <Box>
-        <Typography variant="h6">No user found!</Typography>
-      </Box>
-    );
-  }
-
   const columns: GridColDef[] = [
     {
       field: "profilePhoto",
@@ -92,7 +81,6 @@ const UserPage = () => {
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }) => {
-        console.log(row);
         if (row?.adopter) {
           return (
             <Box>
@@ -258,13 +246,18 @@ const UserPage = () => {
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={users}
+            rows={users || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10, 20]}
             checkboxSelection
             sx={{ border: 0 }}
           />
+          {(!users || users.length === 0) && (
+            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+              No pets found!
+            </Typography>
+          )}
         </Paper>
       </Box>
     </Box>

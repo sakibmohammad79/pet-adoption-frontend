@@ -4,15 +4,6 @@ import { baseApi } from "./baseApi";
 
 const publisherApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // createAdmin: build.mutation({
-    //   query: (data) => ({
-    //     url: "/user/create-admin",
-    //     method: "POST",
-    //     contentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.admin],
-    // }),
     getMyCreatredPet: build.query({
       query: (id: string) => ({
         url: `/publisher/pet/${id}`,

@@ -1,30 +1,19 @@
 "use client";
-import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
+import { useGetMyBookedPetsQuery } from "@/redux/api/adopterApi";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
+import { getUserInfo } from "@/services/auth.services";
+import { Box, Chip, Paper, Stack, TextField, Typography } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useDebounced } from "@/redux/hooks";
-import { useDeletePetMutation, useGetPetsQuery } from "@/redux/api/petApi";
 import Link from "next/link";
 
-const AllPetPage = () => {
-  const query: Record<string, any> = {};
-  const [searchQuery, setSearchQuery] = useState("");
-  const debouncedValue = useDebounced({ searchQuery: searchQuery, delay: 900 });
+const MyBookedPage = () => {
+  const { data: profileData, isLoading: loading } = useGetMyProfileQuery({});
+  const adopterId = profileData?.profile?.adopter?.id;
 
-  if (!!debouncedValue) {
-    query["searchTerm"] = debouncedValue;
-  }
-  const { data, isLoading } = useGetPetsQuery({ ...query });
-  const pets = data?.pets;
-  const publishedPets = pets?.filter((pet: any) => pet.isPublished);
-  console.log(publishedPets);
+  const { data: myPets, isLoading } = useGetMyBookedPetsQuery(adopterId);
 
-  // Handle different states
   if (isLoading) {
     return (
       <Box sx={{ display: "flex" }}>
@@ -32,6 +21,11 @@ const AllPetPage = () => {
       </Box>
     );
   }
+
+  const pets: any = [];
+  myPets?.forEach((petData: any) => {
+    pets.push(petData.pet);
+  });
 
   const columns: GridColDef[] = [
     {
@@ -109,17 +103,14 @@ const AllPetPage = () => {
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Details",
       flex: 1,
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }) => {
-        if (row?.isAdopt || row?.isBooked) {
-          return <Chip label="Unavailable" color="error" />;
-        }
         return (
           <Link href={`/pet-list/${row.id}`}>
-            <Chip label="Adopt Now" color="success" />
+            <Chip label="Details" color="primary" />
           </Link>
         );
       },
@@ -127,7 +118,6 @@ const AllPetPage = () => {
   ];
 
   const paginationModel = { page: 0, pageSize: 10 };
-
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -137,26 +127,22 @@ const AllPetPage = () => {
           fontWeight={600}
           color="primary.main"
         >
-          ALL PETS
+          MY BOOKED PET
         </Typography>
-        <TextField
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search Pet"
-        ></TextField>
       </Stack>
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
           <DataGrid
-            rows={publishedPets || []}
+            rows={pets || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
             checkboxSelection
             sx={{ border: 0 }}
           />
-          {(!publishedPets || publishedPets.length === 0) && (
+          {(!pets || pets.length === 0) && (
             <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No pets found!
+              No booked pets found!
             </Typography>
           )}
         </Paper>
@@ -165,4 +151,4 @@ const AllPetPage = () => {
   );
 };
 
-export default AllPetPage;
+export default MyBookedPage;

@@ -84,11 +84,7 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
     }
   };
   return (
-    <PetFullScreenModal
-      open={open}
-      setOpen={setOpen}
-      title="Create a new admin"
-    >
+    <PetFullScreenModal open={open} setOpen={setOpen} title="Create a new pet">
       <PetForm
         onSubmit={handleCreateAdmin}
         // resolver={zodResolver(createAdminValidationSchema)}
@@ -194,7 +190,7 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
             mb: 2,
           }}
         >
-          Create Admin
+          Create New Pet
         </Button>
       </PetForm>
     </PetFullScreenModal>

@@ -4,6 +4,7 @@ export const enum tagTypes {
   publisher = "publisher",
   user = "user",
   pet = "pet",
+  adoption = "adoption",
 }
 
 export const tagTypesList = [
@@ -12,4 +13,5 @@ export const tagTypesList = [
   tagTypes.publisher,
   tagTypes.user,
   tagTypes.pet,
+  tagTypes.adoption,
 ];

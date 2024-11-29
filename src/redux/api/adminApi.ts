@@ -27,6 +27,18 @@ const adminApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.admin],
     }),
+    getAdoptionRequest: build.query({
+      query: () => ({
+        url: "/admin/adoption-request",
+        method: "GET",
+      }),
+      transformResponse: (response: any) => {
+        return {
+          adoptionRequest: response,
+        };
+      },
+      providesTags: [tagTypes.adoption],
+    }),
     deleteAdmin: build.mutation({
       query: (id) => ({
         url: `/admin/soft/${id}`,
@@ -41,4 +53,5 @@ export const {
   useCreateAdminMutation,
   useGetAdminsQuery,
   useDeleteAdminMutation,
+  useGetAdoptionRequestQuery,
 } = adminApi;

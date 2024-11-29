@@ -39,7 +39,7 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         },
         {
           title: "Manage Adoption",
-          path: `${role}/adoptions`,
+          path: `${role}/manage-adoptions`,
           icon: AddHomeWorkIcon,
         },
         {

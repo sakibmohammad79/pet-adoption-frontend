@@ -8,31 +8,12 @@ import "swiper/css/autoplay";
 import { Box, Typography, Button, Container } from "@mui/material";
 import Image from "next/image";
 import { Autoplay } from "swiper/modules";
+import { useGetPetsQuery } from "@/redux/api/petApi";
 
 const PopularPet = () => {
-  const pets = [
-    {
-      name: "Retriever",
-      image: "https://i.postimg.cc/vBQtnT63/pexels-pixabay-45201.jpg",
-      bgColor: "#FAD4D4",
-    },
-    {
-      name: "Bulldog",
-      image: "https://i.postimg.cc/vBQtnT63/pexels-pixabay-45201.jpg",
-      bgColor: "#F6E4C6",
-    },
-    {
-      name: "Bulldog",
-      image: "https://i.postimg.cc/vBQtnT63/pexels-pixabay-45201.jpg",
-      bgColor: "#E5E5E5",
-    },
-    {
-      name: "Poodle",
-      image: "https://i.postimg.cc/vBQtnT63/pexels-pixabay-45201.jpg",
-      bgColor: "#DADADA",
-    },
-    // Add more pet data as needed
-  ];
+  const { data, isLoading } = useGetPetsQuery({});
+  console.log(data);
+  const pets = data?.pets;
 
   return (
     <Container sx={{ pb: 16 }}>
@@ -78,7 +59,7 @@ const PopularPet = () => {
             disableOnInteraction: false,
           }}
         >
-          {pets.map((pet, index) => (
+          {pets?.map((pet: any, index: number) => (
             <SwiperSlide key={index}>
               <Box
                 sx={{
@@ -92,10 +73,13 @@ const PopularPet = () => {
                 }}
               >
                 <Image
-                  src={pet.image}
-                  alt={pet.name}
-                  width={500}
-                  height={500}
+                  src={
+                    pet?.image ||
+                    "https://i.ibb.co/4JTh9dG/pexels-lina-1741205-1.jpg"
+                  }
+                  alt={pet?.name}
+                  width={400}
+                  height={400}
                   style={{
                     width: "100%",
                     height: "auto",
@@ -120,7 +104,7 @@ const PopularPet = () => {
                       borderRadius: 0,
                     }}
                   >
-                    {pet.name}
+                    {pet?.name}
                   </Button>
                 </Box>
               </Box>

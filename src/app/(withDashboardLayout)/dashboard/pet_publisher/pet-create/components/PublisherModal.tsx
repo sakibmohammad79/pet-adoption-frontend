@@ -7,8 +7,14 @@ import {
   optionsGender,
   optionsHealthStatus,
   optionsSize,
+  optionsSpecies,
 } from "@/constants/selectOptions";
 import { useCreatePetMutation } from "@/redux/api/petApi";
+import {
+  createAdminValidationSchema,
+  createPetValidationSchema,
+} from "@/validation/formValidationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid } from "@mui/material";
 import React from "react";
 import { FieldValues } from "react-hook-form";
@@ -16,7 +22,7 @@ import { toast } from "sonner";
 
 const defaultValues = {
   name: "",
-  image: "",
+  species: "",
   description: "",
   gender: "",
   age: "",
@@ -28,6 +34,7 @@ const defaultValues = {
   healthStatus: "",
   specialNeeds: "",
   location: "",
+  file: "",
 };
 interface IModalProps {
   open: boolean;
@@ -69,6 +76,7 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
         };
         try {
           const res = await createPet(payload).unwrap();
+          console.log(res);
           if (res?.id) {
             toast.success("Pet created successfully!");
             setOpen(false);
@@ -87,12 +95,20 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
     <PetFullScreenModal open={open} setOpen={setOpen} title="Create a new pet">
       <PetForm
         onSubmit={handleCreateAdmin}
-        // resolver={zodResolver(createAdminValidationSchema)}
+        // resolver={zodResolver(createPetValidationSchema)}
         defaultValues={defaultValues}
       >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput label="Name" name="name" fullWidth={true} size="medium" />
+          </Grid>
+          <Grid item xs={12} sm={12} md={4}>
+            <PetSelect
+              size="medium"
+              name="species"
+              label="Species"
+              options={optionsSpecies}
+            />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput
@@ -177,7 +193,14 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
               size="medium"
             />
           </Grid>
-
+          <Grid item xs={12} sm={12} md={4}>
+            <PetInput
+              label="Description"
+              name="description"
+              fullWidth={true}
+              size="medium"
+            />
+          </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetFile name="file" label="Upload File" sx={{ py: 2 }} />
           </Grid>

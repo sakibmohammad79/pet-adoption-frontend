@@ -14,6 +14,12 @@ export const optionsHealthStatus = [
   { value: "SPAYED_NEUTERED", label: "SPAYED_NEUTERED" },
   { value: "VACCINATED", label: "VACCINATED" },
 ];
+export const optionsSpecies = [
+  { value: "DOG", label: "DOG" },
+  { value: "CAT", label: "CAT" },
+  { value: "BIRD", label: "BIRD" },
+  { value: "RABBIT", label: "RABBIT" },
+];
 
 export const optionsRole = [
   { value: "PET_PUBLISHER", label: "Pet Publisher" },

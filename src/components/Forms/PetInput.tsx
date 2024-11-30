@@ -9,6 +9,8 @@ interface IInputProps {
   fullWidth?: boolean;
   placeHolder?: string;
   required?: boolean;
+  rows?: number;
+  multiline?: boolean;
 }
 const PetInput = ({
   name,
@@ -16,6 +18,8 @@ const PetInput = ({
   size = "small",
   type = "text",
   label,
+  rows,
+  multiline,
   sx,
   placeHolder,
   required,
@@ -30,6 +34,8 @@ const PetInput = ({
           {...field}
           sx={{ ...sx }}
           label={label}
+          multiline={multiline}
+          rows={rows}
           variant="outlined"
           fullWidth={fullWidth}
           size={size}

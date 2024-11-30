@@ -37,7 +37,7 @@ const PetCreatePage = () => {
     profileData?.publisher?.id
   );
   const pets = data?.pets;
-
+  console.log(pets);
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -83,11 +83,12 @@ const PetCreatePage = () => {
           <Box>
             <Image
               src={
-                row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
+                row?.image ||
+                "https://i.ibb.co/4JTh9dG/pexels-lina-1741205-1.jpg"
               }
               alt="profile"
-              height={30}
-              width={30}
+              height={50}
+              width={50}
             />
           </Box>
         );

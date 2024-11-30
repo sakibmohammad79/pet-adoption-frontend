@@ -46,3 +46,45 @@ export const createAdminValidationSchema = z.object({
   birthDate: z.string({ message: "Date of birth is required!" }),
   file: z.string({ message: "Photo is required!" }),
 });
+
+export const createPetValidationSchema = z.object({
+  name: z.string().min(1, { message: "Name is required!" }),
+  species: z.enum(["DOG", "CAT", "RABBIT", "BIRD"], {
+    message: "Species must be one of Dog, Cat, Rabbit, or Bird!",
+  }),
+  image: z
+    .string()
+    .url({ message: "Image URL must be a valid URL!" })
+    .optional(),
+  birthDate: z.preprocess((arg) => {
+    if (typeof arg === "string") {
+      const date = new Date(arg); // Validate if the string is a valid ISO date
+      if (!isNaN(date.getTime()) && date.toISOString().startsWith(arg)) {
+        return date;
+      }
+      throw new Error("Invalid date format");
+    } // If not a string, return the value as-is (must be a Date object or undefined)
+    return arg;
+  }, z.date().optional()),
+  description: z.string().optional(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER"], {
+    message: "Gender is required!",
+  }),
+  age: z.string().min(0, { message: "Age must be a positive number!" }),
+  breed: z.string().min(1, { message: "Breed is required!" }),
+  weight: z.string().min(0, { message: "Weight must be a positive number!" }),
+  height: z.string().min(0, { message: "Height must be a positive number!" }),
+  color: z.string().min(1, { message: "Color is required!" }),
+  size: z.enum(["LARGE", "SMALL", "MEDIUM"], {
+    message: "Pet size is required!",
+  }),
+  healthStatus: z.enum(
+    ["VACCINATED", "SPAYED_NEUTERED", "SPECIAL_NEEDS", "UNKNOWN"],
+    {
+      message: "Health status is required!",
+    }
+  ),
+  specialNeeds: z.string().optional(),
+  location: z.string().optional(),
+  publisherId: z.string().min(1, { message: "Publisher ID is required!" }),
+});

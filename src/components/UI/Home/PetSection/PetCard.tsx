@@ -28,10 +28,7 @@ const PetCard = ({ pet }: { pet: any }) => {
       <Image
         height={400}
         width={380}
-        src={
-          pet?.image ||
-          "https://i.postimg.cc/8k016xsJ/pexels-kevinbidwell-1398185.jpg"
-        }
+        src={pet?.image || "https://i.ibb.co/4JTh9dG/pexels-lina-1741205-1.jpg"}
         alt="pet-image"
         style={{
           transition: "opacity 0.3s ease", // Smooth transition for opacity

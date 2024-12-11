@@ -17,11 +17,19 @@ import { Stack } from "@mui/material";
 import Link from "next/link";
 
 import dynamic from "next/dynamic";
+import { getUserInfo } from "@/services/auth.services";
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
 
 export default function Navbar() {
+  const [userRole, setUserRole] = React.useState("");
+  React.useEffect(() => {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setUserRole(userInfo?.role);
+    }
+  }, [userRole]);
   const AuthButtonLg = dynamic(
     () => import("@/components/UI/AuthButton/AuthButtonLg"),
     { ssr: false }
@@ -89,17 +97,26 @@ export default function Navbar() {
             </Link>
             <Box sx={{ display: { xs: "none", sm: "flex", gap: 32 } }}>
               <Link href="/">
-                <Typography>Home</Typography>
+                <Typography fontWeight={600}>HOME</Typography>
               </Link>
               <Link href="/pet-list">
-                <Typography>Pet List</Typography>
+                <Typography fontWeight={600}>PET LIST</Typography>
               </Link>
               <Link href="/">
-                <Typography>About</Typography>
+                <Typography fontWeight={600}>ABOUT</Typography>
               </Link>
               <Link href="/">
-                <Typography>Contact</Typography>
+                <Typography fontWeight={600}>CONTACT</Typography>
               </Link>
+              {userRole && (
+                <Typography
+                  component={Link}
+                  href={`/dashboard/${userRole}`}
+                  fontWeight={600}
+                >
+                  DASHBOARD
+                </Typography>
+              )}
             </Box>
             <AuthButtonLg></AuthButtonLg>
           </Stack>

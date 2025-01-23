@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 const PetDetailsPage = ({ params }: any) => {
   const { data, isLoading } = useGetSinglePetsQuery(params.petId);
   const { data: userData } = useGetMyProfileQuery({});
+  console.log(userData);
   const profileData = userData?.profile;
   console.log(profileData);
   const adopterId = profileData?.adopter?.id;

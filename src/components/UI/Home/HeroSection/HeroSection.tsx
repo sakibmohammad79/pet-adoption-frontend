@@ -11,18 +11,28 @@ import { Pagination, Autoplay } from "swiper/modules";
 
 const HeroSection = () => {
   return (
-    <Box sx={{ width: "100%", height: "100vh", overflow: "hidden" }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100vh",
+        overflow: "hidden",
+        "& .swiper-pagination-bullet": {
+          backgroundColor: "primary.main",
+        },
+      }}
+    >
       <Swiper
         pagination={{ clickable: true }}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
         }}
-        modules={[Pagination, Autoplay]} // Ensure Autoplay is included here
-        loop={true} // Allows the slider to loop back to the beginning
+        modules={[Pagination, Autoplay]}
+        loop={true}
         className="mySwiper"
         style={{ width: "100%", height: "100%" }}
       >
+        {/* First Slide */}
         <SwiperSlide>
           <Box
             sx={{
@@ -34,10 +44,18 @@ const HeroSection = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              px: { xs: 2, sm: 4, md: 8 }, // Responsive padding
             }}
           >
-            <Container sx={{ textAlign: "left" }}>
-              <Typography fontWeight="bold" variant="h2" color="white">
+            <Container sx={{ textAlign: { xs: "center", md: "left" } }}>
+              <Typography
+                fontWeight="bold"
+                variant="h3"
+                color="white"
+                sx={{
+                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3.5rem" },
+                }}
+              >
                 Best Friend{" "}
                 <Box
                   component="span"
@@ -51,22 +69,36 @@ const HeroSection = () => {
                 </Box>{" "}
                 <br /> Happy Time
               </Typography>
-              <Typography variant="h6" color="white" sx={{ mt: 2 }}>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              <Typography
+                variant="body1"
+                color="white"
+                sx={{
+                  mt: 2,
+                  fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+                }}
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 <br />
-                Quas obcaecati iure quam aliquid quisquam
+                Quas obcaecati iure quam aliquid quisquam.
               </Typography>
-              <Button sx={{ mt: 2 }}>
+              <Button
+                sx={{
+                  mt: 2,
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                  py: { xs: 0.5, md: 1 },
+                }}
+              >
                 View More <PetsIcon sx={{ pl: 1 }} />
               </Button>
             </Container>
           </Box>
         </SwiperSlide>
+
+        {/* Repeat Slides */}
         <SwiperSlide>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
               alignItems: "center",
               height: "100%",
               backgroundImage:
@@ -74,10 +106,18 @@ const HeroSection = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              px: { xs: 2, sm: 4, md: 8 },
             }}
           >
-            <Container sx={{ textAlign: "right" }}>
-              <Typography fontWeight="bold" variant="h2" color="white">
+            <Container sx={{ textAlign: { xs: "center", md: "right" } }}>
+              <Typography
+                fontWeight="bold"
+                variant="h3"
+                color="white"
+                sx={{
+                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3.5rem" },
+                }}
+              >
                 Best Friend{" "}
                 <Box
                   component="span"
@@ -91,22 +131,35 @@ const HeroSection = () => {
                 </Box>{" "}
                 <br /> Happy Time
               </Typography>
-              <Typography variant="h6" color="white" sx={{ mt: 2 }}>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              <Typography
+                variant="body1"
+                color="white"
+                sx={{
+                  mt: 2,
+                  fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+                }}
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 <br />
-                Quas obcaecati iure quam aliquid quisquam
+                Quas obcaecati iure quam aliquid quisquam.
               </Typography>
-              <Button sx={{ mt: 2 }}>
+              <Button
+                sx={{
+                  mt: 2,
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                  py: { xs: 0.5, md: 1 },
+                }}
+              >
                 View More <PetsIcon sx={{ pl: 1 }} />
               </Button>
             </Container>
           </Box>
         </SwiperSlide>
+
         <SwiperSlide>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
               alignItems: "center",
               height: "100%",
               backgroundImage:
@@ -114,10 +167,18 @@ const HeroSection = () => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              px: { xs: 2, sm: 4, md: 8 },
             }}
           >
-            <Container sx={{ textAlign: "left" }}>
-              <Typography fontWeight="bold" variant="h2" color="white">
+            <Container sx={{ textAlign: { xs: "center", md: "left" } }}>
+              <Typography
+                fontWeight="bold"
+                variant="h3"
+                color="white"
+                sx={{
+                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3.5rem" },
+                }}
+              >
                 Best Friend{" "}
                 <Box
                   component="span"
@@ -131,12 +192,25 @@ const HeroSection = () => {
                 </Box>{" "}
                 <br /> Happy Time
               </Typography>
-              <Typography variant="h6" color="white" sx={{ mt: 2 }}>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              <Typography
+                variant="body1"
+                color="white"
+                sx={{
+                  mt: 2,
+                  fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
+                }}
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 <br />
-                Quas obcaecati iure quam aliquid quisquam
+                Quas obcaecati iure quam aliquid quisquam.
               </Typography>
-              <Button sx={{ mt: 2 }}>
+              <Button
+                sx={{
+                  mt: 2,
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                  py: { xs: 0.5, md: 1 },
+                }}
+              >
                 View More <PetsIcon sx={{ pl: 1 }} />
               </Button>
             </Container>

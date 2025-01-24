@@ -10,11 +10,17 @@ const Footer = () => {
   return (
     <Box bgcolor="rgb(17, 26, 34)" py={5}>
       <Container>
-        <Stack direction="row" gap={4} justifyContent="center">
+        {/* Navigation Links */}
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          gap={{ xs: 2, sm: 4 }}
+          justifyContent={{ xs: "center", sm: "center" }}
+          alignItems="center"
+          textAlign={{ xs: "center", sm: "left" }}
+        >
           <Typography color="white" component={Link} href="/consultation">
             Home
           </Typography>
-
           <Typography color="white" component={Link} href="/medicine">
             About
           </Typography>
@@ -22,7 +28,17 @@ const Footer = () => {
             Profile
           </Typography>
         </Stack>
-        <Stack direction="row" justifyContent="center" gap={2} py={3}>
+
+        {/* Social Icons */}
+        <Stack
+          direction="row"
+          justifyContent="center"
+          gap={2}
+          py={3}
+          sx={{
+            flexWrap: "wrap",
+          }}
+        >
           <Link href="/facebook">
             <Image
               alt="facebook"
@@ -31,7 +47,6 @@ const Footer = () => {
               src={facebookIcon}
             ></Image>
           </Link>
-
           <Link href="/linkedin">
             <Image
               alt="linkedin"
@@ -57,12 +72,19 @@ const Footer = () => {
             ></Image>
           </Link>
         </Stack>
-        <Box sx={{ border: "1px dashed lightgray" }}></Box>
+
+        {/* Divider */}
+        <Box
+          sx={{ border: "1px dashed lightgray", width: "100%", my: 2 }}
+        ></Box>
+
+        {/* Footer Bottom Section */}
         <Stack
-          sx={{ direction: { xs: "col", sm: "col", md: "row", lg: "row" } }}
-          py={2}
+          direction={{ xs: "column", sm: "row" }}
           justifyContent="space-between"
           alignItems="center"
+          gap={{ xs: 2, sm: 0 }}
+          textAlign={{ xs: "center", sm: "left" }}
         >
           <Typography component="p" color="white">
             &copy;2024 Pet Adoption. All Rights Reserved.
@@ -77,7 +99,7 @@ const Footer = () => {
             PET{" "}
             <Box component="span" color="white">
               ADOPTION
-            </Box>{" "}
+            </Box>
           </Typography>
           <Typography component="p" color="white">
             Pet Adoption. Terms & Conditions.

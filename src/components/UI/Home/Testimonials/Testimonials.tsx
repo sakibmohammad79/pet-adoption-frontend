@@ -81,7 +81,7 @@ const Testimonials = () => {
               0: { slidesPerView: 1 }, // Mobile
               600: { slidesPerView: 2 }, // Tablets
               900: { slidesPerView: 2 }, // Small desktops
-              1200: { slidesPerView: 3 }, // Large desktops
+              1200: { slidesPerView: 2 }, // Large desktops
             }}
             style={{ width: "100%", height: "100%" }}
           >
@@ -116,8 +116,8 @@ const Testimonials = () => {
                       textAlign="justify"
                     >
                       The best overall dog DNA test is Embark Breed & Health Kit
-                      (view at Chewy), which provides you with breed and health
-                      insights for your pet.
+                      (view at Chewy), which provides you with breed information
+                      and health insights.
                     </Typography>
                     <Box
                       display="flex"

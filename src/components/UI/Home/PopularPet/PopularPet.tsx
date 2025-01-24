@@ -12,7 +12,9 @@ import { useGetPetsQuery } from "@/redux/api/petApi";
 
 const PopularPet = () => {
   const { data, isLoading } = useGetPetsQuery({});
-  console.log(data);
+  if (isLoading) {
+    return <Typography>Loading...</Typography>;
+  }
   const pets = data?.pets;
 
   return (
@@ -46,13 +48,24 @@ const PopularPet = () => {
           most dogs.
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+        }}
+      >
         {/* Swiper Slider for multiple cards per slide */}
         <Swiper
           spaceBetween={10}
-          slidesPerView={2}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 2 },
+          }}
           loop={true}
-          style={{ width: "70%", height: "100%" }}
+          style={{ width: "100%", height: "100%" }}
           modules={[Autoplay]}
           autoplay={{
             delay: 3000,
@@ -115,7 +128,7 @@ const PopularPet = () => {
         {/* Static third card */}
         <Box
           sx={{
-            width: "30%",
+            flex: { xs: "0 0 100%", md: "0 0 30%" },
             borderRadius: 2,
             padding: 6,
             backgroundColor: "primary.main",

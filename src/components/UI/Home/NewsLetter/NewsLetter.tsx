@@ -5,35 +5,54 @@ import InputBase from "@mui/material/InputBase";
 
 const NewsLetter = () => {
   return (
-    <Box sx={{ backgroundColor: "#F6F3EE", pb: 16 }}>
+    <Box sx={{ backgroundColor: "#F6F3EE", pb: { xs: 8, md: 16 } }}>
       <Container>
         <Box
           sx={{
             backgroundColor: "#EE4433",
             display: "flex",
-            justifyContent: "space-around",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
             alignItems: "center",
-            p: 8,
+            gap: { xs: 4, md: 0 },
+            p: { xs: 4, md: 8 },
             borderRadius: 6,
           }}
         >
-          <Box>
-            <Typography variant="h4" fontWeight={600} mb={1} color="white">
+          <Box textAlign={{ xs: "center", md: "left" }}>
+            <Typography
+              variant="h4"
+              fontWeight={600}
+              mb={1}
+              color="white"
+              fontSize={{ xs: "1.5rem", sm: "2rem" }}
+            >
               Newsletter For
             </Typography>
-            <Typography color="white" fontWeight={600}>
+            <Typography
+              color="white"
+              fontWeight={600}
+              fontSize={{ xs: "0.875rem", sm: "1rem" }}
+            >
               * Do Not Show Your Email.
             </Typography>
           </Box>
           {/* email field */}
-          <Box display="flex" gap={2}>
+          <Box
+            display="flex"
+            flexDirection={{ xs: "column", sm: "row" }}
+            gap={2}
+            alignItems="center"
+            width="100%"
+            maxWidth={{ xs: "100%", sm: 500 }}
+          >
             <Box
               component="form"
               sx={{
                 p: 1,
                 display: "flex",
                 alignItems: "center",
-                width: 400,
+                width: "100%",
                 bgcolor: "white",
                 borderRadius: 2,
               }}
@@ -44,20 +63,22 @@ const NewsLetter = () => {
                 inputProps={{ "aria-label": "Enter your email..." }}
               />
             </Box>
-            <Box>
-              <Button
-                sx={{
-                  bgcolor: "white",
-                  color: "primary.main",
-                  fontWeight: 600,
-                  "&:hover": {
-                    backgroundColor: "black",
-                  },
-                }}
-              >
-                Subscribe
-              </Button>
-            </Box>
+            <Button
+              sx={{
+                bgcolor: "white",
+                color: "primary.main",
+                fontWeight: 600,
+                px: { xs: 4, sm: 6 },
+                py: 1,
+                width: { xs: "100%", sm: "auto" },
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+            >
+              Subscribe
+            </Button>
           </Box>
         </Box>
       </Container>

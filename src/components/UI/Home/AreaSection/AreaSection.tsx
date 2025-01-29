@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import { Container, Typography } from "@mui/material";
-// import ChattogramMap from '../components/ChattogramMap';
+import AdoptionAreaMap from "@/components/Shared/map/AdoptionAreaMap";
 
 const AreaSection = () => {
   return (
@@ -8,7 +9,7 @@ const AreaSection = () => {
       <Typography variant="h4" gutterBottom>
         Chattogram District Map
       </Typography>
-      {/* <ChattogramMap /> */}
+      <AdoptionAreaMap></AdoptionAreaMap>
     </Container>
   );
 };

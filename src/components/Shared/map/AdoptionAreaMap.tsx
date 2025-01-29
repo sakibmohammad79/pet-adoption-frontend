@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
@@ -11,9 +12,9 @@ const center = {
   lng: 91.7832,
 };
 
-const AreaMap = () => {
+const AdoptionAreaMap = () => {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
   });
 
   if (loadError) return <div>Error loading maps</div>;
@@ -26,4 +27,4 @@ const AreaMap = () => {
   );
 };
 
-export default AreaMap;
+export default AdoptionAreaMap;

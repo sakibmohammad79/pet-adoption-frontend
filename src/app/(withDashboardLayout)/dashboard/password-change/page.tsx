@@ -12,24 +12,24 @@ import { useChangePasswordMutation } from "@/redux/api/authApi";
 const PasswordChange = () => {
   const [changePassword] = useChangePasswordMutation();
   const router = useRouter();
+
   const onSubmit = async (values: FieldValues) => {
     try {
       const res = await changePassword(values).unwrap();
-
+      console.log(res);
       if (res?.success === true) {
         removeUser();
-        // deleteCookies([authKey]);
         router.push("/");
-        toast.success("Password Changed Successfully");
+        toast.success(res?.message);
+      } else {
+        toast.error("Old password is incorrect!");
       }
-      //  else {
-      //   throw new Error("Incorrect Old Password");
-      // }
     } catch (error: any) {
-      console.log(error);
-      toast.success(error?.message);
+      const errorMessage = error?.data?.message || "An error occurred";
+      toast.error(errorMessage);
     }
   };
+
   return (
     <Box
       sx={{

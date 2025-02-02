@@ -15,26 +15,26 @@ type TFormProps = {
   children: ReactNode;
   onSubmit: SubmitHandler<FieldValues>;
 } & TFormConfig;
-
 const PetForm = ({
   children,
   onSubmit,
   resolver,
   defaultValues,
 }: TFormProps) => {
-  const formConfig: TFormConfig = {};
+  const formConfig: TFormConfig = {
+    defaultValues,
+  };
+
   if (resolver) {
     formConfig["resolver"] = resolver;
   }
-  if (resolver) {
-    formConfig["defaultValues"] = defaultValues;
-  }
+
   const methods = useForm(formConfig);
   const { handleSubmit, reset } = methods;
 
   const formSubmit: SubmitHandler<FieldValues> = (data: FieldValues) => {
     onSubmit(data);
-    reset();
+    reset(defaultValues); // Reset with default values
   };
 
   return (
@@ -43,5 +43,4 @@ const PetForm = ({
     </FormProvider>
   );
 };
-
 export default PetForm;

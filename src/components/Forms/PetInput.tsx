@@ -1,4 +1,4 @@
-import { SxProps, TextField } from "@mui/material";
+import { SxProps, TextField, TextFieldProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 interface IInputProps {
   name: string;
@@ -11,6 +11,7 @@ interface IInputProps {
   required?: boolean;
   rows?: number;
   multiline?: boolean;
+  InputProps?: TextFieldProps["InputProps"]; // Allow InputProps
 }
 const PetInput = ({
   name,
@@ -23,6 +24,7 @@ const PetInput = ({
   sx,
   placeHolder,
   required,
+  InputProps, // Accept InputProps
 }: IInputProps) => {
   const { control } = useFormContext();
   return (
@@ -44,6 +46,7 @@ const PetInput = ({
           required={required}
           error={!!error?.message}
           helperText={error?.message}
+          InputProps={InputProps}
         />
       )}
     />

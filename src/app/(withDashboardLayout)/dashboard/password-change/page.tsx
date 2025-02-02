@@ -1,19 +1,39 @@
 "use client";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Stack,
+  Typography,
+} from "@mui/material";
 import KeyIcon from "@mui/icons-material/Key";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { toast } from "sonner";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, useForm, useFormContext } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { removeUser } from "@/services/auth.services";
-import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
+import PetForm from "@/components/Forms/PetForm";
 
 const PasswordChange = () => {
   const [changePassword] = useChangePasswordMutation();
   const router = useRouter();
 
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { reset } = useForm();
+
   const onSubmit = async (values: FieldValues) => {
+    if (values.newPassword !== values.confirmPassword) {
+      toast.error("New Password and Confirm Password do not match!");
+      return;
+    }
     try {
       const res = await changePassword(values).unwrap();
       console.log(res);
@@ -21,6 +41,7 @@ const PasswordChange = () => {
         removeUser();
         router.push("/");
         toast.success(res?.message);
+        reset(); // Reset the form values only on success
       } else {
         toast.error("Old password is incorrect!");
       }
@@ -40,55 +61,92 @@ const PasswordChange = () => {
         boxShadow: 1,
         borderRadius: 1,
         mx: "auto",
-        mt: {
-          xs: 2,
-          md: 5,
-        },
+        mt: { xs: 2, md: 5 },
       }}
     >
       <Stack alignItems="center" justifyContent="center">
-        <Box
-          sx={{
-            "& svg": {
-              width: 100,
-              height: 100,
-            },
-          }}
-        >
+        <Box sx={{ "& svg": { width: 100, height: 100 } }}>
           <KeyIcon sx={{ color: "primary.main" }} />
         </Box>
         <Typography variant="h5" fontWeight={600} sx={{ mb: 2, mt: -1.5 }}>
-          Change password
+          Change Password
         </Typography>
       </Stack>
       <PetForm
         onSubmit={onSubmit}
-        //defaultValues={{ oldPassword: "", newPassword: "" }}
-        // resolver={zodResolver(validationSchema)}
+        defaultValues={{
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        }}
       >
-        <Grid>
-          <Grid item xs={12} sm={12} md={6}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
             <PetInput
               name="oldPassword"
-              type="password"
+              type={showOldPassword ? "text" : "password"}
               label="Old Password"
               fullWidth
               sx={{ mb: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowOldPassword(!showOldPassword)}
+                    >
+                      {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12}>
             <PetInput
               name="newPassword"
-              type="password"
+              type={showNewPassword ? "text" : "password"}
               label="New Password"
               fullWidth
               sx={{ mb: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    >
+                      {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <PetInput
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              label="Re-Type New Password"
+              fullWidth
+              sx={{ mb: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
         </Grid>
 
         <Button type="submit" sx={{ width: "100%", my: 2 }}>
-          change Password
+          Change Password
         </Button>
       </PetForm>
     </Box>

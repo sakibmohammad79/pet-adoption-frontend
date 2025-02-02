@@ -8,11 +8,22 @@ import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyIcon from "@mui/icons-material/Key";
 import StarIcon from "@mui/icons-material/Star";
-
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
 export const DrawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
+  const deafaultMenus = [
+    // {
+    //   title: "My Profile",
+    //   path: `${role}/profile`,
+    //   icon: AccountCircleIcon,
+    // },
+    {
+      title: "Password Change",
+      path: `password-change`,
+      icon: KeyIcon,
+    },
+  ];
 
   switch (role) {
     case USER_ROLE.ADMIN:
@@ -46,11 +57,6 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "My Profile",
           path: `${role}/profile`,
           icon: AccountCircleIcon,
-        },
-        {
-          title: "Password Change",
-          path: `${role}/password-change`,
-          icon: KeyIcon,
         }
       );
       break;
@@ -81,11 +87,7 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/profile`,
           icon: AccountCircleIcon,
         },
-        {
-          title: "Password Change",
-          path: `${role}/password-change`,
-          icon: KeyIcon,
-        },
+
         {
           title: "Give Review",
           path: `${role}/review`,
@@ -116,11 +118,6 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Give Review",
           path: `${role}/review`,
           icon: StarIcon,
-        },
-        {
-          title: "Password Change",
-          path: `${role}/password-change`,
-          icon: KeyIcon,
         }
       );
       break;
@@ -128,5 +125,5 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
     default:
       break;
   }
-  return [...roleMenus];
+  return [...roleMenus, ...deafaultMenus];
 };

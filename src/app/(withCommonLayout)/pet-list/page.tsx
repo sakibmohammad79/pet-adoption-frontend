@@ -1,13 +1,46 @@
 "use client";
 import PetCard from "@/components/UI/Home/PetSection/PetCard";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Grid,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import PetsIcon from "@mui/icons-material/Pets";
 import { useGetPetsQuery } from "@/redux/api/petApi";
+import { useState } from "react";
 const AllPetList = () => {
-  const { data, isLoading } = useGetPetsQuery({});
+  const speciesList = ["ALL", "CAT", "DOG", "BIRD", "RABBIT"];
+  const [selectedSpecies, setSelectedSpecies] = useState("ALL");
+
+  // Fetch pets based on selected species
+  const { data, isLoading } = useGetPetsQuery(
+    selectedSpecies === "ALL" ? {} : { species: selectedSpecies }
+  );
   const pets = data?.pets;
 
+  // Responsive settings
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
   const publishedPets = pets?.filter((pet: any) => pet.isPublished);
+
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+    setSelectedSpecies(newValue);
+  };
 
   return (
     <Container sx={{ backgroundColor: "#FFFFFF", pt: 16, pb: 8 }}>
@@ -41,6 +74,35 @@ const AllPetList = () => {
             most dogs.
           </Typography>
         </Box>
+
+        <Stack justifyContent="center" alignItems="center">
+          <Box width={isMobile ? "100%" : "auto"} sx={{ overflowX: "auto" }}>
+            <Tabs
+              value={selectedSpecies}
+              onChange={handleChange}
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+              aria-label="Pet species filter"
+              sx={{
+                my: 4,
+                maxWidth: "100%",
+                "& .MuiTabs-flexContainer": {
+                  justifyContent: isMobile ? "start" : "center",
+                },
+              }}
+            >
+              {speciesList.map((species) => (
+                <Tab
+                  sx={{ fontSize: 16 }}
+                  key={species}
+                  label={species}
+                  value={species}
+                />
+              ))}
+            </Tabs>
+          </Box>
+        </Stack>
 
         <Box my={8}>
           <Grid container spacing={6}>

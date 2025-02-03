@@ -15,7 +15,7 @@ const userApi = baseApi.injectEndpoints({
           meta,
         };
       },
-      providesTags: [tagTypes.user],
+      // providesTags: [tagTypes.user],
     }),
     getUsers: build.query({
       query: (arg: Record<string, any>) => ({

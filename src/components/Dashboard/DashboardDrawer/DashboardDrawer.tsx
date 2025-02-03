@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Sidebar from "../Sidebar/Sidebar";
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 
 const drawerWidth = 240;
 
@@ -17,6 +18,30 @@ export default function DashboardDrawer({
 }: {
   children: React.ReactNode;
 }) {
+  const [userName, setUserName] = React.useState("User");
+  const { data, isLoading } = useGetMyProfileQuery({});
+  const profileData = data?.profile;
+  React.useEffect(() => {
+    if (profileData) {
+      if (profileData.role === "ADMIN") {
+        setUserName(
+          `${profileData?.admin?.firstName} ${profileData?.admin?.lastName}` ||
+            "Admin"
+        );
+      } else if (profileData?.role === "PET_ADOPTER") {
+        setUserName(
+          `${profileData?.adopter?.firstName} ${profileData?.adopter?.lastName}` ||
+            "Adopter"
+        );
+      } else {
+        setUserName(
+          `${profileData?.publisher?.firstName} ${profileData?.publisher?.lastName}` ||
+            "Publisher"
+        );
+      }
+    }
+  }, [profileData]);
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -57,7 +82,7 @@ export default function DashboardDrawer({
           </IconButton>
           <Box>
             <Typography variant="h6" noWrap component="div">
-              Hi, Mohammad Sakib
+              Hey, {userName}
             </Typography>
           </Box>
         </Toolbar>

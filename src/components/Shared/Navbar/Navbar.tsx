@@ -13,9 +13,8 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Avatar, Menu, MenuItem, Stack, Tooltip } from "@mui/material";
+import { Stack } from "@mui/material";
 import Link from "next/link";
-
 import dynamic from "next/dynamic";
 import { getUserInfo } from "@/services/auth.services";
 
@@ -61,20 +60,6 @@ export default function Navbar() {
       </List>
     </Box>
   );
-
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   return (
     <Box>
@@ -122,15 +107,6 @@ export default function Navbar() {
               <Link href="/">
                 <Typography fontWeight={600}>CONTACT</Typography>
               </Link>
-              {userRole && (
-                <Typography
-                  component={Link}
-                  href={`/dashboard/${userRole}`}
-                  fontWeight={600}
-                >
-                  DASHBOARD
-                </Typography>
-              )}
             </Box>
 
             <AuthButtonLg></AuthButtonLg>

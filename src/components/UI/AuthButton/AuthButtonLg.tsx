@@ -1,9 +1,26 @@
 import { getUserInfo, removeUser } from "@/services/auth.services";
-import { Box, Button } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 const AuthButtonLg = () => {
+  const [userRole, setUserRole] = React.useState("");
+  React.useEffect(() => {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setUserRole(userInfo?.role);
+    }
+  }, [userRole]);
   const userInfo = getUserInfo();
   const router = useRouter();
 
@@ -12,15 +29,62 @@ const AuthButtonLg = () => {
     router.refresh();
   };
 
+  const settings = ["Profile", "Dashboard", "Logout"];
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
     <Box>
       {userInfo?.userId ? (
-        <Button
-          onClick={handleLogout}
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          Logout
-        </Button>
+        <Box sx={{ flexGrow: 0 }}>
+          <Tooltip title="Open settings">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElUser)} // ✅ Ensure 'open' is always defined
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => (
+              <MenuItem
+                key={setting}
+                onClick={() => {
+                  handleCloseUserMenu(); // Close menu first
+                  if (setting === "Logout") {
+                    handleLogout(); // Call logout only when clicking "Logout"
+                  }
+                  if (setting === "Dashboard") {
+                    router.push(`/dashboard/${userRole}`);
+                  }
+                }}
+              >
+                <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
       ) : (
         <Link href="/login">
           <Button sx={{ display: { xs: "none", sm: "block" } }}>Login</Button>

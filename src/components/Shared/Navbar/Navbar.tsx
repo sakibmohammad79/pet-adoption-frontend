@@ -131,7 +131,7 @@ export default function Navbar() {
         >
           {drawer}
 
-          <AuthButtonSm></AuthButtonSm>
+          {/* <AuthButtonSm></AuthButtonSm> */}
         </Drawer>
       </nav>
     </Box>

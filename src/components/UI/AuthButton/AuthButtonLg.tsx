@@ -90,7 +90,7 @@ const AuthButtonLg = () => {
         </Box>
       ) : (
         <Link href="/login">
-          <Button sx={{ display: { xs: "none", sm: "block" } }}>Login</Button>
+          <Button sx={{ display: {} }}>Login</Button>
         </Link>
       )}
     </Box>

@@ -19,9 +19,9 @@ import dynamic from "next/dynamic";
 import { getUserInfo } from "@/services/auth.services";
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact"];
 
 export default function Navbar() {
+  const userInfo = getUserInfo();
   const [userRole, setUserRole] = React.useState("");
   React.useEffect(() => {
     const userInfo = getUserInfo();
@@ -33,10 +33,7 @@ export default function Navbar() {
     () => import("@/components/UI/AuthButton/AuthButtonLg"),
     { ssr: false }
   );
-  const AuthButtonSm = dynamic(
-    () => import("@/components/UI/AuthButton/AuthButtonSm"),
-    { ssr: false }
-  );
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -49,15 +46,32 @@ export default function Navbar() {
         PET
       </Typography>
       <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+
+      <Box sx={{ display: { md: "block", lg: "none", direction: "row" } }}>
+        <Link href="/">
+          <Typography fontWeight={600} my={2}>
+            HOME
+          </Typography>
+        </Link>
+        <Link href="/pet-list">
+          <Typography fontWeight={600}>PET LIST</Typography>
+        </Link>
+        <Link href="/">
+          <Typography fontWeight={600} my={2}>
+            ABOUT
+          </Typography>
+        </Link>
+        <Link href="/">
+          <Typography fontWeight={600}>CONTACT</Typography>
+        </Link>
+        {userInfo?.userId && (
+          <Link href={`/dashboard/${userRole}`}>
+            <Typography mt={2} fontWeight={600}>
+              DASHBOARD
+            </Typography>
+          </Link>
+        )}
+      </Box>
     </Box>
   );
 
@@ -107,6 +121,11 @@ export default function Navbar() {
               <Link href="/">
                 <Typography fontWeight={600}>CONTACT</Typography>
               </Link>
+              {userInfo?.userId && (
+                <Link href={`/dashboard/${userRole}`}>
+                  <Typography fontWeight={600}>DASHBOARD</Typography>
+                </Link>
+              )}
             </Box>
 
             <AuthButtonLg></AuthButtonLg>
@@ -130,8 +149,6 @@ export default function Navbar() {
           }}
         >
           {drawer}
-
-          {/* <AuthButtonSm></AuthButtonSm> */}
         </Drawer>
       </nav>
     </Box>

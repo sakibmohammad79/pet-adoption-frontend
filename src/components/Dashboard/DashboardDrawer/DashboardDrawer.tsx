@@ -10,6 +10,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Sidebar from "../Sidebar/Sidebar";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
+import { Avatar, Menu, MenuItem, Stack, Tooltip } from "@mui/material";
+import { getUserInfo, removeUser } from "@/services/auth.services";
+import { useRouter } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -18,12 +21,14 @@ export default function DashboardDrawer({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [userName, setUserName] = React.useState("User");
+  const [userRole, setUserRole] = React.useState("");
   const { data, isLoading } = useGetMyProfileQuery({});
   const profileData = data?.profile;
   React.useEffect(() => {
     if (profileData) {
-      if (profileData.role === "ADMIN") {
+      if (profileData?.role === "ADMIN") {
         setUserName(
           `${profileData?.admin?.firstName} ${profileData?.admin?.lastName}` ||
             "Admin"
@@ -42,6 +47,13 @@ export default function DashboardDrawer({
     }
   }, [profileData]);
 
+  React.useEffect(() => {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setUserRole(userInfo?.role);
+    }
+  }, [userRole]);
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -58,6 +70,25 @@ export default function DashboardDrawer({
     if (!isClosing) {
       setMobileOpen(!mobileOpen);
     }
+  };
+
+  //setting
+  const handleLogout = () => {
+    removeUser();
+    router.refresh();
+  };
+
+  const settings = ["HOME", "PROFILE", "LOGOUT"];
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
   return (
@@ -80,11 +111,71 @@ export default function DashboardDrawer({
           >
             <MenuIcon />
           </IconButton>
-          <Box>
-            <Typography variant="h6" noWrap component="div">
-              Hey, {userName}
-            </Typography>
-          </Box>
+
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+          >
+            {/* Left Side - User Name */}
+            <Box>
+              <Typography variant="h6" noWrap component="div">
+                Hey, {userName}
+              </Typography>
+            </Box>
+
+            {/* Right Side - Avatar and Menu */}
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="https://i.ibb.co/p6wb1JBc/man.png"
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => {
+                      handleCloseUserMenu();
+                      if (setting === "HOME") {
+                        router.push(`/`);
+                      }
+                      if (setting === "PROFILE") {
+                        router.push(`/dashboard/${userRole}/profile`);
+                      }
+                      if (setting === "LOGOUT") {
+                        handleLogout();
+                        router.push("/");
+                      }
+                    }}
+                  >
+                    <Typography sx={{ textAlign: "center" }}>
+                      {setting}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Stack>
         </Toolbar>
       </AppBar>
       <Box

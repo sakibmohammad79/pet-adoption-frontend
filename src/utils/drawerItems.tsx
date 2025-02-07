@@ -53,11 +53,6 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/manage-adoptions`,
           icon: AddHomeWorkIcon,
         }
-        // {
-        //   title: "My Profile",
-        //   path: `${role}/profile`,
-        //   icon: AccountCircleIcon,
-        // }
       );
       break;
     case USER_ROLE.PET_ADOPTER:
@@ -82,11 +77,7 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/my-adopt`,
           icon: AddHomeWorkIcon,
         },
-        // {
-        //   title: "Profile",
-        //   path: `${role}/profile`,
-        //   icon: AccountCircleIcon,
-        // },
+
         {
           title: "Give Review",
           path: `${role}/review`,
@@ -106,12 +97,6 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/pet-create`,
           icon: PublishedWithChangesIcon,
         },
-
-        // {
-        //   title: "Profile",
-        //   path: `${role}/profile`,
-        //   icon: AccountCircleIcon,
-        // },
 
         {
           title: "Give Review",

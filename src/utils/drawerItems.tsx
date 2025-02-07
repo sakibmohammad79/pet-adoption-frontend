@@ -13,11 +13,11 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 export const DrawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
   const deafaultMenus = [
-    // {
-    //   title: "My Profile",
-    //   path: `${role}/profile`,
-    //   icon: AccountCircleIcon,
-    // },
+    {
+      title: "My Profile",
+      path: `${role}/profile`,
+      icon: AccountCircleIcon,
+    },
     {
       title: "Password Change",
       path: `password-change`,
@@ -52,12 +52,12 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Manage Adoption",
           path: `${role}/manage-adoptions`,
           icon: AddHomeWorkIcon,
-        },
-        {
-          title: "My Profile",
-          path: `${role}/profile`,
-          icon: AccountCircleIcon,
         }
+        // {
+        //   title: "My Profile",
+        //   path: `${role}/profile`,
+        //   icon: AccountCircleIcon,
+        // }
       );
       break;
     case USER_ROLE.PET_ADOPTER:
@@ -82,12 +82,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/my-adopt`,
           icon: AddHomeWorkIcon,
         },
-        {
-          title: "Profile",
-          path: `${role}/profile`,
-          icon: AccountCircleIcon,
-        },
-
+        // {
+        //   title: "Profile",
+        //   path: `${role}/profile`,
+        //   icon: AccountCircleIcon,
+        // },
         {
           title: "Give Review",
           path: `${role}/review`,
@@ -108,11 +107,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: PublishedWithChangesIcon,
         },
 
-        {
-          title: "Profile",
-          path: `${role}/profile`,
-          icon: AccountCircleIcon,
-        },
+        // {
+        //   title: "Profile",
+        //   path: `${role}/profile`,
+        //   icon: AccountCircleIcon,
+        // },
 
         {
           title: "Give Review",

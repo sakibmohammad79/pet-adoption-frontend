@@ -11,9 +11,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import LoginModal from "./components/LoginModal";
+import { useState } from "react";
 
 const LoginPage = () => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleLogin = async (data: FieldValues) => {
     try {
@@ -109,6 +112,15 @@ const LoginPage = () => {
                 </Box>
               </Link>
             </Typography>
+            <Box pt={2} display="flex" justifyContent="center">
+              <Button onClick={() => setIsModalOpen(true)}>
+                Demo Credentials
+              </Button>
+              <LoginModal
+                open={isModalOpen}
+                setOpen={setIsModalOpen}
+              ></LoginModal>
+            </Box>
           </Box>
         </Box>
       </Stack>

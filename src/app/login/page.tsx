@@ -5,7 +5,15 @@ import { UserLogin } from "@/services/actions/loginUser";
 import { storeUserInfo } from "@/services/auth.services";
 import { loginValidationSchema } from "@/validation/formValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,8 +25,10 @@ import { useState } from "react";
 const LoginPage = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async (data: FieldValues) => {
+    setLoading(true);
     try {
       const res = await UserLogin(data);
       if (res?.data?.accessToken) {
@@ -30,8 +40,12 @@ const LoginPage = () => {
       }
     } catch (err: any) {
       console.log(err.message);
+      toast.error("An error occurred while logging in.");
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <Container>
       <Stack
@@ -55,7 +69,7 @@ const LoginPage = () => {
                 width={80}
                 src="https://i.postimg.cc/8cJ5XMDB/adopt-a-pet-cute-puppies-in-the-box-illustration-in-flat-style-free-vector.jpg"
                 alt="Pet-icon"
-              ></Image>
+              />
             </Box>
             <Box>
               <Typography fontSize={24} fontWeight="bold">
@@ -68,10 +82,7 @@ const LoginPage = () => {
             <PetForm
               onSubmit={handleLogin}
               resolver={zodResolver(loginValidationSchema)}
-              defaultValues={{
-                password: "",
-                email: "",
-              }}
+              defaultValues={{ password: "", email: "" }}
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
@@ -100,8 +111,13 @@ const LoginPage = () => {
                 type="submit"
                 fullWidth={true}
                 sx={{ backgroundColor: "orange", mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Please Login
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Please Login"
+                )}
               </Button>
             </PetForm>
             <Typography align="center">
@@ -116,10 +132,7 @@ const LoginPage = () => {
               <Button onClick={() => setIsModalOpen(true)}>
                 Demo Credentials
               </Button>
-              <LoginModal
-                open={isModalOpen}
-                setOpen={setIsModalOpen}
-              ></LoginModal>
+              <LoginModal open={isModalOpen} setOpen={setIsModalOpen} />
             </Box>
           </Box>
         </Box>

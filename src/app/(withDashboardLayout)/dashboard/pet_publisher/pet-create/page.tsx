@@ -20,6 +20,7 @@ const PetCreatePage = () => {
   const [deletePet] = useDeletePetMutation();
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
   const profileData = profile?.profile;
+  console.log(profileData, "profile data");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const query: Record<string, any> = {};

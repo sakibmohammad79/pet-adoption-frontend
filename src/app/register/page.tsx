@@ -10,10 +10,19 @@ import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
 import { registerValidationSchema } from "@/validation/formValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -30,66 +39,56 @@ const defaultValues = {
 
 const RegisterPage = () => {
   const router = useRouter();
-  const handleRegister = async (data: FieldValues) => {
-    console.log(data);
-    const userData = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      gender: data.gender,
-      birthDate: data.birthDate,
-      contactNumber: data.contactNumber,
-      address: data.address,
-    };
+  const [loading, setLoading] = useState(false);
 
-    if (data.role === "PET_ADOPTER") {
-      const adopterData = {
-        password: data.password,
-        adopter: userData,
+  const handleRegister = async (data: FieldValues) => {
+    setLoading(true);
+    try {
+      const userData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        gender: data.gender,
+        birthDate: data.birthDate,
+        contactNumber: data.contactNumber,
+        address: data.address,
       };
-      const modifyData = modifyPayload(adopterData);
-      try {
-        const registerRes = await AdopterRegister(modifyData);
-        if (registerRes?.data?.id) {
-          const loginRes = await UserLogin({
-            email: data.email,
-            password: data.password,
-          });
-          if (loginRes?.data?.accessToken) {
-            storeUserInfo(loginRes?.data?.accessToken);
-            router.push("/dashboard");
-          }
-          toast.success(registerRes?.message);
-        } else {
-          toast.error(registerRes?.message);
-        }
-      } catch (err: any) {
-        console.log(err.message);
+
+      let registerRes;
+      if (data.role === "PET_ADOPTER") {
+        const modifyData = modifyPayload({
+          password: data.password,
+          adopter: userData,
+        });
+        registerRes = await AdopterRegister(modifyData);
+      } else if (data.role === "PET_PUBLISHER") {
+        const modifyData = modifyPayload({
+          password: data.password,
+          publisher: userData,
+        });
+        registerRes = await PublisherRegister(modifyData);
       }
-    }
-    if (data.role === "PET_PUBLISHER") {
-      const publisherData = {
-        password: data.password,
-        publisher: userData,
-      };
-      const modifyData = modifyPayload(publisherData);
-      try {
-        const registerRes = await PublisherRegister(modifyData);
-        if (registerRes?.data?.id) {
-          const loginRes = await UserLogin(data);
-          if (loginRes?.data?.accessToken) {
-            storeUserInfo(loginRes?.data?.accessToken);
-            router.push("/dashboard");
-          }
-          toast.success(registerRes?.message);
-        } else {
-          toast.error(registerRes?.message);
+
+      if (registerRes?.data?.id) {
+        const loginRes = await UserLogin({
+          email: data.email,
+          password: data.password,
+        });
+        if (loginRes?.data?.accessToken) {
+          storeUserInfo(loginRes?.data?.accessToken);
+          router.push("/dashboard");
         }
-      } catch (err: any) {
-        console.log(err.message);
+        toast.success(registerRes?.message);
+      } else {
+        toast.error(registerRes?.message);
       }
+    } catch (err: any) {
+      toast.error("Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <Container>
       <Stack
@@ -113,7 +112,7 @@ const RegisterPage = () => {
                 width={80}
                 src="https://i.postimg.cc/8cJ5XMDB/adopt-a-pet-cute-puppies-in-the-box-illustration-in-flat-style-free-vector.jpg"
                 alt="Pet-icon"
-              ></Image>
+              />
             </Box>
             <Box>
               <Typography fontSize={24} fontWeight="bold">
@@ -130,32 +129,19 @@ const RegisterPage = () => {
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetInput
-                    label="First Name"
-                    name="firstName"
-                    fullWidth={true}
-                  />
+                  <PetInput label="First Name" name="firstName" fullWidth />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetInput
-                    label="Last Name"
-                    name="lastName"
-                    fullWidth={true}
-                  />
+                  <PetInput label="Last Name" name="lastName" fullWidth />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetInput
-                    label="Email"
-                    name="email"
-                    fullWidth={true}
-                    type="email"
-                  />
+                  <PetInput label="Email" name="email" fullWidth type="email" />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <PetInput
                     label="Password"
                     name="password"
-                    fullWidth={true}
+                    fullWidth
                     type="password"
                   />
                 </Grid>
@@ -173,24 +159,29 @@ const RegisterPage = () => {
                   <PetInput
                     label="Contact Number"
                     name="contactNumber"
-                    fullWidth={true}
+                    fullWidth
                     type="tel"
                   />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                  <PetInput label="Address" name="address" fullWidth={true} />
+                  <PetInput label="Address" name="address" fullWidth />
                 </Grid>
               </Grid>
               <Button
                 type="submit"
-                fullWidth={true}
+                fullWidth
                 sx={{ backgroundColor: "orange", mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Please Register
+                {loading ? (
+                  <CircularProgress size={24} sx={{ color: "white" }} />
+                ) : (
+                  "Please Register"
+                )}
               </Button>
             </PetForm>
             <Typography align="center">
-              Alrady have an acount? please{" "}
+              Already have an account? Please{" "}
               <Link href="/login">
                 <Box component="span" color="orange" fontWeight="bold">
                   Login

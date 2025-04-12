@@ -8,6 +8,7 @@ import "swiper/css/autoplay";
 
 // Import required modules
 import { Pagination, Autoplay } from "swiper/modules";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -81,15 +82,17 @@ const HeroSection = () => {
                 <br />
                 Quas obcaecati iure quam aliquid quisquam.
               </Typography>
+              <Link href={"/pet-list"}>
               <Button
+              
                 sx={{
                   mt: 2,
                   fontSize: { xs: "0.8rem", md: "1rem" },
                   py: { xs: 0.5, md: 1 },
                 }}
               >
-                View More <PetsIcon sx={{ pl: 1 }} />
-              </Button>
+                View Animals <PetsIcon sx={{ pl: 1 }} />
+              </Button></Link>
             </Container>
           </Box>
         </SwiperSlide>
@@ -143,15 +146,17 @@ const HeroSection = () => {
                 <br />
                 Quas obcaecati iure quam aliquid quisquam.
               </Typography>
+              <Link href={"/pet-list"}>
               <Button
+              
                 sx={{
                   mt: 2,
                   fontSize: { xs: "0.8rem", md: "1rem" },
                   py: { xs: 0.5, md: 1 },
                 }}
               >
-                View More <PetsIcon sx={{ pl: 1 }} />
-              </Button>
+                View Animals <PetsIcon sx={{ pl: 1 }} />
+              </Button></Link>
             </Container>
           </Box>
         </SwiperSlide>
@@ -204,15 +209,17 @@ const HeroSection = () => {
                 <br />
                 Quas obcaecati iure quam aliquid quisquam.
               </Typography>
+              <Link href={"/pet-list"}>
               <Button
+              
                 sx={{
                   mt: 2,
                   fontSize: { xs: "0.8rem", md: "1rem" },
                   py: { xs: 0.5, md: 1 },
                 }}
               >
-                View More <PetsIcon sx={{ pl: 1 }} />
-              </Button>
+                View Animals <PetsIcon sx={{ pl: 1 }} />
+              </Button></Link>
             </Container>
           </Box>
         </SwiperSlide>

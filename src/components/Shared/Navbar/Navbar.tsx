@@ -115,11 +115,11 @@ export default function Navbar() {
               <Link href="/pet-list">
                 <Typography fontWeight={600}>PET LIST</Typography>
               </Link>
-              <Link href="/">
-                <Typography fontWeight={600}>ABOUT</Typography>
-              </Link>
-              <Link href="/">
+              <Link href="/contact">
                 <Typography fontWeight={600}>CONTACT</Typography>
+              </Link>
+              <Link href="/about">
+                <Typography fontWeight={600}>ABOUT</Typography>
               </Link>
               {userInfo?.userId && (
                 <Link href={`/dashboard/${userRole}`}>

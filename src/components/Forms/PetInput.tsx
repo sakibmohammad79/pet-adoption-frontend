@@ -1,56 +1,82 @@
-import { SxProps, TextField, TextFieldProps } from "@mui/material";
+
+import { SxProps, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
-interface IInputProps {
+type TPhInputProps = {
   name: string;
   label?: string;
   type?: string;
   size?: "small" | "medium";
-  sx?: SxProps;
   fullWidth?: boolean;
-  placeHolder?: string;
+  placeholder?: string;
   required?: boolean;
-  rows?: number;
+  sx?: SxProps;
   multiline?: boolean;
-  InputProps?: TextFieldProps["InputProps"]; // Allow InputProps
-}
-const PetInput = ({
+  rules?: any;
+  rows?: number;
+};
+
+const PHInput = ({
   name,
-  fullWidth,
+  label,
   size = "small",
   type = "text",
-  label,
-  rows,
-  multiline,
+  fullWidth,
   sx,
-  placeHolder,
   required,
-  InputProps, // Accept InputProps
-}: IInputProps) => {
+  multiline,
+  rules,
+  rows,
+}: TPhInputProps) => {
   const { control } = useFormContext();
+
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field, fieldState: { error } }) => (
-        <TextField
-          {...field}
-          sx={{ ...sx }}
-          label={label}
-          multiline={multiline}
-          rows={rows}
-          variant="outlined"
-          fullWidth={fullWidth}
-          size={size}
-          type={type}
-          placeholder={label}
-          required={required}
-          error={!!error?.message}
-          helperText={error?.message}
-          InputProps={InputProps}
-        />
-      )}
+      rules={rules}
+      render={({ field, fieldState: { error } }) => {
+        // Special handling for file input
+        if (type === "file") {
+          return (
+            <TextField
+              sx={{ ...sx }}
+              type="file"
+              fullWidth={fullWidth}
+              size={size}
+              required={required}
+              label={label}
+              inputProps={{ accept: "image/*" }}
+              error={!!error?.message}
+              helperText={error?.message}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const fileList = e.target.files;
+                field.onChange(fileList); // React Hook Form gets the FileList
+              }}
+            />
+          );
+        }
+
+        // Default text input
+        return (
+          <TextField
+            sx={{ ...sx }}
+            {...field}
+            label={label}
+            variant="outlined"
+            size={size}
+            type={type}
+            fullWidth={fullWidth}
+            placeholder={label}
+            required={required}
+            error={!!error?.message}
+            helperText={error?.message}
+            multiline={multiline}
+            rows={rows}
+          />
+        );
+      }}
     />
   );
 };
 
-export default PetInput;
+export default PHInput;

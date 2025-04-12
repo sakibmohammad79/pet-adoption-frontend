@@ -52,6 +52,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Manage Adoption",
           path: `${role}/manage-adoptions`,
           icon: AddHomeWorkIcon,
+        },
+        {
+          title: "Manage review",
+          path: `${role}/manage-review`,
+          icon: AddHomeWorkIcon,
         }
       );
       break;

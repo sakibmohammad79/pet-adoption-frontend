@@ -17,6 +17,19 @@ const publisherApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.pet],
     }),
+    getAllPublisher: build.query({
+      query: () => ({
+        url: '/publisher',
+        method: "GET",
+      }),
+      transformResponse: (response: any, meta: TMeta) => {
+        return {
+          publisher: response,
+          meta,
+        };
+      },
+      providesTags: [tagTypes.publisher],
+    }),
     deletePublisher: build.mutation({
       query: (id) => ({
         url: `/publisher/${id}`,
@@ -27,5 +40,5 @@ const publisherApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useDeletePublisherMutation, useGetMyCreatredPetQuery } =
+export const { useDeletePublisherMutation, useGetMyCreatredPetQuery, useGetAllPublisherQuery } =
   publisherApi;

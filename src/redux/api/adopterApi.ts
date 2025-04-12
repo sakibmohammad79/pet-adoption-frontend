@@ -4,6 +4,13 @@ import { baseApi } from "./baseApi";
 
 const adopterApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getAllAdopter: build.query({
+      query: () => ({
+        url: '/adopter',
+        method: "GET",
+      }),
+      providesTags: [tagTypes.adopter],
+    }),
     getSingleAdopter: build.query({
       query: (id) => ({
         url: `/adopter/${id}`,
@@ -51,4 +58,5 @@ export const {
   useGetSingleAdopterQuery,
   useGetMyBookedPetsQuery,
   useGetMyAdoptedPetsQuery,
+  useGetAllAdopterQuery
 } = adopterApi;

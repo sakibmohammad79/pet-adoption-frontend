@@ -18,12 +18,14 @@ import PetCard from "./PetCard";
 import Link from "next/link";
 import { useGetPetsQuery } from "@/redux/api/petApi";
 
+// Animation imports
+import { Fade, Slide } from "react-awesome-reveal";
+
 const speciesList = ["ALL", "CAT", "DOG", "BIRD", "RABBIT"];
 
 const PetSection = () => {
   const [selectedSpecies, setSelectedSpecies] = useState("ALL");
 
-  // Fetch pets based on selected species
   const { data, isLoading } = useGetPetsQuery(
     selectedSpecies === "ALL" ? {} : { species: selectedSpecies }
   );
@@ -35,7 +37,6 @@ const PetSection = () => {
     setSelectedSpecies(newValue);
   };
 
-  // Responsive settings
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -50,75 +51,83 @@ const PetSection = () => {
   return (
     <Container sx={{ backgroundColor: "#FFFFFF", pt: 12, pb: 8 }}>
       <Box textAlign="center">
-        <PetsIcon
-          sx={{ py: 1, color: "primary.main", height: 40, width: 40 }}
-        />
-        <Typography
-          component="h1"
-          variant="h6"
-          color="primary.main"
-          fontWeight={600}
-        >
-          Meet the animals
-        </Typography>
-        <Typography
-          color="black"
-          component="h1"
-          variant="h4"
-          fontWeight={700}
-          my={1}
-        >
-          Puppies Waiting for Adoption
-        </Typography>
-        <Typography>
-          Find your perfect pet! Browse through our available animals for
-          adoption.
-        </Typography>
+        <Fade direction="down" triggerOnce>
+          <PetsIcon sx={{ py: 1, color: "primary.main", height: 40, width: 40 }} />
+        </Fade>
+        <Fade direction="down" cascade damping={0.1} triggerOnce>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="primary.main"
+            fontWeight={600}
+          >
+            Meet the animals
+          </Typography>
+          <Typography
+            color="black"
+            component="h1"
+            variant="h4"
+            fontWeight={700}
+            my={1}
+          >
+            Puppies Waiting for Adoption
+          </Typography>
+          <Typography>
+            Find your perfect pet! Browse through our available animals for adoption.
+          </Typography>
+        </Fade>
 
-        {/* Responsive Tabs */}
+        {/* Tabs */}
         <Stack justifyContent="center" alignItems="center">
           <Box width={isMobile ? "100%" : "auto"} sx={{ overflowX: "auto" }}>
-            <Tabs
-              value={selectedSpecies}
-              onChange={handleChange}
-              variant="scrollable"
-              scrollButtons
-              allowScrollButtonsMobile
-              aria-label="Pet species filter"
-              sx={{
-                my: 4,
-                maxWidth: "100%",
-                "& .MuiTabs-flexContainer": {
-                  justifyContent: isMobile ? "start" : "center",
-                },
-              }}
-            >
-              {speciesList.map((species) => (
-                <Tab
-                  sx={{ fontSize: 16 }}
-                  key={species}
-                  label={species}
-                  value={species}
-                />
-              ))}
-            </Tabs>
+            <Slide direction="up" triggerOnce>
+              <Tabs
+                value={selectedSpecies}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons
+                allowScrollButtonsMobile
+                aria-label="Pet species filter"
+                sx={{
+                  my: 4,
+                  maxWidth: "100%",
+                  "& .MuiTabs-flexContainer": {
+                    justifyContent: isMobile ? "start" : "center",
+                  },
+                }}
+              >
+                {speciesList.map((species) => (
+                  <Tab
+                    sx={{ fontSize: 16 }}
+                    key={species}
+                    label={species}
+                    value={species}
+                  />
+                ))}
+              </Tabs>
+            </Slide>
           </Box>
         </Stack>
 
-        {/* Display pet cards */}
+        {/* Pet cards */}
         <Box my={8}>
           <Grid container spacing={4}>
-            {publishedPets.slice(0, 6).map((pet: any) => (
+            {publishedPets.slice(0, 6).map((pet: any, index: number) => (
               <Grid item xs={12} sm={6} md={4} key={pet.id}>
-                <PetCard pet={pet} />
+                <Fade delay={index * 100} triggerOnce>
+                  <PetCard pet={pet} />
+                </Fade>
               </Grid>
             ))}
           </Grid>
         </Box>
 
-        <Link href="/pet-list">
-          <Button sx={{ mt: 4 }}>View More</Button>
-        </Link>
+        {/* View More Button */}
+        <Slide direction="up" triggerOnce>
+          <Link href="/pet-list">
+            <Button sx={{ mt: 4 }}>View More</Button>
+          </Link>
+        </Slide>
       </Box>
     </Container>
   );

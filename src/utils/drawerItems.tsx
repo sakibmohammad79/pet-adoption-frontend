@@ -102,7 +102,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           path: `${role}/pet-create`,
           icon: PublishedWithChangesIcon,
         },
-
+        {
+          title: "My Published Pet",
+          path: `${role}/pet-published`,
+          icon: PublishedWithChangesIcon,
+        },
         {
           title: "Give Review",
           path: `${role}/review`,

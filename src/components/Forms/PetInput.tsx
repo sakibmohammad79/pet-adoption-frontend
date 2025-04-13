@@ -1,6 +1,6 @@
-
 import { SxProps, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
+
 type TPhInputProps = {
   name: string;
   label?: string;
@@ -13,6 +13,8 @@ type TPhInputProps = {
   multiline?: boolean;
   rules?: any;
   rows?: number;
+
+  [key: string]: any; 
 };
 
 const PHInput = ({
@@ -26,6 +28,7 @@ const PHInput = ({
   multiline,
   rules,
   rows,
+  ...rest // 👈 Capture additional props like InputProps here
 }: TPhInputProps) => {
   const { control } = useFormContext();
 
@@ -52,6 +55,7 @@ const PHInput = ({
                 const fileList = e.target.files;
                 field.onChange(fileList); // React Hook Form gets the FileList
               }}
+              {...rest}
             />
           );
         }
@@ -72,6 +76,7 @@ const PHInput = ({
             helperText={error?.message}
             multiline={multiline}
             rows={rows}
+            {...rest} 
           />
         );
       }}

@@ -76,6 +76,7 @@ const Testimonials = () => {
                   <Box
                     sx={{
                       p: 4,
+                      height: 150,
                       bgcolor: "white",
                       borderRadius: 4,
                       display: "flex",

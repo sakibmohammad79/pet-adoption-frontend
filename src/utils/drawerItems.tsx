@@ -13,11 +13,11 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 export const DrawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
   const deafaultMenus = [
-    {
-      title: "My Profile",
-      path: `${role}/profile`,
-      icon: AccountCircleIcon,
-    },
+    // {
+    //   title: "My Profile",
+    //   path: `${role}/profile`,
+    //   icon: AccountCircleIcon,
+    // },
     {
       title: "Password Change",
       path: `password-change`,

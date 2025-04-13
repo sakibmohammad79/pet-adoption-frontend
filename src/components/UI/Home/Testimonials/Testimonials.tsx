@@ -11,7 +11,7 @@ import { useGetAllReviewQuery } from "@/redux/api/reviewApi";
 import { getUserInfo } from "@/services/auth.services";
 
 const Testimonials = () => {
-  const { role } = getUserInfo();
+  
   const { data: reviews } = useGetAllReviewQuery({});
   const publishedReviews = reviews?.filter((review: any) => review?.isPublished);
 
@@ -68,7 +68,7 @@ const Testimonials = () => {
               const fullName = `${user?.firstName ?? ""} ${user?.lastName ?? ""}`;
              
               const profilePhoto =
-                user?.profilePhoto || "https://i.ibb.co/VjVFQBc/default-user.jpg";
+                user?.profilePhoto || "https://i.postimg.cc/Pxf7WpS0/user.png";
                 const reviewerRole = review.publisher ? "Publisher" : "Adopter";
 
               return (

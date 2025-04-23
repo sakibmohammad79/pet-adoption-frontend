@@ -5,7 +5,7 @@ import AdoptionAreaMap from "@/components/Shared/map/AdoptionAreaMap";
 
 const AreaSection = () => {
   return (
-    <Container>
+    <Container >
       <AdoptionAreaMap></AdoptionAreaMap>
     </Container>
   );

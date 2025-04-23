@@ -21,7 +21,7 @@ const AdoptionAreaMap = () => {
 
   const mapContainerStyle = {
     width: "100%",
-    height: isSmallScreen ? "300px" : "400px",
+    height: isSmallScreen ? "300px" : "500px",
     borderRadius: "10px",
   };
 
@@ -54,7 +54,7 @@ const AdoptionAreaMap = () => {
       sx={{
         mx: "auto",
         my: isSmallScreen ? 4 : 8,
-        p: isSmallScreen ? 1 : 2,
+        p: isSmallScreen ? 1 : 1,
         borderRadius: 3,
         boxShadow: 2,
         maxWidth: isSmallScreen ? "95%" : "100%",

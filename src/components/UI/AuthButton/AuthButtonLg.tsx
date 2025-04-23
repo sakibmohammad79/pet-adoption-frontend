@@ -47,13 +47,30 @@ const AuthButtonLg = () => {
       {userInfo?.userId ? (
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="https://i.ibb.co.com/p6wb1JBc/man.png"
-              />
-            </IconButton>
-          </Tooltip>
+  <IconButton
+    onClick={handleOpenUserMenu}
+    sx={{
+      p: 0,
+      borderRadius: "50%",
+      border: "2px solid #ffffff55",
+      transition: "0.3s",
+      "&:hover": {
+        transform: "scale(1.1)",
+        boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+        borderColor: "#ffffffaa",
+      },
+    }}
+  >
+    <Avatar
+      alt="User Avatar"
+      src="https://i.ibb.co/p6wb1JBc/man.png"
+      sx={{
+        width: 40,
+        height: 40,
+      }}
+    />
+  </IconButton>
+</Tooltip>
           <Menu
             sx={{ mt: "45px" }}
             id="menu-appbar"
@@ -79,7 +96,7 @@ const AuthButtonLg = () => {
                     handleLogout(); // Call logout only when clicking "Logout"
                   }
                   if (setting === "Dashboard") {
-                    router.push(`/dashboard/${userRole}`);
+                    router.push(`/dashboard/${userRole}/profile`);
                   }
                 }}
               >

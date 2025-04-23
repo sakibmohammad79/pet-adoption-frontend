@@ -13,6 +13,8 @@ import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import { Avatar, Menu, MenuItem, Stack, Tooltip } from "@mui/material";
 import { getUserInfo, removeUser } from "@/services/auth.services";
 import { useRouter } from "next/navigation";
+import SettingsIcon from "@mui/icons-material/Settings"; // Add this at the top
+
 
 const drawerWidth = 240;
 
@@ -128,12 +130,22 @@ export default function DashboardDrawer({
             {/* Right Side - Avatar and Menu */}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://i.ibb.co/p6wb1JBc/man.png"
-                  />
-                </IconButton>
+              <IconButton
+  onClick={handleOpenUserMenu}
+  sx={{
+    p: 1,
+    backgroundColor: "#ffffff20",
+    borderRadius: "50%",
+    transition: "0.3s",
+    "&:hover": {
+      backgroundColor: "#ffffff40",
+      transform: "rotate(20deg) scale(1.1)",
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+    },
+  }}
+>
+  <SettingsIcon sx={{ color: "white" }} />
+</IconButton>
               </Tooltip>
               <Menu
                 sx={{ mt: "45px" }}

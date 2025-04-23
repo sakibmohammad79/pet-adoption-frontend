@@ -88,7 +88,12 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Give Review",
           path: `${role}/review`,
           icon: StarIcon,
-        }
+        },
+        {
+          title: "My Profile",
+          path: `${role}/profile`,
+          icon: AccountCircleIcon,
+        },
       );
       break;
     case USER_ROLE.PET_PUBLISHER:
@@ -112,7 +117,12 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Give Review",
           path: `${role}/review`,
           icon: StarIcon,
-        }
+        },
+        {
+          title: "My Profile",
+          path: `${role}/profile`,
+          icon: AccountCircleIcon,
+        },
       );
       break;
 

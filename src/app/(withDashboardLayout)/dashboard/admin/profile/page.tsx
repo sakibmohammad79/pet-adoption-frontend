@@ -169,9 +169,9 @@ const AdminProfile = () => {
             sx={{
               backgroundColor: '#FF6B00',
               fontWeight: 600,
-              fontSize: 18,
-              px: 5,
-              py: 1.8,
+              fontSize: 16,
+              px: 3,
+              py: 1.4,
               borderRadius: 3,
               boxShadow: '0 4px 12px rgba(255, 107, 0, 0.3)',
               '&:hover': {

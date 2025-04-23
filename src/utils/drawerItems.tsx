@@ -13,11 +13,7 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 export const DrawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
   const deafaultMenus = [
-    // {
-    //   title: "My Profile",
-    //   path: `${role}/profile`,
-    //   icon: AccountCircleIcon,
-    // },
+    
     {
       title: "Password Change",
       path: `password-change`,
@@ -57,7 +53,12 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           title: "Manage review",
           path: `${role}/manage-review`,
           icon: AddHomeWorkIcon,
-        }
+        },
+        {
+          title: "My Profile",
+          path: `${role}/profile`,
+          icon: AccountCircleIcon,
+        },
       );
       break;
     case USER_ROLE.PET_ADOPTER:

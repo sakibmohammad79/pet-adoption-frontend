@@ -6,10 +6,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -115,11 +111,12 @@ export default function Navbar() {
               <Link href="/pet-list">
                 <Typography fontWeight={600}>PET LIST</Typography>
               </Link>
-              <Link href="/contact">
-                <Typography fontWeight={600}>CONTACT</Typography>
-              </Link>
+              
               <Link href="/about">
                 <Typography fontWeight={600}>ABOUT</Typography>
+              </Link>
+              <Link href="/contact">
+                <Typography fontWeight={600}>CONTACT</Typography>
               </Link>
               {userInfo?.userId && (
                 <Link href={`/dashboard/${userRole}`}>

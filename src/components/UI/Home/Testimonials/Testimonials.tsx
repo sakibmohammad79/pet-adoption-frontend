@@ -76,7 +76,7 @@ const Testimonials = () => {
                   <Box
                     sx={{
                       p: 4,
-                      height: 150,
+                      height: {xs: 250, md: 180},
                       bgcolor: "white",
                       borderRadius: 4,
                       display: "flex",
@@ -122,8 +122,8 @@ const Testimonials = () => {
                           </Typography>
                          
                           <Typography fontSize="0.8rem" color="text.secondary">
-  {reviewerRole}
-</Typography>
+                          {reviewerRole}
+                      </Typography>
                           <Typography fontSize="0.9rem" mt={0.5}>
                             {"⭐".repeat(review?.rating || 0)}
                           </Typography>

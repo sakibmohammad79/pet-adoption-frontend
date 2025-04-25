@@ -3,20 +3,14 @@ import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
-
 import { useState } from "react";
-import Swal from "sweetalert2";
 import Image from "next/image";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useDebounced } from "@/redux/hooks";
-
 import { useGetMyCreatredPetQuery, useGetMyPublishedPetQuery } from "@/redux/api/publisherApi";
-import { getUserInfo } from "@/services/auth.services";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
-import { useDeletePetMutation } from "@/redux/api/petApi";
 
-const PetCreatePage = () => {
+
+const MyPublishPetPage = () => {
 
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
   const profileData = profile?.profile;
@@ -30,9 +24,7 @@ const PetCreatePage = () => {
     query["searchTerm"] = debouncedValue;
   }
 
-  if (profileLoading) {
-    <Typography>loading...</Typography>;
-  }
+ 
 
   const { data, isLoading } = useGetMyPublishedPetQuery(
     profileData?.publisher?.id
@@ -41,7 +33,13 @@ const PetCreatePage = () => {
   console.log(pets);
   
 
-    ;
+  if (profileLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   // Handle different states
   if (isLoading) {
@@ -163,4 +161,4 @@ const PetCreatePage = () => {
   );
 };
 
-export default PetCreatePage;
+export default MyPublishPetPage;

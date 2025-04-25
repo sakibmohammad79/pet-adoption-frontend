@@ -196,43 +196,26 @@ const PetCreatePage = () => {
   const paginationModel = { page: 0, pageSize: 10 };
 
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight={600}
-          color="primary.main"
-        >
-          MY CREATED PET
-        </Typography>
-        <Button sx={{ py: 2 }} onClick={() => setIsModalOpen(true)}>
-          Create New Pet
-        </Button>
-        <PublisherModal
-          open={isModalOpen}
-          setOpen={setIsModalOpen}
-          publisherId={profileData?.publisher?.id}
+    <Box mt={4}>
+    <Paper sx={{ width: "100%", overflowX: "auto" }}>
+      <Box sx={{ minWidth: "900px" }}> {/* You can adjust minWidth as needed */}
+        <DataGrid
+          rows={pets || []}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[10, 20]}
+          checkboxSelection
+          sx={{ border: 0 }}
         />
-      </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
-          <DataGrid
-            rows={pets || []}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[10, 20]}
-            checkboxSelection
-            sx={{ border: 0 }}
-          />
-          {(!pets || pets.length === 0) && (
-            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No pets found!
-            </Typography>
-          )}
-        </Paper>
       </Box>
-    </Box>
+      {(!pets || pets.length === 0) && (
+        <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+          No pets found!
+        </Typography>
+      )}
+    </Paper>
+  </Box>
+  
   );
 };
 

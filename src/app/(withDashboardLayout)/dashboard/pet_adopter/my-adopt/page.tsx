@@ -2,12 +2,15 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetMyAdoptedPetsQuery } from "@/redux/api/adopterApi";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
-import { Box, Chip, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Box, Chip, Paper, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
 
 const MyAdoptPage = () => {
+ 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { data: profileData, isLoading: loading } = useGetMyProfileQuery({});
   const adopterId = profileData?.profile?.adopter?.id;
   const { data: myPets, isLoading } = useGetMyAdoptedPetsQuery(adopterId);
@@ -25,6 +28,8 @@ const MyAdoptPage = () => {
     pets.push(petData.pet);
   });
 
+  
+
   const columns: GridColDef[] = [
     {
       field: "image",
@@ -35,12 +40,9 @@ const MyAdoptPage = () => {
       renderCell: ({ row }) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {" "}
             <Image
               className="pet-image"
-              src={
-                row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
-              }
+              src={row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"}
               alt="profile"
               height={30}
               width={30}
@@ -48,6 +50,7 @@ const MyAdoptPage = () => {
           </Box>
         );
       },
+      width: isSmallScreen ? 80 : 120, // Adjust width for small screens
     },
     {
       field: "name",
@@ -55,6 +58,7 @@ const MyAdoptPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 120 : 200, 
     },
     {
       field: "gender",
@@ -62,6 +66,7 @@ const MyAdoptPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
     {
       field: "age",
@@ -69,6 +74,7 @@ const MyAdoptPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 80 : 100, 
     },
     {
       field: "breed",
@@ -76,6 +82,7 @@ const MyAdoptPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
     {
       field: "size",
@@ -83,14 +90,15 @@ const MyAdoptPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
-
     {
       field: "color",
       headerName: "Color",
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
     {
       field: "healthStatus",
@@ -98,6 +106,7 @@ const MyAdoptPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 120 : 150, 
     },
     {
       field: "action",
@@ -112,20 +121,17 @@ const MyAdoptPage = () => {
           </Link>
         );
       },
+      width: isSmallScreen ? 120 : 150, 
     },
   ];
 
   const paginationModel = { page: 0, pageSize: 10 };
+
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight={600}
-          color="primary.main"
-        >
-          MY BOOKED PET
+        <Typography variant="h4" component="h1" fontWeight={600} color="primary.main">
+          MY ADOPTED PET
         </Typography>
       </Stack>
       <Box mt={4}>
@@ -135,7 +141,7 @@ const MyAdoptPage = () => {
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
+            // checkboxSelection
             sx={{ border: 0 }}
           />
           {(!pets || pets.length === 0) && (

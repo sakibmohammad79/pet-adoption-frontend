@@ -2,13 +2,14 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetMyBookedPetsQuery } from "@/redux/api/adopterApi";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
-import { getUserInfo } from "@/services/auth.services";
-import { Box, Chip, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Box, Chip, Paper, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import Link from "next/link";
 
 const MyBookedPage = () => {
+  const theme = useTheme(); 
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); 
   const { data: profileData, isLoading: loading } = useGetMyProfileQuery({});
   const adopterId = profileData?.profile?.adopter?.id;
 
@@ -27,6 +28,8 @@ const MyBookedPage = () => {
     pets.push(petData.pet);
   });
 
+ 
+
   const columns: GridColDef[] = [
     {
       field: "image",
@@ -37,12 +40,9 @@ const MyBookedPage = () => {
       renderCell: ({ row }) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {" "}
             <Image
               className="pet-image"
-              src={
-                row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
-              }
+              src={row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"}
               alt="profile"
               height={30}
               width={30}
@@ -50,6 +50,7 @@ const MyBookedPage = () => {
           </Box>
         );
       },
+      width: isSmallScreen ? 80 : 120, 
     },
     {
       field: "name",
@@ -57,6 +58,7 @@ const MyBookedPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 120 : 200, 
     },
     {
       field: "gender",
@@ -64,6 +66,7 @@ const MyBookedPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
     {
       field: "age",
@@ -71,6 +74,7 @@ const MyBookedPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 80 : 100, 
     },
     {
       field: "breed",
@@ -78,6 +82,7 @@ const MyBookedPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
     {
       field: "size",
@@ -85,14 +90,15 @@ const MyBookedPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150, 
     },
-
     {
       field: "color",
       headerName: "Color",
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 100 : 150,
     },
     {
       field: "healthStatus",
@@ -100,6 +106,7 @@ const MyBookedPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: isSmallScreen ? 120 : 150, 
     },
     {
       field: "action",
@@ -114,19 +121,16 @@ const MyBookedPage = () => {
           </Link>
         );
       },
+      width: isSmallScreen ? 120 : 150, // Adjust width for small screens
     },
   ];
 
   const paginationModel = { page: 0, pageSize: 10 };
+
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight={600}
-          color="primary.main"
-        >
+        <Typography variant="h4" component="h1" fontWeight={600} color="primary.main">
           MY BOOKED PET
         </Typography>
       </Stack>
@@ -137,7 +141,7 @@ const MyBookedPage = () => {
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
+            // checkboxSelection
             sx={{ border: 0 }}
           />
           {(!pets || pets.length === 0) && (

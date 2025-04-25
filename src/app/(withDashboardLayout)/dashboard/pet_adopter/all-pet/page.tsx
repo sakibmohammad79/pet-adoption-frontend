@@ -5,8 +5,6 @@ import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 import Image from "next/image";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useDebounced } from "@/redux/hooks";
 import { useDeletePetMutation, useGetPetsQuery } from "@/redux/api/petApi";
 import Link from "next/link";
@@ -37,18 +35,14 @@ const AllPetPage = () => {
     {
       field: "image",
       headerName: "Image",
-      flex: 1,
       align: "center",
       headerAlign: "center",
       renderCell: ({ row }) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {" "}
             <Image
               className="pet-image"
-              src={
-                row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
-              }
+              src={row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"}
               alt="profile"
               height={30}
               width={30}
@@ -56,6 +50,8 @@ const AllPetPage = () => {
           </Box>
         );
       },
+      width: 120, // Fixed width for smaller screens
+      flex: 1, // Flex for larger screens
     },
     {
       field: "name",
@@ -63,6 +59,7 @@ const AllPetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 150, // Fixed width for smaller screens
     },
     {
       field: "gender",
@@ -70,6 +67,7 @@ const AllPetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 100, // Fixed width for smaller screens
     },
     {
       field: "age",
@@ -77,6 +75,7 @@ const AllPetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 80, // Fixed width for smaller screens
     },
     {
       field: "breed",
@@ -84,6 +83,7 @@ const AllPetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 100, // Fixed width for smaller screens
     },
     {
       field: "size",
@@ -91,14 +91,15 @@ const AllPetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 100, // Fixed width for smaller screens
     },
-
     {
       field: "color",
       headerName: "Color",
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 100, // Fixed width for smaller screens
     },
     {
       field: "healthStatus",
@@ -106,13 +107,14 @@ const AllPetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
+      width: 120, // Fixed width for smaller screens
     },
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
       align: "center",
       headerAlign: "center",
+      flex: 1,
       renderCell: ({ row }) => {
         if (row?.isAdopt || row?.isBooked) {
           return <Chip label="Unavailable" color="error" />;
@@ -123,6 +125,7 @@ const AllPetPage = () => {
           </Link>
         );
       },
+      width: 120, // Fixed width for smaller screens
     },
   ];
 
@@ -131,18 +134,10 @@ const AllPetPage = () => {
   return (
     <Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight={600}
-          color="primary.main"
-        >
+        <Typography variant="h4" component="h1" fontWeight={600} color="primary.main">
           ALL PETS
         </Typography>
-        <TextField
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search Pet"
-        ></TextField>
+        <TextField onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search Pet" />
       </Stack>
       <Box mt={4}>
         <Paper sx={{ height: "100%", width: "100%" }}>
@@ -151,7 +146,6 @@ const AllPetPage = () => {
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
             sx={{ border: 0 }}
           />
           {(!publishedPets || publishedPets.length === 0) && (

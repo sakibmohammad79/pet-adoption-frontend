@@ -36,7 +36,7 @@ const PasswordChange = () => {
     }
     try {
       const res = await changePassword(values).unwrap();
-      console.log(res);
+
       if (res?.success === true) {
         removeUser();
         router.push("/");

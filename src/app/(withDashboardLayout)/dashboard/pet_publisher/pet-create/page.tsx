@@ -20,7 +20,7 @@ const PetCreatePage = () => {
   const [deletePet] = useDeletePetMutation();
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
   const profileData = profile?.profile;
-  console.log(profileData, "profile data");
+  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const query: Record<string, any> = {};
@@ -38,7 +38,7 @@ const PetCreatePage = () => {
     profileData?.publisher?.id
   );
   const pets = data?.pets;
-  console.log(pets);
+
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
       title: "Are you sure?",

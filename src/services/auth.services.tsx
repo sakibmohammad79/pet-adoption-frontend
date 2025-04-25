@@ -12,7 +12,6 @@ export const storeUserInfo = (token: string) => {
 
 export const getUserInfo = () => {
   const authToken = getFromLocalStorage(authKey);
-  //   console.log(authToken);
   if (authToken) {
     const decodedData: any = jwtDecode(authToken);
     return {

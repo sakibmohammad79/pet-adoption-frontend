@@ -20,7 +20,7 @@ const AllPetPage = () => {
   const { data, isLoading } = useGetPetsQuery({ ...query });
   const pets = data?.pets;
   const publishedPets = pets?.filter((pet: any) => pet.isPublished);
-  console.log(publishedPets);
+
 
   // Handle different states
   if (isLoading) {

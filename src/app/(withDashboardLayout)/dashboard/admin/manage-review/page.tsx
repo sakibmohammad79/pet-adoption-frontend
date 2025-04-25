@@ -12,7 +12,6 @@ const ManageReview = () => {
   const [id, setId] = React.useState("");
 
   const { data: reviews, isLoading, isError } = useGetAllReviewQuery({});
-  console.log(reviews);
   const [publishReview] = usePublishReviewMutation();
   const [unpublishReview] = useUnpublishReviewMutation();
 
@@ -26,10 +25,8 @@ const ManageReview = () => {
   const [deleteReview] = useDeleteReviewMutation();
 
   const handleReviewDelete = async (id: string) => {
-    console.log(id, "id");
     try {
       const res = await deleteReview(id).unwrap();
-      console.log(res);
       if (res?.id) {
         toast.success("Review deleted successfully!");
       }

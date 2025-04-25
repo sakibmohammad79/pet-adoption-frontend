@@ -14,7 +14,7 @@ const MyPublishPetPage = () => {
 
   const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
   const profileData = profile?.profile;
-  console.log(profileData, "profile data");
+
 
  
   const query: Record<string, any> = {};
@@ -30,7 +30,7 @@ const MyPublishPetPage = () => {
     profileData?.publisher?.id
   );
   const pets = data?.pets;
-  console.log(pets);
+
   
 
   if (profileLoading) {

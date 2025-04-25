@@ -52,7 +52,7 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
     };
 
     const data = modifyPayloadWithFile(adminData);
-    // console.log(data);
+ 
     try {
       const res = await createAdmin(data);
 

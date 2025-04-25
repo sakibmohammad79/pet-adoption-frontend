@@ -23,7 +23,7 @@ const formatDate = (dateString: string) =>
 const PetAdopterProfile = () => {
   const { data: adopterData, isLoading } = useGetMyProfileQuery({});
   const profile = adopterData?.profile;
-  console.log(profile);
+
 
   if (isLoading) {
     return (

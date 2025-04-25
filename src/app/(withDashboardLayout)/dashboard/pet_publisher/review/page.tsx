@@ -38,16 +38,16 @@ const ReviewPage = () => {
   const { control,  reset } = methods;
 
   const handleReviewSubmit: SubmitHandler<FieldValues> = async (value) => {
-    // console.log(value);
+  
     try {
       const reviewData = {
         ...value,
         reviewerId: adopterId,
       }
-      console.log(reviewData);
+ 
       
       const res = await createReview(reviewData).unwrap();
-      console.log(res);
+ 
       if (res?.id) {
         toast.success("Your review was sent successfully!");
         reset();

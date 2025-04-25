@@ -125,39 +125,25 @@ const MyPublishPetPage = () => {
   const paginationModel = { page: 0, pageSize: 10 };
 
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight={600}
-          color="primary.main"
-        >
-          MY Published PET
-        </Typography>
-       
-        
-      </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
-          <DataGrid
-          
-            rows={pets || []}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[10, 20]}
-            // checkboxSelection
-            
-            sx={{ border: 0 }}
-          />
-          {(!pets || pets.length === 0) && (
-            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No pets found!
-            </Typography>
-          )}
-        </Paper>
+    <Box mt={4}>
+    <Paper sx={{ width: "100%", overflowX: "auto" }}>
+      <Box sx={{ minWidth: "800px" }}>
+        <DataGrid
+          rows={pets || []}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[10, 20]}
+          sx={{ border: 0 }}
+        />
       </Box>
-    </Box>
+      {(!pets || pets.length === 0) && (
+        <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+          No pets found!
+        </Typography>
+      )}
+    </Paper>
+  </Box>
+  
   );
 };
 

@@ -104,35 +104,24 @@ const ManageAdoptionPage = () => {
   const paginationModel = { page: 0, pageSize: 10 };
 
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h4"
-          component="h1"
-          fontWeight={600}
-          color="primary.main"
-        >
-          ALL Adoption Request
-        </Typography>
-      </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
-          <DataGrid
-            rows={adoptions || []}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[10, 20]}
-            checkboxSelection
-            sx={{ border: 0 }}
-          />
-          {(!adoptions || adoptions.length === 0) && (
-            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No adoption found!
-            </Typography>
-          )}
-        </Paper>
-      </Box>
-    </Box>
+    <Box mt={4} sx={{ width: "100%", overflowX: { xs: "auto", md: "visible" } }}>
+  <Paper sx={{ minWidth: 600, width: "100%" }}>
+    <DataGrid
+      rows={adoptions || []}
+      columns={columns}
+      initialState={{ pagination: { paginationModel } }}
+      pageSizeOptions={[10, 20]}
+      // checkboxSelection
+      sx={{ border: 0, minWidth: 600 }}
+    />
+    {(!adoptions || adoptions.length === 0) && (
+      <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+        No adoption found!
+      </Typography>
+    )}
+  </Paper>
+</Box>
+
   );
 };
 

@@ -1,5 +1,14 @@
 "use client";
-import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -18,12 +27,20 @@ import { useDeleteAdopterMutation } from "@/redux/api/adopterApi";
 import { useDeletePublisherMutation } from "@/redux/api/publisherApi";
 
 const UserPage = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const query: Record<string, any> = {};
   const [searchQuery, setSearchQuery] = useState("");
-  const debouncedValue = useDebounced({ searchQuery: searchQuery, delay: 900 });
+  const debouncedValue = useDebounced({
+    searchQuery: searchQuery,
+    delay: 900,
+  });
+
   if (!!debouncedValue) {
     query["searchTerm"] = debouncedValue;
   }
+
   const { data, isLoading } = useGetUsersQuery({ ...query });
   const users = data?.users;
   const [deleteAdopter] = useDeleteAdopterMutation();
@@ -48,8 +65,7 @@ const UserPage = () => {
         } catch (err: any) {
           console.error(err);
         }
-
-        Swal.fire("Deleted!", "Adopter, has been deleted.", "success");
+        Swal.fire("Deleted!", "Adopter has been deleted.", "success");
       }
       if (data?.role === "PET_PUBLISHER") {
         try {
@@ -57,17 +73,16 @@ const UserPage = () => {
         } catch (err: any) {
           console.error(err);
         }
-        Swal.fire("Deleted!", "Publisher, has been deleted.", "success");
+        Swal.fire("Deleted!", "Publisher has been deleted.", "success");
       }
     } else {
       Swal.fire("Cancelled", "Your item is safe :)", "info");
     }
   };
 
-  // Handle different states
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -77,36 +92,15 @@ const UserPage = () => {
     {
       field: "profilePhoto",
       headerName: "Image",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
+      minWidth: 80,
       renderCell: ({ row }) => {
-        if (row?.adopter) {
-          return (
-            <Box>
-              <Image
-                src={
-                  row?.adoopter?.profilePhoto ||
-                  "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
-                }
-                alt="profile"
-                height={30}
-                width={30}
-              />
-            </Box>
-          );
-        }
+        const src =
+          row?.adopter?.profilePhoto ||
+          row?.publisher?.profilePhoto ||
+          "https://i.postimg.cc/6qRH1Y3S/profile-icon.png";
         return (
           <Box>
-            <Image
-              src={
-                row?.publisher?.profilePhoto ||
-                "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
-              }
-              alt="profile"
-              height={30}
-              width={30}
-            />
+            <Image src={src} alt="profile" height={30} width={30} />
           </Box>
         );
       },
@@ -114,148 +108,117 @@ const UserPage = () => {
     {
       field: "firstName",
       headerName: "First Name",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: ({ row }) => {
-        if (row?.adopter) {
-          return (
-            <Box>
-              <Typography>{row?.adopter?.firstName}</Typography>
-            </Box>
-          );
-        }
-        return (
-          <Box>
-            <Typography>{row?.publisher?.firstName}</Typography>
-          </Box>
-        );
-      },
+      minWidth: 120,
+      renderCell: ({ row }) => (
+        <Typography>{row?.adopter?.firstName || row?.publisher?.firstName}</Typography>
+      ),
     },
     {
       field: "lastName",
       headerName: "Last Name",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: ({ row }) => {
-        if (row?.adopter) {
-          return (
-            <Box>
-              <Typography>{row?.adopter?.lastName}</Typography>
-            </Box>
-          );
-        }
-        return (
-          <Box>
-            <Typography>{row?.publisher?.lastName}</Typography>
-          </Box>
-        );
-      },
+      minWidth: 120,
+      renderCell: ({ row }) => (
+        <Typography>{row?.adopter?.lastName || row?.publisher?.lastName}</Typography>
+      ),
     },
-    {
-      field: "email",
-      headerName: "Email",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-    },
+    { field: "email", headerName: "Email", minWidth: 180 },
     {
       field: "gender",
       headerName: "Gender",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: ({ row }) => {
-        return (
-          <Chip
-            label={
-              row?.role === "PET_ADOPTER"
-                ? row?.adopter?.gender
-                : row?.publisher?.gender
-            }
-            color="default"
-          />
-        );
-      },
+      minWidth: 100,
+      renderCell: ({ row }) => (
+        <Chip
+          label={row?.adopter?.gender || row?.publisher?.gender}
+          color="default"
+        />
+      ),
     },
     {
       field: "role",
       headerName: "Role",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: ({ row }) => {
-        return (
-          <Chip
-            label={row?.role}
-            color={row?.role === "PET_ADOPTER" ? "secondary" : "info"}
-          />
-        );
-      },
+      minWidth: 120,
+      renderCell: ({ row }) => (
+        <Chip
+          label={row?.role}
+          color={row?.role === "PET_ADOPTER" ? "secondary" : "info"}
+        />
+      ),
     },
     {
       field: "status",
       headerName: "Status",
-      align: "center",
-      headerAlign: "center",
-      flex: 1,
-      renderCell: ({ row }) => {
-        return (
-          <Chip
-            label={row?.status}
-            color={row?.status === "ACTIVE" ? "success" : "error"}
-          />
-        );
-      },
+      minWidth: 100,
+      renderCell: ({ row }) => (
+        <Chip
+          label={row?.status}
+          color={row?.status === "ACTIVE" ? "success" : "error"}
+        />
+      ),
     },
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-      renderCell: ({ row }) => {
-        return (
-          <IconButton onClick={() => handleDelete(row)} aria-label="delete">
-            <DeleteIcon sx={{ color: "red" }} />
-          </IconButton>
-        );
-      },
+      minWidth: 80,
+      renderCell: ({ row }) => (
+        <IconButton onClick={() => handleDelete(row)} aria-label="delete">
+          <DeleteIcon sx={{ color: "red" }} />
+        </IconButton>
+      ),
     },
   ];
 
   const paginationModel = { page: 0, pageSize: 10 };
 
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+    <Box
+      sx={{
+        px: { xs: 1, sm: 2, md: 4 },
+        maxWidth: "100%",
+        overflowX: "auto",
+      }}
+    >
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        justifyContent="space-between"
+        alignItems={{ xs: "stretch", sm: "center" }}
+        mb={3}
+      >
         <Typography
-          variant="h4"
+          variant="h5"
           component="h1"
           color="primary.main"
-          fontWeight={400}
+          fontWeight={500}
         >
-          ALL USERS:{" "}
+          ALL USERS
         </Typography>
         <TextField
+          size="small"
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search Users"
-        ></TextField>
+          fullWidth={isSmallScreen}
+        />
       </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
+
+      {/* Scrollable container for small screens */}
+      <Box sx={{ overflowX: "auto" }}>
+        <Paper
+          sx={{
+            width: "100%",
+            minWidth: isSmallScreen ? "1000px" : "auto",
+          }}
+        >
           <DataGrid
             rows={users || []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10, 20]}
-            checkboxSelection
+            // checkboxSelection
             sx={{ border: 0 }}
           />
           {(!users || users.length === 0) && (
             <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No pets found!
+              No users found!
             </Typography>
           )}
         </Paper>

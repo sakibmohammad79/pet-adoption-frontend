@@ -1,6 +1,6 @@
 "use client";
 import { Chip } from "@mui/material";
-import { Box, IconButton, MenuItem, Select, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import * as React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -8,16 +8,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "sonner";
 import { useDeleteReviewMutation, useGetAllReviewQuery, usePublishReviewMutation, useUnpublishReviewMutation } from "@/redux/api/reviewApi";
 
-
-
-
 const ManageReview = () => {
   const [id, setId] = React.useState("");
 
   const { data: reviews, isLoading, isError } = useGetAllReviewQuery({});
   console.log(reviews);
-   const [publishReview] = usePublishReviewMutation();
-   const [unpublishReview] = useUnpublishReviewMutation();
+  const [publishReview] = usePublishReviewMutation();
+  const [unpublishReview] = useUnpublishReviewMutation();
 
   const handlePublishReview = async (id: string) => {
     await publishReview(id);
@@ -57,56 +54,52 @@ const ManageReview = () => {
     );
   }
 
-  const rows =
-    reviews || [];
+  const rows = reviews || [];
 
-  
+  const columns: GridColDef[] = [
+    { field: "rating", headerName: "Rating", flex: 1 },
+    { field: "comment", headerName: "Feedback", flex: 3 },
+    {
+      field: "isPublished",
+      headerName: "Status",
+      flex: 1,
+      renderCell: ({ row }) => {
+        return row.isPublished ? (
+          <Chip
+            label="Unpublish"
+            clickable
+            color="error"
+            onClick={() => handleUnpublishReview(row.id)}
+          />
+        ) : (
+          <Chip
+            label="Publish"
+            clickable
+            color="success"
+            onClick={() => handlePublishReview(row.id)}
+          />
+        );
+      },
+    },
+    { field: "createdAt", headerName: "Date", flex: 1 },
+    {
+      field: "action",
+      headerName: "Action",
+      flex: 1,
+      renderCell: ({ row }) => (
+        <Box>
+          <IconButton>
+            <DeleteIcon
+              onClick={() => handleReviewDelete(row?.id)}
+              style={{ color: "red" }}
+              fontSize="medium"
+            />
+          </IconButton>
+        </Box>
+      ),
+    },
+  ];
 
-    const columns: GridColDef[] = [
-    
-      { field: "rating", headerName: "Rating", flex: 1 },
-      { field: "comment", headerName: "Feedback", flex: 3 },
-      {
-        field: "isPublished",
-        headerName: "Status",
-        flex: 1,
-        renderCell: ({ row }) => {
-          return row.isPublished ? (
-            <Chip
-              label="Unpublish"
-              clickable
-              color="error"
-              onClick={() => handleUnpublishReview(row.id)}
-            />
-          ) : (
-            <Chip
-              label="Publish"
-              clickable
-              color="success"
-              onClick={() => handlePublishReview(row.id)}
-            />
-          );
-        },
-      },
-      
-      { field: "createdAt", headerName: "Date", flex: 1 },
-      {
-        field: "action",
-        headerName: "Action",
-        flex: 1,
-        renderCell: ({ row }) => (
-          <Box>
-            <IconButton>
-              <DeleteIcon
-                onClick={() => handleReviewDelete(row?.id)}
-                style={{ color: "red" }}
-                fontSize="medium"
-              />
-            </IconButton>
-          </Box>
-        ),
-      },
-    ];
   return (
     <Box>
       {isLoading ? (
@@ -125,8 +118,23 @@ const ManageReview = () => {
           Error loading review. Please try again later.
         </Typography>
       ) : rows?.length > 0 ? (
-        <Box my={2} justifyContent="center" alignItems="center">
-          <DataGrid rows={rows} columns={columns} hideFooter />
+        <Box
+          my={2}
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            width: "100%",
+            overflowX: "auto", 
+          }}
+        >
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            hideFooter
+            sx={{
+              minWidth: 600, 
+            }}
+          />
         </Box>
       ) : (
         <Typography variant="h6" textAlign="center" mt={2}>

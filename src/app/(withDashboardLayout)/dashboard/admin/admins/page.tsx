@@ -174,34 +174,43 @@ const AdminsPage = () => {
 
   return (
     <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Button sx={{ py: 2 }} onClick={() => setIsModalOpen(true)}>
-          Create Admin
-        </Button>
-        <AdminModal open={isModalOpen} setOpen={setIsModalOpen} />
-        <TextField
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search Admin"
-        ></TextField>
-      </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
-          <DataGrid
-            rows={admins || []}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
-            checkboxSelection
-            sx={{ border: 0 }}
-          />
-          {(!admins || admins.length === 0) && (
-            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No Admin found!
-            </Typography>
-          )}
-        </Paper>
-      </Box>
+    <Stack
+      direction={{ xs: "column", sm: "row" }}
+      spacing={2}
+      justifyContent="space-between"
+      alignItems={{ xs: "stretch", sm: "center" }}
+    >
+      <Button sx={{ py: 2 }} onClick={() => setIsModalOpen(true)}>
+        Create Admin
+      </Button>
+      <AdminModal open={isModalOpen} setOpen={setIsModalOpen} />
+      <TextField
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search Admin"
+      
+      />
+    </Stack>
+  
+    <Box mt={4} sx={{ width: "100%", overflowX: "auto" }}>
+      <Paper sx={{ minWidth: "900px" }}>
+        <DataGrid
+          rows={admins || []}
+          columns={columns}
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[5, 10]}
+          // checkboxSelection
+          sx={{ border: 0 }}
+        />
+        {(!admins || admins.length === 0) && (
+          <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
+            No Admin found!
+          </Typography>
+        )}
+      </Paper>
     </Box>
+  </Box>
+  
+  
   );
 };
 

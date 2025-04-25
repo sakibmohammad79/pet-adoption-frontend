@@ -1,5 +1,12 @@
 "use client";
-import { Box, Button, Chip, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -21,10 +28,15 @@ const PetPage = () => {
   const [publishPet] = usePublishPetMutation();
   const query: Record<string, any> = {};
   const [searchQuery, setSearchQuery] = useState("");
-  const debouncedValue = useDebounced({ searchQuery: searchQuery, delay: 900 });
+  const debouncedValue = useDebounced({
+    searchQuery: searchQuery,
+    delay: 900,
+  });
+
   if (!!debouncedValue) {
     query["searchTerm"] = debouncedValue;
   }
+
   const { data, isLoading } = useGetPetsQuery({ ...query });
   const pets = data?.pets;
   const [unpublishedPet] = useUnpublishedPetMutation();
@@ -32,15 +44,15 @@ const PetPage = () => {
 
   const handlePublishPet = async (id: string) => {
     try {
-      const res = await publishPet(id);
+      await publishPet(id);
     } catch (err: any) {
       console.log(err);
     }
   };
+
   const handleUnpublishPet = async (id: string) => {
     try {
-      const res = await unpublishedPet(id);
-      console.log(res);
+      await unpublishedPet(id);
     } catch (err: any) {
       console.log(err);
     }
@@ -70,10 +82,9 @@ const PetPage = () => {
     }
   };
 
-  // Handle different states
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -86,21 +97,18 @@ const PetPage = () => {
       flex: 1,
       align: "center",
       headerAlign: "center",
-      renderCell: ({ row }) => {
-        return (
-          <Box>
-            <Image
-              src={
-                row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
-              }
-              alt="
-            pet-image"
-              height={30}
-              width={30}
-            />
-          </Box>
-        );
-      },
+      renderCell: ({ row }) => (
+        <Box>
+          <Image
+            src={
+              row?.image || "https://i.postimg.cc/6qRH1Y3S/profile-icon.png"
+            }
+            alt="pet-image"
+            height={30}
+            width={30}
+          />
+        </Box>
+      ),
     },
     {
       field: "name",
@@ -147,15 +155,14 @@ const PetPage = () => {
             />
           );
         }
-        if (!row?.isPublished)
-          return (
-            <Chip
-              disabled={row?.isAdopt || row?.isBooked ? true : false}
-              label="Publish"
-              color="success"
-              onClick={() => handlePublishPet(row?.id)}
-            />
-          );
+        return (
+          <Chip
+            disabled={row?.isAdopt || row?.isBooked ? true : false}
+            label="Publish"
+            color="success"
+            onClick={() => handlePublishPet(row?.id)}
+          />
+        );
       },
     },
     {
@@ -164,12 +171,9 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
-      renderCell: ({ row }) => {
-        if (row?.isBooked) {
-          return <Chip label="BOOKED" color="default" />;
-        }
-        return <Chip label="NOT BOOK" color="default" />;
-      },
+      renderCell: ({ row }) => (
+        <Chip label={row?.isBooked ? "BOOKED" : "NOT BOOK"} color="default" />
+      ),
     },
     {
       field: "isAdopt",
@@ -177,12 +181,9 @@ const PetPage = () => {
       align: "center",
       headerAlign: "center",
       flex: 1,
-      renderCell: ({ row }) => {
-        if (row?.isAdopt) {
-          return <Chip label="ADOPTED" color={"default"} />;
-        }
-        return <Chip label="NOT ADOPT" color="default" />;
-      },
+      renderCell: ({ row }) => (
+        <Chip label={row?.isAdopt ? "ADOPTED" : "NOT ADOPT"} color="default" />
+      ),
     },
     {
       field: "action",
@@ -199,7 +200,10 @@ const PetPage = () => {
           );
         }
         return (
-          <IconButton onClick={() => handleDelete(row?.id)} aria-label="delete">
+          <IconButton
+            onClick={() => handleDelete(row?.id)}
+            aria-label="delete"
+          >
             <DeleteIcon sx={{ color: "red" }} />
           </IconButton>
         );
@@ -224,23 +228,28 @@ const PetPage = () => {
         <TextField
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search Pet"
-        ></TextField>
+        />
       </Stack>
       <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
-          <DataGrid
-            rows={pets || []}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[10, 20]}
-            checkboxSelection
-            sx={{ border: 0 }}
-          />
-          {(!pets || pets.length === 0) && (
-            <Typography sx={{ textAlign: "center", mt: 2, pb: 2 }} variant="h6">
-              No pets found!
-            </Typography>
-          )}
+        <Paper sx={{ width: "100%", overflowX: "auto" }}>
+          <Box sx={{ minWidth: "800px" }}>
+            <DataGrid
+              rows={pets || []}
+              columns={columns}
+              initialState={{ pagination: { paginationModel } }}
+              pageSizeOptions={[10, 20]}
+              // checkboxSelection
+              sx={{ border: 0 }}
+            />
+            {(!pets || pets.length === 0) && (
+              <Typography
+                sx={{ textAlign: "center", mt: 2, pb: 2 }}
+                variant="h6"
+              >
+                No pets found!
+              </Typography>
+            )}
+          </Box>
         </Paper>
       </Box>
     </Box>

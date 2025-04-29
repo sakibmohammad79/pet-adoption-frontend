@@ -31,7 +31,7 @@ const ContactSection = () => {
             <Typography variant="h6" sx={{ mt: 1 }}>
               Email
             </Typography>
-            <Typography variant="body2">support@petadopt.com</Typography>
+            <Typography variant="body2">mohammadsakib7679@gmail.com</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -40,7 +40,7 @@ const ContactSection = () => {
             <Typography variant="h6" sx={{ mt: 1 }}>
               Phone
             </Typography>
-            <Typography variant="body2">+880 1234 567 890</Typography>
+            <Typography variant="body2">(+880) 01870584779</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -62,10 +62,10 @@ const ContactSection = () => {
 
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField label="Full Name" fullWidth required />
+            <TextField label="Your Full Name" fullWidth required />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField label="Email Address" type="email" fullWidth required />
+            <TextField label="Your Email Address" type="email" fullWidth required />
           </Grid>
           <Grid item xs={12}>
             <TextField label="Subject" fullWidth />

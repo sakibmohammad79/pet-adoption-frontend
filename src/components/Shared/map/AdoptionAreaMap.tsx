@@ -54,7 +54,7 @@ const AdoptionAreaMap = () => {
       sx={{
         mx: "auto",
         my: isSmallScreen ? 4 : 8,
-        p: isSmallScreen ? 1 : 1,
+        p: isSmallScreen ? 1 : 2,
         borderRadius: 3,
         boxShadow: 2,
         maxWidth: isSmallScreen ? "95%" : "100%",

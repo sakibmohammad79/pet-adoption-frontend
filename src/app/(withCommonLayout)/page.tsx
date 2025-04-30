@@ -16,9 +16,9 @@ const Home = () => {
       <PetSection></PetSection>
       <WhyUsSection></WhyUsSection>
       <PopularPet></PopularPet>
+      <ContactSection/>
       <Testimonials></Testimonials>
       <NewsLetter></NewsLetter>
-      <ContactSection/>
       <AreaSection></AreaSection>
     </>
   );

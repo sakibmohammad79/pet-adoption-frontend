@@ -14,6 +14,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { useForm } from "react-hook-form";
 import { useCreateContactMessageMutation } from "@/redux/api/contactMessageApi";
+import { toast } from "sonner";
 
 type ContactFormInputs = {
   name: string;
@@ -33,11 +34,12 @@ const ContactSection = () => {
 
   const onSubmit = async (data: ContactFormInputs) => {
     try {
-      await createContactMessage(data).unwrap();
-      alert("Message sent successfully!");
+      const res = await createContactMessage(data);
+      console.log(res);
+      toast.success("Message sent successfully!");
       reset();
     } catch (error) {
-      alert("Something went wrong.");
+      toast.error("Something went wrong.");
       console.error(error);
     }
   };

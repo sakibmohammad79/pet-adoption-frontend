@@ -43,6 +43,13 @@ const publisherApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.publisher],
     }),
+    updatePublisher: build.mutation({
+      query: (id) => ({
+        url: `/publisher/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.publisher],
+    }),
     deletePublisher: build.mutation({
       query: (id) => ({
         url: `/publisher/${id}`,
@@ -53,5 +60,7 @@ const publisherApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useDeletePublisherMutation, useGetMyCreatredPetQuery, useGetAllPublisherQuery, useGetMyPublishedPetQuery } =
+export const { useDeletePublisherMutation,
+   useGetMyCreatredPetQuery,
+    useGetAllPublisherQuery, useGetMyPublishedPetQuery, useUpdatePublisherMutation } =
   publisherApi;

@@ -13,6 +13,13 @@ const adminApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.admin],
     }),
+    updateAdmin: build.mutation({
+      query: (id: string) => ({
+        url: `/admin/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.admin],
+    }),
     getAdmins: build.query({
       query: (arg: Record<string, any>) => ({
         url: "/admin",
@@ -70,4 +77,5 @@ export const {
   useGetAdoptionRequestQuery,
   useApproveAdoptionMutation,
   useRejectAdoptionMutation,
+  useUpdateAdminMutation
 } = adminApi;

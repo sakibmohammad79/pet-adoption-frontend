@@ -18,6 +18,13 @@ const adopterApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.adopter],
     }),
+    updateAdopter: build.mutation({
+      query: (id) => ({
+        url: `/adopter/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.adopter],
+    }),
     getMyBookedPets: build.query({
       query: (id) => ({
         url: `/adopter/booked-pet/${id}`,
@@ -58,5 +65,6 @@ export const {
   useGetSingleAdopterQuery,
   useGetMyBookedPetsQuery,
   useGetMyAdoptedPetsQuery,
-  useGetAllAdopterQuery
+  useGetAllAdopterQuery,
+  useUpdateAdopterMutation
 } = adopterApi;

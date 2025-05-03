@@ -11,6 +11,8 @@ import {
 import { useGetMyProfileQuery } from '@/redux/api/userApi';
 import { deepPurple } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
+import { useState } from 'react';
+import AdminUpdateModal from './components/AdminUpdateModal';
 
 const formatDate = (dateString: string) =>
   new Date(dateString).toLocaleDateString('en-GB', {
@@ -20,6 +22,7 @@ const formatDate = (dateString: string) =>
   });
 
 const AdminProfile = () => {
+   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: adminData, isLoading } = useGetMyProfileQuery({});
   const profile = adminData?.profile;
 
@@ -163,6 +166,7 @@ const AdminProfile = () => {
         {/* Update Button */}
         <Box textAlign="center" mt={6}>
           <Button
+          onClick={() => setIsModalOpen(true)}
             variant="contained"
             size="large"
             startIcon={<EditIcon />}
@@ -181,6 +185,7 @@ const AdminProfile = () => {
           >
             Update Profile
           </Button>
+          <AdminUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.admin?.id} data={profile?.admin}/>
         </Box>
       </Box>
     </Box>

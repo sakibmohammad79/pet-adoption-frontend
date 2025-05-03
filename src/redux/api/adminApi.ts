@@ -14,9 +14,11 @@ const adminApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.admin],
     }),
     updateAdmin: build.mutation({
-      query: (id: string) => ({
-        url: `/admin/${id}`,
+      query: (payload: any) => ({
+        url: `/admin/${payload?.id}`,
         method: "PATCH",
+        contentType: 'application/json',
+        data: payload?.data
       }),
       invalidatesTags: [tagTypes.admin],
     }),

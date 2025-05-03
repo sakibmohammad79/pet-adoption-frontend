@@ -91,12 +91,15 @@ const AuthButtonLg = () => {
               <MenuItem
                 key={setting}
                 onClick={() => {
-                  handleCloseUserMenu(); // Close menu first
-                  if (setting === "Logout") {
-                    handleLogout(); // Call logout only when clicking "Logout"
+                  handleCloseUserMenu(); 
+                  if (setting === "Profile") {
+                    router.push(`/dashboard/${userRole}/profile`);
                   }
                   if (setting === "Dashboard") {
-                    router.push(`/dashboard/${userRole}/profile`);
+                    router.push(`/dashboard/${userRole}`);
+                  }
+                  if (setting === "Logout") {
+                    handleLogout(); 
                   }
                 }}
               >

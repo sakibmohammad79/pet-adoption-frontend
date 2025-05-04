@@ -19,9 +19,11 @@ const adopterApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.adopter],
     }),
     updateAdopter: build.mutation({
-      query: (id) => ({
-        url: `/adopter/${id}`,
+      query: (payload: any) => ({
+        url: `/adopter/${payload?.id}`,
         method: "PATCH",
+        contentType: 'application/json',
+        data: payload?.data
       }),
       invalidatesTags: [tagTypes.adopter],
     }),

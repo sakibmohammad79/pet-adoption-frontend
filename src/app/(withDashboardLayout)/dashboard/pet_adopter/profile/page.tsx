@@ -11,6 +11,8 @@ import {
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import { deepPurple } from "@mui/material/colors";
 import EditIcon from "@mui/icons-material/Edit";
+import AdopterUpdateModal from "./components/AdopterUpdateModal";
+import { useState } from "react";
 
 // Helper to format date
 const formatDate = (dateString: string) =>
@@ -21,6 +23,7 @@ const formatDate = (dateString: string) =>
   });
 
 const PetAdopterProfile = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: adopterData, isLoading } = useGetMyProfileQuery({});
   const profile = adopterData?.profile;
 
@@ -164,6 +167,7 @@ const PetAdopterProfile = () => {
         {/* Update Button */}
         <Box textAlign="center" mt={6}>
           <Button
+          onClick={() => setIsModalOpen(true)}
             variant="contained"
             size="large"
             startIcon={<EditIcon />}
@@ -182,6 +186,7 @@ const PetAdopterProfile = () => {
           >
             Update Profile
           </Button>
+          <AdopterUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.adopter?.id} data={profile?.adopter}/>
         </Box>
       </Box>
     </Box>

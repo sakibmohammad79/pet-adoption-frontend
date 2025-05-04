@@ -1,18 +1,12 @@
 import PetDatePicker from "@/components/Forms/PetDatePicker";
-import PetFile from "@/components/Forms/PetFileUploader";
 import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import PetSelect from "@/components/Forms/PetSelect";
-import PetFullScreenModal from "@/components/Shared/PetModal/PetFullScreenModal";
-import AdminFullScreenModal from "@/components/Shared/PetModal/PetFullScreenModal";
 import PetModal from "@/components/Shared/PetModal/PetModal";
 import { optionsGender } from "@/constants/selectOptions";
-import { useCreateAdminMutation, useUpdateAdminMutation } from "@/redux/api/adminApi";
-import { toISODate } from "@/utils/isoFormateDate";
-import { modifyPayload } from "@/utils/modifyPayload";
-import { modifyPayloadWithFile } from "@/utils/modifyPlayloadWithFile";
-import { createAdminValidationSchema } from "@/validation/formValidationSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useUpdateAdminMutation } from "@/redux/api/adminApi";
+import { useUpdateAdopterMutation } from "@/redux/api/adopterApi";
+import { useUpdatePublisherMutation } from "@/redux/api/publisherApi";
 import { Button, Grid } from "@mui/material";
 import React from "react";
 import { FieldValues } from "react-hook-form";
@@ -25,8 +19,8 @@ interface IModalProps {
   data: any
 }
 
-const AdminUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
-  const [updateAdmin] = useUpdateAdminMutation();
+const PublisherUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
+  const [updatePublisher] = useUpdatePublisherMutation();
 
   const handleCreateAdmin = async (value: FieldValues) => {
     const adminData = {
@@ -44,9 +38,9 @@ const AdminUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
 
  
     try {
-      const res = await updateAdmin(adminData);
+      const res = await updatePublisher(adminData);
       if (res?.data?.id) {
-        toast.success("Admin updated successfully!");
+        toast.success("Adopter updated successfully!");
         setOpen(false);
       } else {
         toast.error("Something went wrong!");
@@ -122,9 +116,6 @@ const AdminUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
               size="medium"
             />
           </Grid>
-          {/* <Grid item xs={12} sm={12} md={4}>
-            <PetFile name="file" label="Upload File" sx={{ py: 2 }} />
-          </Grid> */}
         </Grid>
         <Button
           type="submit"
@@ -141,4 +132,4 @@ const AdminUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
   );
 };
 
-export default AdminUpdateModal;
+export default PublisherUpdateModal;

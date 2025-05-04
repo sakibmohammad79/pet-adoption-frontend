@@ -44,9 +44,11 @@ const publisherApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.publisher],
     }),
     updatePublisher: build.mutation({
-      query: (id) => ({
-        url: `/publisher/${id}`,
+      query: (payload: any) => ({
+        url: `/publisher/${payload?.id}`,
+        contentType: "application/json",
         method: "PATCH",
+        data: payload?.data
       }),
       invalidatesTags: [tagTypes.publisher],
     }),

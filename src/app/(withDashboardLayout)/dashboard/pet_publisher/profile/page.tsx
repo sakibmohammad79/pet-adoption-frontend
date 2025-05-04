@@ -11,6 +11,9 @@ import {
 import { useGetMyProfileQuery } from '@/redux/api/userApi';
 import { deepPurple } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
+import PublisherModal from '../pet-create/components/PublisherModal';
+import { useState } from 'react';
+import PublisherUpdateModal from './components/PublisherUpdateModal';
 
 const formatDate = (dateString: string) =>
   new Date(dateString).toLocaleDateString('en-GB', {
@@ -20,6 +23,7 @@ const formatDate = (dateString: string) =>
   });
 
 const PetPublisherProfile = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: publisherData, isLoading } = useGetMyProfileQuery({});
   const profile = publisherData?.profile;
 
@@ -163,6 +167,7 @@ const PetPublisherProfile = () => {
         {/* Update Button */}
         <Box textAlign="center" mt={6}>
           <Button
+          onClick={() => setIsModalOpen(true)}
             variant="contained"
             size="large"
             startIcon={<EditIcon />}
@@ -181,6 +186,7 @@ const PetPublisherProfile = () => {
           >
             Update Profile
           </Button>
+          <PublisherUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.publisher?.id} data={profile?.publisher}/>
         </Box>
       </Box>
     </Box>

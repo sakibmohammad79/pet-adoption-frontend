@@ -38,7 +38,6 @@ const AdopterUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
  
     try {
       const res = await updateAdopter(adminData);
-      console.log(res);
       if (res?.data?.id) {
         toast.success("Adopter updated successfully!");
         setOpen(false);
@@ -125,7 +124,7 @@ const AdopterUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
             mb: 2,
           }}
         >
-          Update Adopter
+          Update Profile
         </Button>
       </PetForm>
     </PetModal>

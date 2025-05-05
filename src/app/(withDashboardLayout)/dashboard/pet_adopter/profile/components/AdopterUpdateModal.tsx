@@ -15,10 +15,11 @@ interface IModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string,
-  data: any
+  data: any,
+  refetch: () => void;
 }
 
-const AdopterUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
+const AdopterUpdateModal = ({ open, setOpen, id, data, refetch }: IModalProps) => {
   const [updateAdopter] = useUpdateAdopterMutation();
 
   const handleCreateAdmin = async (value: FieldValues) => {
@@ -40,6 +41,7 @@ const AdopterUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
       const res = await updateAdopter(adminData);
       if (res?.data?.id) {
         toast.success("Adopter updated successfully!");
+        refetch();
         setOpen(false);
       } else {
         toast.error("Something went wrong!");

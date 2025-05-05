@@ -24,7 +24,7 @@ const formatDate = (dateString: string) =>
 
 const PetPublisherProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: publisherData, isLoading } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
+  const { data: publisherData, isLoading, refetch } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
   const profile = publisherData?.profile;
 
   if (isLoading) {
@@ -186,7 +186,8 @@ const PetPublisherProfile = () => {
           >
             Update Profile
           </Button>
-          <PublisherUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.publisher?.id} data={profile?.publisher}/>
+          <PublisherUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.publisher?.id}
+           data={profile?.publisher}  refetch={refetch}/>
         </Box>
       </Box>
     </Box>

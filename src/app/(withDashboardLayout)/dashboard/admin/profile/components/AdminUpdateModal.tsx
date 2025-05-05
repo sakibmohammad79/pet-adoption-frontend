@@ -22,10 +22,11 @@ interface IModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string,
-  data: any
+  data: any,
+  refetch: () => void;
 }
 
-const AdminUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
+const AdminUpdateModal = ({ open, setOpen, id, data, refetch }: IModalProps) => {
   const [updateAdmin] = useUpdateAdminMutation();
 
   const handleCreateAdmin = async (value: FieldValues) => {
@@ -47,6 +48,7 @@ const AdminUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
       const res = await updateAdmin(adminData);
       if (res?.data?.id) {
         toast.success("Admin updated successfully!");
+        refetch();
         setOpen(false);
       } else {
         toast.error("Something went wrong!");

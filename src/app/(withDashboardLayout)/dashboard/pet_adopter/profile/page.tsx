@@ -24,7 +24,7 @@ const formatDate = (dateString: string) =>
 
 const PetAdopterProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: adopterData, isLoading } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
+  const { data: adopterData, isLoading, refetch } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
   const profile = adopterData?.profile;
 
 
@@ -186,7 +186,8 @@ const PetAdopterProfile = () => {
           >
             Update Profile
           </Button>
-          <AdopterUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.adopter?.id} data={profile?.adopter}/>
+          <AdopterUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.adopter?.id} data={profile?.adopter}
+           refetch={refetch}/>
         </Box>
       </Box>
     </Box>

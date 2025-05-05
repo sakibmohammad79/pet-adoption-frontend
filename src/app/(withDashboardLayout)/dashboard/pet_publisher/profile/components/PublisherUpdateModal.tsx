@@ -16,10 +16,11 @@ interface IModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string,
-  data: any
+  data: any,
+  refetch: () => void;
 }
 
-const PublisherUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
+const PublisherUpdateModal = ({ open, setOpen, id, data, refetch }: IModalProps) => {
   const [updatePublisher] = useUpdatePublisherMutation();
 
   const handleCreateAdmin = async (value: FieldValues) => {
@@ -41,6 +42,7 @@ const PublisherUpdateModal = ({ open, setOpen, id, data }: IModalProps) => {
       const res = await updatePublisher(adminData);
       if (res?.data?.id) {
         toast.success("Adopter updated successfully!");
+        refetch();
         setOpen(false);
       } else {
         toast.error("Something went wrong!");

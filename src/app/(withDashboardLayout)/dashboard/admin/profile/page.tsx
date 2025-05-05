@@ -23,8 +23,8 @@ const formatDate = (dateString: string) =>
 
 const AdminProfile = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
-  // const { data: adminData, isLoading } = useGetMyProfileQuery({});
-  const { data: adminData, isLoading } = useGetMyProfileQuery(
+
+  const { data: adminData, isLoading, refetch } = useGetMyProfileQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
@@ -189,7 +189,8 @@ const AdminProfile = () => {
           >
             Update Profile
           </Button>
-          <AdminUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.admin?.id} data={profile?.admin}/>
+          <AdminUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.admin?.id} data={profile?.admin}
+           refetch={refetch}/>
         </Box>
       </Box>
     </Box>

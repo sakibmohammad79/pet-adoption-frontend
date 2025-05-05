@@ -24,7 +24,7 @@ const formatDate = (dateString: string) =>
 
 const PetAdopterProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: adopterData, isLoading } = useGetMyProfileQuery({});
+  const { data: adopterData, isLoading } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
   const profile = adopterData?.profile;
 
 

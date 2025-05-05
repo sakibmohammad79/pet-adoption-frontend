@@ -23,7 +23,11 @@ const formatDate = (dateString: string) =>
 
 const AdminProfile = () => {
    const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: adminData, isLoading } = useGetMyProfileQuery({});
+  // const { data: adminData, isLoading } = useGetMyProfileQuery({});
+  const { data: adminData, isLoading } = useGetMyProfileQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const profile = adminData?.profile;
 
   if (isLoading) {

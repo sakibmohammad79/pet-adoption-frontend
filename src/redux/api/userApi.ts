@@ -15,7 +15,7 @@ const userApi = baseApi.injectEndpoints({
           meta,
         };
       },
-      // providesTags: [tagTypes.user],
+      providesTags: [tagTypes.user],
     }),
     getUsers: build.query({
       query: (arg: Record<string, any>) => ({
@@ -31,13 +31,6 @@ const userApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.user],
     }),
-    // deleteAdmin: build.mutation({
-    //   query: (id) => ({
-    //     url: `/admin/soft/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: [tagTypes.admin],
-    // }),
   }),
 });
 

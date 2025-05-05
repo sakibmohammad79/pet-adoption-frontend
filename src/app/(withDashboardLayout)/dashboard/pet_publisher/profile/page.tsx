@@ -24,7 +24,7 @@ const formatDate = (dateString: string) =>
 
 const PetPublisherProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: publisherData, isLoading } = useGetMyProfileQuery({});
+  const { data: publisherData, isLoading } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
   const profile = publisherData?.profile;
 
   if (isLoading) {

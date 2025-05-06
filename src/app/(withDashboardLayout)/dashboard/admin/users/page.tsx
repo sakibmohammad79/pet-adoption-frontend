@@ -92,7 +92,7 @@ const UserPage = () => {
     {
       field: "profilePhoto",
       headerName: "Image",
-      minWidth: 80,
+      flex: 1,
       renderCell: ({ row }) => {
         const src =
           row?.adopter?.profilePhoto ||
@@ -108,7 +108,7 @@ const UserPage = () => {
     {
       field: "firstName",
       headerName: "First Name",
-      minWidth: 120,
+      flex: 1,
       renderCell: ({ row }) => (
         <Typography>{row?.adopter?.firstName || row?.publisher?.firstName}</Typography>
       ),
@@ -116,7 +116,7 @@ const UserPage = () => {
     {
       field: "lastName",
       headerName: "Last Name",
-      minWidth: 120,
+      flex: 1,
       renderCell: ({ row }) => (
         <Typography>{row?.adopter?.lastName || row?.publisher?.lastName}</Typography>
       ),
@@ -125,7 +125,7 @@ const UserPage = () => {
     {
       field: "gender",
       headerName: "Gender",
-      minWidth: 100,
+      flex: 1,
       renderCell: ({ row }) => (
         <Chip
           label={row?.adopter?.gender || row?.publisher?.gender}
@@ -136,7 +136,7 @@ const UserPage = () => {
     {
       field: "role",
       headerName: "Role",
-      minWidth: 120,
+      flex: 1,
       renderCell: ({ row }) => (
         <Chip
           label={row?.role}
@@ -147,7 +147,7 @@ const UserPage = () => {
     {
       field: "status",
       headerName: "Status",
-      minWidth: 100,
+      flex: 1,
       renderCell: ({ row }) => (
         <Chip
           label={row?.status}
@@ -158,7 +158,7 @@ const UserPage = () => {
     {
       field: "action",
       headerName: "Action",
-      minWidth: 80,
+      flex: 1,
       renderCell: ({ row }) => (
         <IconButton onClick={() => handleDelete(row)} aria-label="delete">
           <DeleteIcon sx={{ color: "red" }} />
@@ -201,13 +201,8 @@ const UserPage = () => {
       </Stack>
 
       {/* Scrollable container for small screens */}
-      <Box sx={{ overflowX: "auto" }}>
-        <Paper
-          sx={{
-            width: "100%",
-            minWidth: isSmallScreen ? "1000px" : "auto",
-          }}
-        >
+      <Box mt={4} sx={{ width: "100%", overflowX: "auto" }}>
+      <Paper sx={{ minWidth: "900px" }}>
           <DataGrid
             rows={users || []}
             columns={columns}

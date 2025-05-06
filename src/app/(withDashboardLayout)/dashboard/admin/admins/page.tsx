@@ -175,10 +175,11 @@ const AdminsPage = () => {
   return (
     <Box>
     <Stack
-      direction={{ xs: "column", sm: "row" }}
+      // direction={{ xs: "column", sm: "row" }}
+      direction={"row"}
       spacing={2}
-      justifyContent="space-between"
-      alignItems={{ xs: "stretch", sm: "center" }}
+      justifyContent={{lg: "space-between"}}
+      // alignItems={{ xs: "center", sm: "stretch" }}
     >
       <Button sx={{ py: 2 }} onClick={() => setIsModalOpen(true)}>
         Create Admin

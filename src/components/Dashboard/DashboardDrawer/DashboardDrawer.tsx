@@ -26,7 +26,7 @@ export default function DashboardDrawer({
   const router = useRouter();
   const [userName, setUserName] = React.useState("User");
   const [userRole, setUserRole] = React.useState("");
-  const { data, isLoading } = useGetMyProfileQuery({});
+  const { data, isLoading } = useGetMyProfileQuery({}, {refetchOnMountOrArgChange: true});
   const profileData = data?.profile;
   React.useEffect(() => {
     if (profileData) {

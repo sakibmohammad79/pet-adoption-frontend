@@ -24,7 +24,7 @@ const AdopterPage = () => {
   ];
 
   return (
-    <Box sx={{ p: 4 }}>
+     <Box sx={{ xs: 2, sm: 2, md: 4 }}>
       <Typography variant="h4" gutterBottom fontWeight="bold" textAlign="center" mb={4}>
         🐾 Adopter Dashboard
       </Typography>

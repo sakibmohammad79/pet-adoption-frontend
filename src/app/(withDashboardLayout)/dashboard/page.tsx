@@ -36,6 +36,14 @@ const DashboardPage = () => {
 
   const { data: reviews } = useGetAllReviewQuery({});
 
+  const publishedReviews = reviews?.filter((r: any) => r?.isPublished).length || 0;
+const unpublishedReviews = (reviews?.length || 0) - publishedReviews;
+
+const reviewChartData = [
+  { name: "Published", count: publishedReviews },
+  { name: "Unpublished", count: unpublishedReviews },
+];
+
   const approvedAdoptions = adoptionRequestDatas.filter(
     (adopt: any) => adopt.adoptionStatus === "APPROVED"
   );
@@ -54,7 +62,7 @@ const DashboardPage = () => {
   const COLORS = ["#82ca9d", "#ffc658", "#ff7f50"]; // Approved, Pending, Rejected
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box sx={{ xs: 1, sm: 2, md: 4}}>
       <Typography
         variant="h4"
         gutterBottom
@@ -163,7 +171,7 @@ const DashboardPage = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} md={6}>
           <Paper
             elevation={3}
             sx={{ p: 3, textAlign: "center", bgcolor: "#e3f2fd" }}
@@ -178,6 +186,29 @@ const DashboardPage = () => {
             </Typography>
           </Paper>
         </Grid>
+
+        <Grid item xs={12} sm={6} md={6}>
+  <Paper
+    elevation={3}
+    sx={{ p: 3, textAlign: "center", bgcolor: "#f0f4c3" }}
+  >
+    <Typography variant="h6" gutterBottom>
+      Review Status
+    </Typography>
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={reviewChartData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="count" fill="#4db6ac" barSize={40} />
+      </BarChart>
+    </ResponsiveContainer>
+  </Paper>
+</Grid>
+
+
+
       </Grid>
     </Box>
   );

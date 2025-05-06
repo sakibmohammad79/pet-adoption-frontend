@@ -27,6 +27,7 @@ const AdminDashboardPage = () => {
   const { data: adopters } = useGetAllAdopterQuery({});
   const { data: publishers } = useGetAllPublisherQuery({});
   const { data: adoptionRequests } = useGetAdoptionRequestQuery({});
+  
 
   const adminCount = admins?.admins?.length || 0;
   const adopterCount = adopters?.length || 0;
@@ -45,7 +46,7 @@ const AdminDashboardPage = () => {
   ];
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box sx={{ xs: 2, sm: 2, md: 4 }}>
       <Typography variant="h4" gutterBottom fontWeight="bold" textAlign="center">
         🛠️ Admin Dashboard
       </Typography>
@@ -114,7 +115,7 @@ const AdminDashboardPage = () => {
                 <TableBody>
                   {(adoptionRequests?.adoptionRequest?.slice(0, 5) || []).map((req: any, idx: number) => (
                     <TableRow key={idx}>
-                      <TableCell>{req?.adopter?.user?.name || "N/A"}</TableCell>
+                      <TableCell>{req?.adopterId || "N/A"}</TableCell>
                       <TableCell>{req?.adoptionStatus}</TableCell>
                       <TableCell>{req?.petId}</TableCell>
                     </TableRow>

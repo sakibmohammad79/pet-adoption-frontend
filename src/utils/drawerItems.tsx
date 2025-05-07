@@ -55,6 +55,11 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
           icon: AddHomeWorkIcon,
         },
         {
+          title: "Manage Messages",
+          path: `${role}/manage-message`,
+          icon: AddHomeWorkIcon,
+        },
+        {
           title: "My Profile",
           path: `${role}/profile`,
           icon: AccountCircleIcon,

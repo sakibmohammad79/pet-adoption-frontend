@@ -4,6 +4,13 @@ import { baseApi } from "./baseApi";
 
 const contactMessageApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
+    getAllContactMessage: build.query({
+      query: () => ({
+        url: "/contactmessage",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.contactMessage],
+    }),
     createContactMessage: build.mutation({
         query: (data) => ({
           url: "/contactmessage/create-message",
@@ -13,14 +20,14 @@ const contactMessageApi = baseApi.injectEndpoints({
         }),
         invalidatesTags: [tagTypes.contactMessage],
     }),
-    getAllContactMessage: build.query({
-      query: () => ({
-        url: "/contactmessage",
-        method: "GET",
+    deleteMessage: build.mutation({
+      query: (id: string) => ({
+        url: `/contactmessage/delete-message/${id}`,
+        method: "DELETE",
       }),
-      providesTags: [tagTypes.contactMessage],
+      invalidatesTags: [tagTypes.contactMessage],
     }),
   }),
 });
 
-export const { useCreateContactMessageMutation, useGetAllContactMessageQuery  } = contactMessageApi;
+export const { useCreateContactMessageMutation, useGetAllContactMessageQuery, useDeleteMessageMutation  } = contactMessageApi;

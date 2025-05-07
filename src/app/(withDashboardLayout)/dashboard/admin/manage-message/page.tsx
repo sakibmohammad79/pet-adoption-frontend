@@ -75,7 +75,7 @@ const ContactMessage = () => {
       </Typography>
       <Grid container spacing={3}>
         {data?.map((message: any) => (
-          <Grid item key={message.id} xs={12} sm={6} lg={4}>
+          <Grid item key={message.id} xs={12} sm={12} md={6}  lg={4}>
             <Fade triggerOnce direction="up">
               <Card
                 sx={{
@@ -136,27 +136,27 @@ const ContactMessage = () => {
                   </Typography>
 
                   <Box mt={2}>
-                    <Typography variant="body2" color="text.secondary" mb={0.5}>
-                      🕒 <strong>Created:</strong>{" "}
+                    <Typography variant="body1" color="text.secondary" mb={0.5}>
+                      🕒 <strong>Time:</strong>{" "}
                       {dayjs(message.createdAt).format("MMM D, YYYY h:mm A")}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      🔄 <strong>Updated:</strong>{" "}
-                      {dayjs(message.updatedAt).format("MMM D, YYYY h:mm A")}
-                    </Typography>
+                    
                   </Box>
 
                   <Box mt={2} display="flex" justifyContent="flex-end" gap={1}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      startIcon={<EmailOutlined />}
-                      href={`mailto:${message.email}?subject=Reply to your message`}
-                    >
-                      Send Email
-                    </Button>
-                  </Box>
+  <Button
+    variant="outlined"
+    color="primary"
+    size="small"
+    startIcon={<EmailOutlined />}
+    target="_blank"
+    rel="noopener noreferrer"
+    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${message.email}&su=Reply to your message`}
+  >
+    Send Email
+  </Button>
+</Box>
+
                 </CardContent>
               </Card>
             </Fade>

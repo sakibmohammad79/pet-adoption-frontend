@@ -9,6 +9,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyIcon from "@mui/icons-material/Key";
 import StarIcon from "@mui/icons-material/Star";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import GradeIcon from '@mui/icons-material/Grade';
+import MessageIcon from '@mui/icons-material/Message';
 
 export const DrawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
@@ -52,12 +54,12 @@ export const DrawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "Manage review",
           path: `${role}/manage-review`,
-          icon: AddHomeWorkIcon,
+          icon: GradeIcon,
         },
         {
           title: "Manage Messages",
           path: `${role}/manage-message`,
-          icon: AddHomeWorkIcon,
+          icon: MessageIcon,
         },
         {
           title: "My Profile",

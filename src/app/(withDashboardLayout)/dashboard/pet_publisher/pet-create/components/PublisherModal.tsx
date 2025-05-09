@@ -1,4 +1,4 @@
-import PetFile from "@/components/Forms/PetFileUploader";
+import PetFile from "@/components/Forms/AutoFileUploader";
 import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import PetSelect from "@/components/Forms/PetSelect";

@@ -1,3 +1,5 @@
+'use client'
+import { useGetMyProfileQuery } from "@/redux/api/userApi";
 import { getUserInfo, removeUser } from "@/services/auth.services";
 import {
   Avatar,
@@ -14,6 +16,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 const AuthButtonLg = () => {
+  const {data} = useGetMyProfileQuery({});
+
   const [userRole, setUserRole] = React.useState("");
   React.useEffect(() => {
     const userInfo = getUserInfo();
@@ -62,13 +66,18 @@ const AuthButtonLg = () => {
     }}
   >
     <Avatar
-      alt="User Avatar"
-      src="https://i.ibb.co/p6wb1JBc/man.png"
-      sx={{
-        width: 40,
-        height: 40,
-      }}
-    />
+  alt="User Avatar"
+  src={
+    data?.profile?.admin?.profilePhoto ??
+    data?.profile?.adopter?.profilePhoto ??
+    data?.profile?.publisher?.profilePhoto ??
+    "https://i.ibb.co/p6wb1JBc/man.png"
+  }
+  sx={{
+    width: 40,
+    height: 40,
+  }}
+/>
   </IconButton>
 </Tooltip>
           <Menu

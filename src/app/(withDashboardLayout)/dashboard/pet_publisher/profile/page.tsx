@@ -14,6 +14,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import PublisherModal from '../pet-create/components/PublisherModal';
 import { useState } from 'react';
 import PublisherUpdateModal from './components/PublisherUpdateModal';
+import AutoFileUploader from '@/components/Forms/AutoFileUploader';
+import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
+import { useUpdatePublisherMutation } from '@/redux/api/publisherApi';
+import { toast } from 'sonner';
 
 const formatDate = (dateString: string) =>
   new Date(dateString).toLocaleDateString('en-GB', {
@@ -26,6 +30,47 @@ const PetPublisherProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: publisherData, isLoading, refetch } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
   const profile = publisherData?.profile;
+
+  const [updatePublisher, { isLoading: isUploading }] = useUpdatePublisherMutation();
+
+  const fileUploadHandler = async (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    const imageUrl = result?.data?.url;
+
+    if (imageUrl) {
+      const profilePhotoUpdateData = {
+        id: profile?.publisher?.id,
+        data: {
+          profilePhoto: imageUrl,
+        },
+      };
+      await updatePublisher(profilePhotoUpdateData);
+      refetch();
+      toast.success('Profile picture updated successfully!');
+    } else {
+      toast.error('Image upload failed.');
+    }
+  } catch (error) {
+    console.error("Error uploading to ImgBB:", error);
+    toast.error('Could not upload image.');
+  }
+};
 
   if (isLoading) {
     return (
@@ -103,6 +148,28 @@ const PetPublisherProfile = () => {
                 {profile?.publisher?.firstName?.charAt(0).toUpperCase()}
               </Avatar>
             )}
+
+
+             {isUploading ? (
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <AutoFileUploader
+                name="file"
+                label="choose your profile photo"
+                icon={<CloudUploadIcon />}
+                onFileUpload={fileUploadHandler}
+                variant="text"
+              ></AutoFileUploader>
+            </Box>
+          )}
+
             <Typography variant="h4" fontWeight={700} mt={3}>
               {fullName}
             </Typography>

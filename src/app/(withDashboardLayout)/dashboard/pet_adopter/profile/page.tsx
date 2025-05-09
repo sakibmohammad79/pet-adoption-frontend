@@ -13,6 +13,10 @@ import { deepPurple } from "@mui/material/colors";
 import EditIcon from "@mui/icons-material/Edit";
 import AdopterUpdateModal from "./components/AdopterUpdateModal";
 import { useState } from "react";
+import { useUpdateAdopterMutation } from "@/redux/api/adopterApi";
+import { toast } from "sonner";
+import AutoFileUploader from "@/components/Forms/AutoFileUploader";
+import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
 
 // Helper to format date
 const formatDate = (dateString: string) =>
@@ -26,7 +30,47 @@ const PetAdopterProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: adopterData, isLoading, refetch } = useGetMyProfileQuery({}, { refetchOnMountOrArgChange: true });
   const profile = adopterData?.profile;
+  const [updateAdopter, {isLoading: isUploading}] = useUpdateAdopterMutation();
 
+
+  const fileUploadHandler = async (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    const imageUrl = result?.data?.url;
+
+    if (imageUrl) {
+      const profilePhotoUpdateData = {
+        id: profile?.adopter?.id,
+        data: {
+          profilePhoto: imageUrl,
+        },
+      };
+      await updateAdopter(profilePhotoUpdateData);
+      refetch();
+      toast.success('Profile picture updated successfully!');
+    } else {
+      toast.error('Image upload failed.');
+    }
+  } catch (error) {
+    console.error("Error uploading to ImgBB:", error);
+    toast.error('Could not upload image.');
+  }
+};
 
   if (isLoading) {
     return (
@@ -58,6 +102,8 @@ const PetAdopterProfile = () => {
       </Box>
     );
   }
+
+
 
   const fullName = `${profile?.adopter?.firstName || ""} ${profile?.adopter?.lastName || ""}`;
   const birthDate = profile?.adopter?.birthDate
@@ -107,6 +153,27 @@ const PetAdopterProfile = () => {
                 {profile?.adopter?.firstName?.charAt(0).toUpperCase()}
               </Avatar>
             )}
+
+             {isUploading ? (
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <AutoFileUploader
+                name="file"
+                label="choose your profile photo"
+                icon={<CloudUploadIcon />}
+                onFileUpload={fileUploadHandler}
+                variant="text"
+              ></AutoFileUploader>
+            </Box>
+          )}
+
             <Typography variant="h4" fontWeight={700} mt={3}>
               {fullName}
             </Typography>

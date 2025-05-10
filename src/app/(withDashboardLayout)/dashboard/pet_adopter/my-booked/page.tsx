@@ -134,8 +134,8 @@ const MyBookedPage = () => {
           MY BOOKED PET
         </Typography>
       </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
+      <Box mt={4} sx={{width: "100%", overflow: "auto"}}>
+        <Paper sx={{ minWidth: "1600px" }}>
           <DataGrid
             rows={pets || []}
             columns={columns}

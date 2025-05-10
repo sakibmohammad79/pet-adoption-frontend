@@ -139,8 +139,8 @@ const AllPetPage = () => {
         </Typography>
         <TextField onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search Pet" />
       </Stack>
-      <Box mt={4}>
-        <Paper sx={{ height: "100%", width: "100%" }}>
+      <Box mt={4} sx={{ width: "100%", overflowX: "auto" }}>
+        <Paper sx={{ minWidth: "1600px" }}>
           <DataGrid
             rows={publishedPets || []}
             columns={columns}

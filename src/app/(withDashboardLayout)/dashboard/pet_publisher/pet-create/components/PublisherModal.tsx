@@ -108,42 +108,42 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
   return (
     <PetFullScreenModal open={open} setOpen={setOpen} title="Publish a Pet">
       <PetForm  onSubmit={handleCreatePet}>
-      <Grid container spacing={2} px={2}>
+    <Grid container spacing={2} px={2}>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="name" label="Pet Name" fullWidth size="medium" />
+    <PetInput name="name" label="Pet Name" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetSelect name="species" label="Species" options={optionsSpecies} fullWidth size="medium" />
+    <PetSelect name="species" label="Species" options={optionsSpecies} fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetSelect name="gender" label="Gender" options={optionsGender} fullWidth size="medium" />
+    <PetSelect name="gender" label="Gender" options={optionsGender} fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="age" label="Age (years)" type="number" fullWidth size="medium" />
+    <PetInput name="age" label="Age (years)" type="number" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="breed" label="Breed" fullWidth size="medium" />
+    <PetInput name="breed" label="Breed" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="weight" label="Weight (kg)" type="number" fullWidth size="medium" />
+    <PetInput name="weight" label="Weight (kg)" type="number" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="height" label="Height (cm)" type="number" fullWidth size="medium" />
+    <PetInput name="height" label="Height (cm)" type="number" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="color" label="Color" fullWidth size="medium" />
+    <PetInput name="color" label="Color" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetSelect name="size" label="Size" options={optionsSize} fullWidth size="medium" />
+    <PetSelect name="size" label="Size" options={optionsSize} fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
     <PetSelect name="healthStatus" label="Health Status" options={optionsHealthStatus} fullWidth size="medium" />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="specialNeeds" label="Special Needs" fullWidth size="medium" />
+    <PetInput name="specialNeeds" label="Special Needs" fullWidth size="medium"  />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
-    <PetInput name="location" label="Location" fullWidth size="medium" />
+    <PetInput name="location" label="Location" fullWidth size="medium" required />
   </Grid>
   <Grid item xs={12} sm={6} md={4}>
     <PetInput name="description" label="Description" multiline rows={3} fullWidth size="medium" />
@@ -168,6 +168,7 @@ const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
     </Button>
   </Grid>
 </Grid>
+
 
 
 

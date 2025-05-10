@@ -1,20 +1,14 @@
 import PetDatePicker from "@/components/Forms/PetDatePicker";
-import PetFile from "@/components/Forms/AutoFileUploader";
+import PetFile from "@/components/Forms/PetFile";
 import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import PetSelect from "@/components/Forms/PetSelect";
 import PetFullScreenModal from "@/components/Shared/PetModal/PetFullScreenModal";
-import AdminFullScreenModal from "@/components/Shared/PetModal/PetFullScreenModal";
-import PetModal from "@/components/Shared/PetModal/PetModal";
 import { optionsGender } from "@/constants/selectOptions";
 import { useCreateAdminMutation } from "@/redux/api/adminApi";
-import { toISODate } from "@/utils/isoFormateDate";
-import { modifyPayload } from "@/utils/modifyPayload";
 import { modifyPayloadWithFile } from "@/utils/modifyPlayloadWithFile";
-import { createAdminValidationSchema } from "@/validation/formValidationSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Grid } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -29,12 +23,15 @@ const defaultValues = {
   birthDate: "",
   file: "",
 };
+
 interface IModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const AdminModal = ({ open, setOpen }: IModalProps) => {
   const [createAdmin] = useCreateAdminMutation();
+  const [loading, setLoading] = useState(false);
 
   const handleCreateAdmin = async (value: FieldValues) => {
     const adminData = {
@@ -52,64 +49,67 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
     };
 
     const data = modifyPayloadWithFile(adminData);
- 
-    try {
-      const res = await createAdmin(data);
 
-      if (res?.data?.id) {
-        toast.success("Admin created successfully!");
+    setLoading(true);
+    try {
+      const res = await createAdmin(data).unwrap();
+      if (res?.id) {
+        toast.success(" Admin created successfully!");
         setOpen(false);
       } else {
-        toast.error("Something went wrong!");
+        toast.error(" Something went wrong!");
       }
     } catch (err: any) {
-      console.log(err.message);
+      toast.error(` Failed to create admin: ${err?.data?.message || err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <PetFullScreenModal
       open={open}
       setOpen={setOpen}
       title="Create a new admin"
     >
-      <PetForm
-        onSubmit={handleCreateAdmin}
-        // resolver={zodResolver(createAdminValidationSchema)}
-        defaultValues={defaultValues}
-      >
+      <PetForm onSubmit={handleCreateAdmin} defaultValues={defaultValues}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput
               label="First Name"
               name="firstName"
-              fullWidth={true}
+              fullWidth
               size="medium"
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput
               label="Last Name"
               name="lastName"
-              fullWidth={true}
+              fullWidth
               size="medium"
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput
               label="Email"
               name="email"
-              fullWidth={true}
+              fullWidth
               type="email"
               size="medium"
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput
               label="Password"
               name="password"
-              fullWidth={true}
+              fullWidth
               type="password"
               size="medium"
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
@@ -118,6 +118,7 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
               name="gender"
               label="Gender"
               options={optionsGender}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
@@ -125,34 +126,38 @@ const AdminModal = ({ open, setOpen }: IModalProps) => {
               size="medium"
               label="Contact Number"
               name="contactNumber"
-              fullWidth={true}
+              fullWidth
               type="tel"
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PetDatePicker name="birthDate" fullWidth={true} size="medium" />
+            <PetDatePicker
+              name="birthDate"
+              fullWidth
+              size="medium"
+              required
+            />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <PetInput
               label="Address"
               name="address"
-              fullWidth={true}
+              fullWidth
               size="medium"
+              required
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <PetFile name="file" label="Upload File" sx={{ py: 2 }} />
+            <PetFile name="file" label="Upload File" required={true} />
           </Grid>
         </Grid>
         <Button
           type="submit"
-          sx={{
-            backgroundColor: "orange",
-            mt: 3,
-            mb: 2,
-          }}
+          sx={{ backgroundColor: "orange", mt: 3, mb: 2 }}
+          disabled={loading}
         >
-          Create Admin
+          {loading ? "Creating..." : "Create Admin"}
         </Button>
       </PetForm>
     </PetFullScreenModal>

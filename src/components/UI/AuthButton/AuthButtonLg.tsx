@@ -50,7 +50,7 @@ const AuthButtonLg = () => {
     <Box>
       {userInfo?.userId ? (
         <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
+          <Tooltip title="Open Menu">
   <IconButton
     onClick={handleOpenUserMenu}
     sx={{
@@ -66,7 +66,7 @@ const AuthButtonLg = () => {
     }}
   >
     <Avatar
-  alt="User Avatar"
+  alt="User image"
   src={
     data?.profile?.admin?.profilePhoto ??
     data?.profile?.adopter?.profilePhoto ??
@@ -74,8 +74,8 @@ const AuthButtonLg = () => {
     "https://i.ibb.co/p6wb1JBc/man.png"
   }
   sx={{
-    width: 40,
-    height: 40,
+    width: 45,
+    height: 45,
   }}
 />
   </IconButton>

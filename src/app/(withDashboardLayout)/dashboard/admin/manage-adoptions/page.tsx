@@ -105,7 +105,7 @@ const ManageAdoptionPage = () => {
 
   return (
     <Box mt={4} sx={{ width: "100%", overflowX: { xs: "auto", md: "visible" } }}>
-  <Paper sx={{ minWidth: 600, width: "100%" }}>
+  <Paper sx={{ minWidth: "1200px" }}>
     <DataGrid
       rows={adoptions || []}
       columns={columns}

@@ -232,7 +232,7 @@ const PetPage = () => {
       </Stack>
       <Box mt={4}>
         <Paper sx={{ width: "100%", overflowX: "auto" }}>
-          <Box sx={{ minWidth: "800px" }}>
+          <Box sx={{ minWidth: "1200px" }}>
             <DataGrid
               rows={pets || []}
               columns={columns}

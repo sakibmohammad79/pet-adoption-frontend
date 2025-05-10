@@ -178,10 +178,10 @@ const UserPage = () => {
       }}
     >
       <Stack
-        direction={{ xs: "column", sm: "row" }}
+        direction="row"
         spacing={2}
-        justifyContent="space-between"
-        alignItems={{ xs: "stretch", sm: "center" }}
+        justifyContent={{  lg: "space-between"}}
+      
         mb={3}
       >
         <Typography
@@ -202,7 +202,7 @@ const UserPage = () => {
 
       {/* Scrollable container for small screens */}
       <Box mt={4} sx={{ width: "100%", overflowX: "auto" }}>
-      <Paper sx={{ minWidth: "900px" }}>
+      <Paper sx={{ minWidth: "1200px" }}>
           <DataGrid
             rows={users || []}
             columns={columns}

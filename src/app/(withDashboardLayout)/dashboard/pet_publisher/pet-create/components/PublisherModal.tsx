@@ -1,4 +1,5 @@
-import PetFile from "@/components/Forms/AutoFileUploader";
+'use client';
+
 import PetForm from "@/components/Forms/PetForm";
 import PetInput from "@/components/Forms/PetInput";
 import PetSelect from "@/components/Forms/PetSelect";
@@ -10,12 +11,14 @@ import {
   optionsSpecies,
 } from "@/constants/selectOptions";
 import { useCreatePetMutation } from "@/redux/api/petApi";
-import { FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, CircularProgress, Grid } from "@mui/material";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { useGetMyProfileQuery } from "@/redux/api/userApi";
+import { FieldValues, useForm } from "react-hook-form";
+import AutoFileUploader from "@/components/Forms/AutoFileUploader";
+import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
 
 const defaultValues = {
   name: "",
@@ -31,7 +34,7 @@ const defaultValues = {
   healthStatus: "",
   specialNeeds: "",
   location: "",
-  file: "",
+  image: "",
 };
 
 interface IModalProps {
@@ -43,181 +46,131 @@ interface IModalProps {
 const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
 
 const PublisherModal = ({ open, setOpen, publisherId }: IModalProps) => {
-  const { data: profile, isLoading: profileLoading } = useGetMyProfileQuery({});
-  const profileData = profile?.profile;
+
+ 
 
   const [createPet] = useCreatePetMutation();
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const form = useForm<FieldValues>({
+    defaultValues,
+    mode: "onChange",
+  });
 
   const handleCreatePet = async (value: FieldValues) => {
     setLoading(true);
     try {
-      const file = value.file;
-      if (!file) {
-        toast.error("Please upload a valid file");
+      if (!imageFile) {
+        toast.error("Please upload a pet image.");
         setLoading(false);
         return;
       }
 
       // Upload image to ImgBB
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("image", imageFile);
       const response = await fetch(
         `https://api.imgbb.com/1/upload?key=${apiKey}`,
         { method: "POST", body: formData }
       );
+
       const data = await response.json();
 
       if (data.success) {
         const imageUrl = data?.data?.url;
-        const { file, ...rest } = value;
         const payload = {
-          ...rest,
+          ...value,
           age: Number(value.age),
           height: Number(value.height),
           weight: Number(value.weight),
           image: imageUrl,
-          publisherId: profileData?.publisher?.id,
+          publisherId,
         };
 
-        // Call API to create pet
-        try {
-          const res = await createPet(payload).unwrap();
-          if (res?.id) {
-            toast.success("Pet created successfully!");
-            setOpen(false);
-          }
-        } catch (err: any) {
-          toast.error(err?.message || "Failed to create pet");
-        }
+       await createPet(payload);
+
+        toast.success("Pet successfully created!");
+        setOpen(false);
+        form.reset(defaultValues);
+        setImageFile(null);
       } else {
-        toast.error("Image upload failed");
+        toast.error("Image upload failed.");
       }
     } catch (error) {
-      toast.error("Error occurred during creation");
+      console.error(error);
+      toast.error("Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <PetFullScreenModal open={open} setOpen={setOpen} title="Create a new pet">
-      <PetForm onSubmit={handleCreatePet} defaultValues={defaultValues}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput label="Name" name="name" fullWidth size="medium" />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetSelect
-              size="medium"
-              name="species"
-              label="Species"
-              options={optionsSpecies}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput label="Breed" name="breed" fullWidth size="medium" />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput label="Color" name="color" fullWidth size="medium" />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              label="Age"
-              name="age"
-              fullWidth
-              type="number"
-              size="medium"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetSelect
-              size="medium"
-              name="gender"
-              label="Gender"
-              options={optionsGender}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetSelect
-              size="medium"
-              name="size"
-              label="Size"
-              options={optionsSize}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetSelect
-              size="medium"
-              name="healthStatus"
-              label="Health Status"
-              options={optionsHealthStatus}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              size="medium"
-              label="Height"
-              name="height"
-              fullWidth
-              type="number"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              size="medium"
-              label="Weight"
-              name="weight"
-              fullWidth
-              type="number"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              label="Location"
-              name="location"
-              fullWidth
-              size="medium"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              label="Special Needs"
-              name="specialNeeds"
-              fullWidth
-              size="medium"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetInput
-              label="Description"
-              name="description"
-              fullWidth
-              size="medium"
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <PetFile name="file" label="Upload File" sx={{ py: 2 }} />
-          </Grid>
-        </Grid>
+    <PetFullScreenModal open={open} setOpen={setOpen} title="Publish a Pet">
+      <PetForm  onSubmit={handleCreatePet}>
+      <Grid container spacing={2} px={2}>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="name" label="Pet Name" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetSelect name="species" label="Species" options={optionsSpecies} fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetSelect name="gender" label="Gender" options={optionsGender} fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="age" label="Age (years)" type="number" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="breed" label="Breed" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="weight" label="Weight (kg)" type="number" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="height" label="Height (cm)" type="number" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="color" label="Color" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetSelect name="size" label="Size" options={optionsSize} fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetSelect name="healthStatus" label="Health Status" options={optionsHealthStatus} fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="specialNeeds" label="Special Needs" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="location" label="Location" fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <PetInput name="description" label="Description" multiline rows={3} fullWidth size="medium" />
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <AutoFileUploader
+      name="file"
+      label="Upload Pet Image"
+      icon={<CloudUploadIcon />}
+      onFileUpload={(file) => setImageFile(file)}
+    />
+  </Grid>
+  <Grid item xs={12} textAlign={{ xs: 'center', sm: 'start' }} mt={4}>
+    <Button
+      type="submit"
+      variant="contained"
+      color="primary"
+      disabled={loading}
+      sx={{ px: 4, py: 1.5, borderRadius: 2 }}
+    >
+      {loading ? <CircularProgress size={24} /> : "Publish Pet"}
+    </Button>
+  </Grid>
+</Grid>
 
-        {/* Submit Button with Loading Indicator */}
-        <Button
-          type="submit"
-          disabled={loading}
-          sx={{
-            backgroundColor: "orange",
-            mt: 3,
-            mb: 2,
-            "&:disabled": { backgroundColor: "#ccc" },
-          }}
-        >
-          {loading ? (
-            <CircularProgress size={24} sx={{ color: "white" }} />
-          ) : (
-            "Create New Pet"
-          )}
-        </Button>
+
+
       </PetForm>
     </PetFullScreenModal>
   );

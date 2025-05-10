@@ -13,7 +13,6 @@ type TPhInputProps = {
   multiline?: boolean;
   rules?: any;
   rows?: number;
-
   [key: string]: any; 
 };
 

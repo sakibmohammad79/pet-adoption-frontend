@@ -197,8 +197,16 @@ const PetCreatePage = () => {
 
   return (
     <Box mt={4}>
+    <Stack direction="row" gap={4} alignItems="center" mb={2}>
+      <Typography variant="h5">My Created Pets</Typography>
+      <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)}>
+        Create Pet
+      </Button>
+    </Stack>
+      <PublisherModal open={isModalOpen} setOpen={setIsModalOpen} publisherId={profileData?.publisher?.id}/>
+
     <Paper sx={{ width: "100%", overflowX: "auto" }}>
-      <Box sx={{ minWidth: "900px" }}> {/* You can adjust minWidth as needed */}
+      <Box sx={{ minWidth: "900px" }}>
         <DataGrid
           rows={pets || []}
           columns={columns}
@@ -214,6 +222,8 @@ const PetCreatePage = () => {
         </Typography>
       )}
     </Paper>
+
+
   </Box>
   
   );

@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
-import { Box, Typography, Button, Container } from "@mui/material";
+import { Box, Typography, Button, Container, Stack, Avatar, Chip } from "@mui/material";
 import Image from "next/image";
 import { Autoplay } from "swiper/modules";
 import { useGetPetsQuery } from "@/redux/api/petApi";
@@ -16,24 +16,119 @@ const PopularPet = () => {
   if (isLoading) {
     return <Typography>Loading...</Typography>;
   }
-  const pets = data?.pets;
+
+  const pets = data?.pets || [];
+  const limitedPets = pets.slice(0, 8);
+  const availablePets = limitedPets?.filter((pet: any) => !pet?.isAdopt && !pet?.isBooked);
+
 
   return (
-    <Container sx={{ pb: 16 }}>
-      <Box textAlign="center" pb={8}>
-        <PetsIcon sx={{ py: 1, color: "primary.main", height: 40, width: 40 }} />
-        <Typography component="h1" variant="h6" color="primary.main" fontWeight={600}>
-          Meet the animals
-        </Typography>
-        <Typography color="black" component="h1" variant="h4" fontWeight={700} my={1}>
-          Puppies Waiting for Adoption
-        </Typography>
-        <Typography>
-          The best overall dog DNA test is Embark Breed & Health Kit (view at Chewy),
-          <br />
-          which provides you with a breed breakdown and health information on most dogs.
-        </Typography>
-      </Box>
+    <Container sx={{ pb: 16, pt: 16 }}>
+      
+       <Box textAlign="center" mb={8}>
+          <Stack 
+            direction="row" 
+            justifyContent="center" 
+            alignItems="center" 
+            spacing={2} 
+            mb={3}
+            sx={{ flexWrap: "wrap" }}
+          >
+            <Avatar
+              sx={{
+                width: 60,
+                height: 60,
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                animation: "pulse 2s infinite",
+                "@keyframes pulse": {
+                  "0%": { transform: "scale(1)" },
+                  "50%": { transform: "scale(1.05)" },
+                  "100%": { transform: "scale(1)" },
+                }
+              }}
+            >
+              <PetsIcon sx={{ fontSize: 32, color: "white" }} />
+            </Avatar>
+            <Chip
+              label="Find Your Companion" 
+              sx={{ 
+                bgcolor: "primary.main", 
+                color: "white",
+                fontWeight: "bold",
+                fontSize: { xs: "0.9rem", sm: "1rem" },
+                px: 3,
+                py: 1
+              }} 
+            />
+          </Stack>
+          
+          <Typography
+            variant="h2"
+            component="h1"
+            sx={{
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontWeight: 800,
+              fontSize: { xs: "2rem", sm: "3rem", md: "4rem" },
+              lineHeight: 1.2,
+              mb: 3,
+              textAlign: "center"
+            }}
+          >
+            Meet Your New
+            <br />
+            Best Friend
+          </Typography>
+          
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{ 
+              maxWidth: 700, 
+              mx: "auto",
+              fontSize: { xs: "1rem", sm: "1.2rem" },
+              lineHeight: 1.6,
+              mb: 3,
+              px: 2
+            }}
+          >
+            Discover loving pets waiting for their forever homes. Each one has a unique personality 
+            and is ready to bring joy to your family.
+          </Typography>
+
+          <Stack 
+            direction={{ xs: "column", sm: "row" }}
+            justifyContent="center" 
+            spacing={4} 
+            sx={{ 
+              backgroundColor: "white", 
+              borderRadius: 3, 
+              p: 3, 
+              display: "inline-flex",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+              minWidth: { xs: "280px", sm: "auto" }
+            }}
+          >
+            <Box textAlign="center">
+              <Typography variant="h5" fontWeight="bold" color="primary.main">
+                {availablePets?.length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Available Pets
+              </Typography>
+            </Box>
+            <Box textAlign="center">
+              <Typography variant="h5" fontWeight="bold" color="success.main">
+                {pets.filter((pet: any) => pet?.isAdopt).length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Happy Adoptions
+              </Typography>
+            </Box>
+          </Stack>
+        </Box>
 
       <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2 }}>
         {/* Swiper Slider for multiple cards per slide */}

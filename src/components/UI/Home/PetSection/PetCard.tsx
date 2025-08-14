@@ -1,106 +1,213 @@
+
 "use client";
 
-import { Box, Button, Divider, Rating, Typography } from "@mui/material";
-import Image from "next/image";
+import { 
+  Box, 
+  Button, 
+  Card,
+  CardMedia,
+  CardContent,
+  Divider, 
+  Rating, 
+  Typography,
+  Chip
+} from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
-const PetCard = ({ pet }: { pet: any }) => {
+interface Pet {
+  id: string;
+  name: string;
+  breed: string;
+  gender: string;
+  image?: string;
+  isAdopt: boolean;
+  isBooked: boolean;
+}
+
+interface PetCardProps {
+  pet: Pet;
+}
+
+const PetCard: React.FC<PetCardProps> = ({ pet }) => {
+  const isUnavailable = pet.isAdopt || pet.isBooked;
+  const defaultImage = "https://i.ibb.co/4JTh9dG/pexels-lina-1741205-1.jpg";
+
   return (
-    <Box
+    <Card
       sx={{
-        backgroundColor: "#F4F1EA",
-        height: 400,
-        width: 380,
-        mb: 8,
+        maxWidth: 380,
+        mx: "auto",
         position: "relative",
-        mx: "auto", // Centers the image box horizontally
-        "&:hover .adoption-button": {
-          display: "block", // Show button on hover
+        overflow: "visible",
+        backgroundColor: "transparent",
+        boxShadow: "none",
+        "&:hover .pet-image": {
+          transform: "scale(1.05)",
+          filter: "brightness(0.8)",
         },
-        "&:hover img": {
-          opacity: 0.6, // Lower opacity on hover
-          transform: "scale(1.05)", // Slightly scale the image
-          transition: "transform 0.3s ease, opacity 0.3s ease", // Smooth transition
+        "&:hover .adoption-button": {
+          opacity: 1,
+          visibility: "visible",
         },
       }}
     >
-      <Image
-        height={400}
-        width={380}
-        src={pet?.image || "https://i.ibb.co/4JTh9dG/pexels-lina-1741205-1.jpg"}
-        alt="pet-image"
-        style={{
-          transition: "opacity 0.3s ease", // Smooth transition for opacity
-        }}
-      />
-
+      {/* Image Container */}
       <Box
         sx={{
-          position: "absolute",
+          position: "relative",
+          height: 400,
+          backgroundColor: "#F4F1EA",
+          borderRadius: 2,
+          overflow: "hidden",
+        }}
+      >
+        <CardMedia
+          component="img"
+          height="400"
+          image={pet?.image || defaultImage}
+          alt={`${pet?.name} - pet for adoption`}
+          className="pet-image"
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "all 0.3s ease",
+          }}
+        />
+
+        {/* Status Chip */}
+        {isUnavailable && (
+          <Chip
+            label={pet.isAdopt ? "Adopted" : "Booked"}
+            color={pet.isAdopt ? "success" : "warning"}
+            sx={{
+              position: "absolute",
+              top: 16,
+              right: 16,
+              fontWeight: 600,
+              zIndex: 2,
+            }}
+          />
+        )}
+
+        {/* Adoption Button Overlay */}
+        <Link href={`/pet-list/${pet.id}`} style={{ textDecoration: 'none' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            className="adoption-button"
+            disabled={isUnavailable}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              opacity: 0,
+              visibility: "hidden",
+              transition: "all 0.3s ease",
+              zIndex: 10,
+              px: 3,
+              py: 1.5,
+              borderRadius: 2,
+              fontWeight: 600,
+              textTransform: "none",
+              fontSize: "1rem",
+              boxShadow: 3,
+            }}
+          >
+            {isUnavailable ? "Not Available" : "Adopt Now"}
+          </Button>
+        </Link>
+      </Box>
+
+      {/* Pet Information Card */}
+      <CardContent
+        sx={{
+          position: "relative",
           backgroundColor: "white",
-          boxShadow: 1,
-          p: 2,
-          bottom: -80,
-          left: "50%", // Move to center
-          transform: "translateX(-50%)", // Center horizontally
-          width: 320,
+          boxShadow: 2,
+          borderRadius: 2,
+          mt: -6,
+          mx: 2,
+          zIndex: 1,
+          p: 3,
         }}
       >
         <Typography
           color="primary.main"
-          fontWeight={600}
+          fontWeight={700}
           variant="h5"
-          component="h1"
+          component="h2"
           textAlign="center"
           textTransform="capitalize"
+          sx={{ mb: 2 }}
         >
           {pet?.name}
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography fontSize={14} fontWeight={600}>
-            {pet?.breed}
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          <Typography 
+            variant="body2" 
+            fontWeight={600}
+            color="text.secondary"
+          >
+            Breed: {pet?.breed}
           </Typography>
-          <Typography fontSize={14} fontWeight={600}>
+          <Typography 
+            variant="body2" 
+            fontWeight={600}
+            color="text.secondary"
+          >
             Gender: {pet?.gender}
           </Typography>
         </Box>
-        <Box sx={{ width: "100%", textAlign: "center", my: 2 }}>
-          <Divider
-            sx={{
-              borderColor: "gray",
-              borderStyle: "dashed",
-            }}
-          />
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Rating name="read-only" size="small" value={5} readOnly />
-          <Typography fontSize={14} fontWeight={600}>
-            Total Price: Free
+
+        <Divider
+          sx={{
+            borderColor: "grey.300",
+            borderStyle: "dashed",
+            my: 2,
+          }}
+        />
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Rating name="pet-rating" size="small" value={5} readOnly />
+            <Typography variant="caption" color="text.secondary">
+              (5.0)
+            </Typography>
+          </Box>
+          <Typography 
+            variant="body2" 
+            fontWeight={600}
+            color="success.main"
+          >
+            Adoption: Free
           </Typography>
         </Box>
-      </Box>
 
-      {/* Adoption Button */}
-      <Link href={`/pet-list/${pet.id}`}>
-        <Button
-          variant="contained"
-          color="primary"
-          className="adoption-button"
-          disabled={pet.isAdopt || pet.isBooked} // Disable button based on conditions
-          sx={{
-            position: "absolute",
-            top: "50%", // Center vertically
-            left: "50%", // Center horizontally
-            transform: "translate(-50%, -50%)", // Adjust to center
-            display: "none", // Hide button by default
-            zIndex: 10, // Ensure the button is above other elements
-          }}
-        >
-          {pet.isAdopt || pet.isBooked ? "Not Available" : "Adopt Now"}
-        </Button>
-      </Link>
-    </Box>
+        {/* Mobile Adoption Button */}
+        <Box sx={{ mt: 2, display: { xs: "block", sm: "none" } }}>
+          <Link href={`/pet-list/${pet.id}`} style={{ textDecoration: 'none' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={isUnavailable}
+              sx={{
+                py: 1.5,
+                borderRadius: 2,
+                fontWeight: 600,
+                textTransform: "none",
+              }}
+            >
+              {isUnavailable ? "Not Available" : "View Details"}
+            </Button>
+          </Link>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 

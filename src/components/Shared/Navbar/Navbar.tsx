@@ -19,12 +19,14 @@ const drawerWidth = 240;
 export default function Navbar() {
   const userInfo = getUserInfo();
   const [userRole, setUserRole] = React.useState("");
+  
   React.useEffect(() => {
     const userInfo = getUserInfo();
     if (userInfo) {
       setUserRole(userInfo?.role);
     }
-  }, [userRole]);
+  }, []);
+
   const AuthButtonLg = dynamic(
     () => import("@/components/UI/AuthButton/AuthButtonLg"),
     { ssr: false }
@@ -39,35 +41,39 @@ export default function Navbar() {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        PET
+        PET ADOPT
       </Typography>
       <Divider />
 
-      <Box sx={{ display: { md: "block", lg: "none", direction: "row" } }}>
+      <Stack spacing={2} sx={{ mt: 2, px: 2 }}>
         <Link href="/">
-          <Typography fontWeight={600} my={2}>
+          <Typography fontWeight={600} sx={{ color: 'inherit', textDecoration: 'none' }}>
             HOME
           </Typography>
         </Link>
         <Link href="/pet-list">
-          <Typography fontWeight={600}>PET LIST</Typography>
+          <Typography fontWeight={600} sx={{ color: 'inherit', textDecoration: 'none' }}>
+            PET LIST
+          </Typography>
         </Link>
-        <Link href="/">
-          <Typography fontWeight={600} my={2}>
+        <Link href="/about">
+          <Typography fontWeight={600} sx={{ color: 'inherit', textDecoration: 'none' }}>
             ABOUT
           </Typography>
         </Link>
-        <Link href="/">
-          <Typography fontWeight={600}>CONTACT</Typography>
+        <Link href="/contact">
+          <Typography fontWeight={600} sx={{ color: 'inherit', textDecoration: 'none' }}>
+            CONTACT
+          </Typography>
         </Link>
         {userInfo?.userId && (
           <Link href={`/dashboard/${userRole}`}>
-            <Typography mt={2} fontWeight={600}>
+            <Typography fontWeight={600} sx={{ color: 'inherit', textDecoration: 'none' }}>
               DASHBOARD
             </Typography>
           </Link>
         )}
-      </Box>
+      </Stack>
     </Box>
   );
 
@@ -85,13 +91,15 @@ export default function Navbar() {
           >
             <MenuIcon sx={{ color: "primary.main" }} />
           </IconButton>
+          
           <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ width: "100%", gap: 5 }}
+            sx={{ width: "100%" }}
           >
-            <Link href="/">
+            {/* Logo */}
+            <Link href="/" style={{ textDecoration: 'none' }}>
               <Typography
                 variant="h5"
                 component="h1"
@@ -104,38 +112,93 @@ export default function Navbar() {
                 PET ADOPT
               </Typography>
             </Link>
-            <Box sx={{ display: { xs: "none", sm: "flex", gap: 32 } }}>
-              <Link href="/">
-                <Typography fontWeight={600}>HOME</Typography>
+            
+            {/* Desktop Navigation Links */}
+            <Stack 
+              direction="row" 
+              spacing={4} 
+              sx={{ 
+                display: { xs: "none", sm: "flex" },
+                alignItems: "center"
+              }}
+            >
+              <Link href="/" style={{ textDecoration: 'none' }}>
+                <Typography 
+                  fontWeight={600} 
+                  sx={{ 
+                    color: 'text.primary',
+                    '&:hover': { color: 'primary.main' },
+                    transition: 'color 0.2s'
+                  }}
+                >
+                  HOME
+                </Typography>
               </Link>
-              <Link href="/pet-list">
-                <Typography fontWeight={600}>PET LIST</Typography>
+              <Link href="/pet-list" style={{ textDecoration: 'none' }}>
+                <Typography 
+                  fontWeight={600}
+                  sx={{ 
+                    color: 'text.primary',
+                    '&:hover': { color: 'primary.main' },
+                    transition: 'color 0.2s'
+                  }}
+                >
+                  PET LIST
+                </Typography>
               </Link>
-              
-              <Link href="/about">
-                <Typography fontWeight={600}>ABOUT</Typography>
+              <Link href="/about" style={{ textDecoration: 'none' }}>
+                <Typography 
+                  fontWeight={600}
+                  sx={{ 
+                    color: 'text.primary',
+                    '&:hover': { color: 'primary.main' },
+                    transition: 'color 0.2s'
+                  }}
+                >
+                  ABOUT
+                </Typography>
               </Link>
-              <Link href="/contact">
-                <Typography fontWeight={600}>CONTACT</Typography>
+              <Link href="/contact" style={{ textDecoration: 'none' }}>
+                <Typography 
+                  fontWeight={600}
+                  sx={{ 
+                    color: 'text.primary',
+                    '&:hover': { color: 'primary.main' },
+                    transition: 'color 0.2s'
+                  }}
+                >
+                  CONTACT
+                </Typography>
               </Link>
               {userInfo?.userId && (
-                <Link href={`/dashboard/${userRole}`}>
-                  <Typography fontWeight={600}>DASHBOARD</Typography>
+                <Link href={`/dashboard/${userRole}`} style={{ textDecoration: 'none' }}>
+                  <Typography 
+                    fontWeight={600}
+                    sx={{ 
+                      color: 'text.primary',
+                      '&:hover': { color: 'primary.main' },
+                      transition: 'color 0.2s'
+                    }}
+                  >
+                    DASHBOARD
+                  </Typography>
                 </Link>
               )}
-            </Box>
+            </Stack>
 
-            <AuthButtonLg></AuthButtonLg>
+            {/* Auth Button */}
+            <AuthButtonLg />
           </Stack>
         </Toolbar>
       </AppBar>
+      
       <nav>
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -148,6 +211,7 @@ export default function Navbar() {
           {drawer}
         </Drawer>
       </nav>
+      <Toolbar />
     </Box>
   );
 }

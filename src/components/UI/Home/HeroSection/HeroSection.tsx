@@ -78,9 +78,8 @@ const HeroSection = () => {
                   fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
                 }}
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                <br />
-                Quas obcaecati iure quam aliquid quisquam.
+                Find your new best friend today! 🐾
+                <br></br>Browse adorable pets waiting for a loving home.
               </Typography>
               <Link href={"/pet-list"}>
               <Button
@@ -142,9 +141,8 @@ const HeroSection = () => {
                   fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
                 }}
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                <br />
-                Quas obcaecati iure quam aliquid quisquam.
+                Find your new best friend today! 🐾
+                <br></br>Browse adorable pets waiting for a loving home.
               </Typography>
               <Link href={"/pet-list"}>
               <Button
@@ -205,9 +203,8 @@ const HeroSection = () => {
                   fontSize: { xs: "0.9rem", sm: "1rem", md: "1.2rem" },
                 }}
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                <br />
-                Quas obcaecati iure quam aliquid quisquam.
+                Find your new best friend today! 🐾
+                <br></br>Browse adorable pets waiting for a loving home.
               </Typography>
               <Link href={"/pet-list"}>
               <Button

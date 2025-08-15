@@ -101,9 +101,14 @@ const PetSection = () => {
             component="h1"
             variant="h4"
             fontWeight={700}
+            
             sx={{ 
               my: 2,
-              fontSize: { xs: '1.75rem', sm: '2.125rem' }
+              fontSize: { xs: '1.75rem', sm: '2.125rem' },
+               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent"
             }}
           >
             Puppies Waiting for Adoption

@@ -140,13 +140,13 @@ const ContactSection: React.FC = () => {
           
           <Fade triggerOnce delay={100}>
             <Typography 
-              variant="h3" 
               component="h1"
+            variant="h4"
               fontWeight={700}
               sx={{ 
                 mb: 2,
-                fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-                background: "linear-gradient(45deg, #1976d2, #42a5f5)",
+                fontSize: { xs: '1.75rem', sm: '2.125rem' },
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",

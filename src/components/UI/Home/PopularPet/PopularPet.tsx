@@ -63,15 +63,15 @@ const PopularPet = () => {
           </Stack>
           
           <Typography
-            variant="h2"
             component="h1"
+            variant="h4"
             sx={{
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               fontWeight: 800,
-              fontSize: { xs: "2rem", sm: "3rem", md: "4rem" },
+              fontSize: { xs: '1.75rem', sm: '2.125rem' },
               lineHeight: 1.2,
               mb: 3,
               textAlign: "center"

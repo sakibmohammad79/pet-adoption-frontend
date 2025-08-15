@@ -10,9 +10,7 @@ import {
   Avatar,
   Stack,
   LinearProgress,
-  Divider,
   Button,
-  IconButton,
   Chip,
 } from "@mui/material";
 import {
@@ -21,18 +19,14 @@ import {
   CheckCircleOutlined,
   PeopleOutlined,
   TrendingUp,
-  CalendarToday,
-  LocationOn,
-  Phone,
-  Email,
   Star,
   Add,
   Visibility,
-  Edit,
+  Phone,
 } from "@mui/icons-material";
 import {
-  BarChart,
-  Bar,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -41,8 +35,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  AreaChart,
-  Area,
 } from "recharts";
 import {
   useGetAllAdopterQuery,
@@ -62,11 +54,6 @@ const AdopterPage = () => {
   const bookedCount = myBookedPets?.length || 0;
   const adoptedCount = myAdoptedPets?.length || 0;
   const totalAdopters = adopters?.length || 0;
-
-  const adoptionStats = [
-    { name: "Booked", count: bookedCount, fill: "#FF9800" },
-    { name: "Adopted", count: adoptedCount, fill: "#4CAF50" },
-  ];
 
   const pieData = [
     { name: "Adopted", value: adoptedCount, color: "#4CAF50" },
@@ -143,95 +130,19 @@ const AdopterPage = () => {
               textShadow: "0 2px 4px rgba(0,0,0,0.1)",
             }}
           >
-            🐾 Welcome Back, {profileData?.profile?.name || "Pet Lover"}!
+            🐾 Adoption Dashboard
           </Typography>
           <Typography variant="h6" color="rgba(255,255,255,0.8)" fontWeight={300}>
-            Your personal adoption journey dashboard
+            Track your pet adoption journey
           </Typography>
         </Box>
 
         <Grid container spacing={4}>
-          {/* Profile Card */}
-          <Grid item xs={12} md={4}>
-            <Card
-              elevation={8}
-              sx={{
-                borderRadius: 4,
-                background: "rgba(255,255,255,0.95)",
-                backdropFilter: "blur(10px)",
-                height: "100%",
-              }}
-            >
-              <CardContent sx={{ p: 4 }}>
-                <Stack alignItems="center" spacing={3}>
-                  <Avatar
-                    sx={{
-                      width: 100,
-                      height: 100,
-                      background: "linear-gradient(135deg, #FF6B6B, #4ECDC4)",
-                      fontSize: 48,
-                    }}
-                  >
-                    {profileData?.profile?.name?.charAt(0) || "U"}
-                  </Avatar>
-                  
-                  <Box textAlign="center">
-                    <Typography variant="h5" fontWeight="bold" color="#2C3E50">
-                      {profileData?.profile?.name || "User"}
-                    </Typography>
-                    <Chip
-                      label="Pet Adopter"
-                      sx={{
-                        bgcolor: "#E8F5E8",
-                        color: "#4CAF50",
-                        fontWeight: 600,
-                        mt: 1,
-                      }}
-                    />
-                  </Box>
-
-                  <Divider sx={{ width: "100%" }} />
-
-                  <Stack spacing={2} width="100%">
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <Email sx={{ color: "#666", fontSize: 20 }} />
-                      <Typography variant="body2" color="text.secondary">
-                        {profileData?.profile?.email || "email@example.com"}
-                      </Typography>
-                    </Stack>
-                    
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <CalendarToday sx={{ color: "#666", fontSize: 20 }} />
-                      <Typography variant="body2" color="text.secondary">
-                        Member since 2024
-                      </Typography>
-                    </Stack>
-                  </Stack>
-
-                  <Button
-                    variant="contained"
-                    startIcon={<Edit />}
-                    sx={{
-                      background: "linear-gradient(45deg, #FF6B6B, #4ECDC4)",
-                      borderRadius: 3,
-                      px: 3,
-                      py: 1,
-                      fontWeight: 600,
-                    }}
-                    fullWidth
-                  >
-                    Edit Profile
-                  </Button>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-
           {/* Statistics Cards */}
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12}>
             <Grid container spacing={3}>
               {adopterStats.map((stat, index) => (
-                <Grid item xs={12} sm={4} key={index}>
+                <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card
                     elevation={8}
                     sx={{

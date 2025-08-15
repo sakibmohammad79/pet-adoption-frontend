@@ -7,15 +7,31 @@ import {
   CircularProgress,
   Grid,
   Typography,
+  Card,
+  CardContent,
+  Stack,
+  Chip,
+  IconButton,
+  Divider,
 } from '@mui/material';
 import { useGetMyProfileQuery } from '@/redux/api/userApi';
-import { deepPurple } from '@mui/material/colors';
-import EditIcon from '@mui/icons-material/Edit';
+import {
+  Edit as EditIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
+  LocationOn as LocationIcon,
+  CalendarToday as CalendarIcon,
+  Person as PersonIcon,
+  AccountCircle as AccountIcon,
+  Update as UpdateIcon,
+  CameraAlt as CameraIcon,
+  Badge as BadgeIcon,
+  CloudUpload as CloudUploadIcon,
+} from '@mui/icons-material';
 import PublisherModal from '../pet-create/components/PublisherModal';
 import { useState } from 'react';
 import PublisherUpdateModal from './components/PublisherUpdateModal';
 import AutoFileUploader from '@/components/Forms/AutoFileUploader';
-import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
 import { useUpdatePublisherMutation } from '@/redux/api/publisherApi';
 import { toast } from 'sonner';
 
@@ -34,43 +50,43 @@ const PetPublisherProfile = () => {
   const [updatePublisher, { isLoading: isUploading }] = useUpdatePublisherMutation();
 
   const fileUploadHandler = async (file: File) => {
-  const formData = new FormData();
-  formData.append("image", file);
+    const formData = new FormData();
+    formData.append("image", file);
 
-  try {
-    const response = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
-      {
-        method: "POST",
-        body: formData,
+    try {
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
       }
-    );
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+      const result = await response.json();
+      const imageUrl = result?.data?.url;
+
+      if (imageUrl) {
+        const profilePhotoUpdateData = {
+          id: profile?.publisher?.id,
+          data: {
+            profilePhoto: imageUrl,
+          },
+        };
+        await updatePublisher(profilePhotoUpdateData);
+        refetch();
+        toast.success('Profile picture updated successfully!');
+      } else {
+        toast.error('Image upload failed.');
+      }
+    } catch (error) {
+      console.error("Error uploading to ImgBB:", error);
+      toast.error('Could not upload image.');
     }
-
-    const result = await response.json();
-    const imageUrl = result?.data?.url;
-
-    if (imageUrl) {
-      const profilePhotoUpdateData = {
-        id: profile?.publisher?.id,
-        data: {
-          profilePhoto: imageUrl,
-        },
-      };
-      await updatePublisher(profilePhotoUpdateData);
-      refetch();
-      toast.success('Profile picture updated successfully!');
-    } else {
-      toast.error('Image upload failed.');
-    }
-  } catch (error) {
-    console.error("Error uploading to ImgBB:", error);
-    toast.error('Could not upload image.');
-  }
-};
+  };
 
   if (isLoading) {
     return (
@@ -80,9 +96,10 @@ const PetPublisherProfile = () => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         }}
       >
-        <CircularProgress />
+        <CircularProgress size={60} sx={{ color: 'white' }} />
       </Box>
     );
   }
@@ -95,9 +112,10 @@ const PetPublisherProfile = () => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         }}
       >
-        <Typography variant="h4">No profile data found.</Typography>
+        <Typography variant="h4" color="white">No profile data found.</Typography>
       </Box>
     );
   }
@@ -107,155 +125,394 @@ const PetPublisherProfile = () => {
   const createdAt = formatDate(profile?.publisher?.createdAt);
   const updatedAt = formatDate(profile?.publisher?.updatedAt);
 
+  const profileDetails = [
+    { 
+      label: 'Email Address', 
+      value: profile?.email, 
+      icon: <EmailIcon sx={{ color: '#4ECDC4' }} />,
+      color: '#4ECDC4'
+    },
+    { 
+      label: 'Contact Number', 
+      value: profile?.publisher?.contactNumber, 
+      icon: <PhoneIcon sx={{ color: '#FF6B6B' }} />,
+      color: '#FF6B6B'
+    },
+    { 
+      label: 'Gender', 
+      value: profile?.publisher?.gender, 
+      icon: <PersonIcon sx={{ color: '#4CAF50' }} />,
+      color: '#4CAF50'
+    },
+    { 
+      label: 'Birth Date', 
+      value: birthDate, 
+      icon: <CalendarIcon sx={{ color: '#FF9800' }} />,
+      color: '#FF9800'
+    },
+    { 
+      label: 'Address', 
+      value: profile?.publisher?.address, 
+      icon: <LocationIcon sx={{ color: '#9C27B0' }} />,
+      color: '#9C27B0'
+    },
+    {
+      label: 'Account Status',
+      value: profile?.status,
+      icon: <AccountIcon sx={{ color: profile?.status === 'ACTIVE' ? '#4CAF50' : '#F44336' }} />,
+      color: profile?.status === 'ACTIVE' ? '#4CAF50' : '#F44336',
+      isStatus: true
+    },
+    { 
+      label: 'Member Since', 
+      value: createdAt, 
+      icon: <CalendarIcon sx={{ color: '#2196F3' }} />,
+      color: '#2196F3'
+    },
+    { 
+      label: 'Last Updated', 
+      value: updatedAt, 
+      icon: <UpdateIcon sx={{ color: '#607D8B' }} />,
+      color: '#607D8B'
+    },
+  ];
+
   return (
     <Box
       sx={{
-        width: '100%',
-        minHeight: '90vh',
-        py: 8,
-        px: { xs: 3, md: 12 },
+        m: 0,
+        p: 0,
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '100vh',
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30c0-6.627 5.373-12 12-12s12 5.373 12 12-5.373 12-12 12-12-5.373-12-12z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          zIndex: 0,
+        },
       }}
     >
-      <Box
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: 4,
-          boxShadow: 4,
-          p: { xs: 4, md: 6 },
-          maxWidth: '1300px',
-          mx: 'auto',
-        }}
-      >
-        <Grid container spacing={6}>
-          {/* Avatar + Basic Info */}
-          <Grid item xs={12} md={4} textAlign="center">
-            {profile?.publisher?.profilePhoto ? (
-              <Avatar
-                alt={fullName}
-                src={profile?.publisher?.profilePhoto}
-                sx={{ width: 150, height: 150, mx: 'auto' }}
-              />
-            ) : (
-              <Avatar
-                sx={{
-                  width: 150,
-                  height: 150,
-                  bgcolor: deepPurple[500],
-                  fontSize: 48,
-                  mx: 'auto',
-                }}
-              >
-                {profile?.publisher?.firstName?.charAt(0).toUpperCase()}
-              </Avatar>
-            )}
+      <Box sx={{ position: 'relative', zIndex: 1, p: { xs: 2, sm: 3, md: 4 } }}>
+        {/* Header Section */}
+        <Box textAlign="center" mb={6}>
+          <Typography
+            variant="h3"
+            fontWeight="bold"
+            sx={{
+              background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent',
+              mb: 1,
+              textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+          >
+            🐾 My Profile
+          </Typography>
+          <Typography variant="h6" color="rgba(255,255,255,0.8)" fontWeight={300}>
+            Manage your publisher account information
+          </Typography>
+        </Box>
 
-
-             {isUploading ? (
-            <Box
+        <Grid container spacing={4} maxWidth="1200px" mx="auto">
+          {/* Profile Card */}
+          <Grid item xs={12} md={4}>
+            <Card
+              elevation={8}
               sx={{
-                mt: 2,
+                borderRadius: 4,
+                background: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(10px)',
+                height: 'fit-content',
+                position: 'sticky',
+                top: 20,
               }}
             >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-              <AutoFileUploader
-                name="file"
-                label="choose your profile photo"
-                icon={<CloudUploadIcon />}
-                onFileUpload={fileUploadHandler}
-                variant="text"
-              ></AutoFileUploader>
-            </Box>
-          )}
+              <CardContent sx={{ p: 4 }}>
+                <Stack alignItems="center" spacing={3}>
+                  <Box sx={{ position: 'relative' }}>
+                    {profile?.publisher?.profilePhoto ? (
+                      <Avatar
+                        alt={fullName}
+                        src={profile?.publisher?.profilePhoto}
+                        sx={{ 
+                          width: 120, 
+                          height: 120,
+                          border: '4px solid',
+                          borderColor: 'primary.main',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
+                        }}
+                      />
+                    ) : (
+                      <Avatar
+                        sx={{
+                          width: 120,
+                          height: 120,
+                          background: 'linear-gradient(135deg, #FF6B6B, #4ECDC4)',
+                          fontSize: 48,
+                          fontWeight: 'bold',
+                          border: '4px solid white',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.15)'
+                        }}
+                      >
+                        {profile?.publisher?.firstName?.charAt(0).toUpperCase()}
+                      </Avatar>
+                    )}
+                    
+                    {/* Camera Icon for Photo Upload */}
+                    <IconButton
+                      sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        bgcolor: '#4ECDC4',
+                        color: 'white',
+                        width: 40,
+                        height: 40,
+                        '&:hover': {
+                          bgcolor: '#36B5B0',
+                        },
+                      }}
+                    >
+                      <CameraIcon />
+                    </IconButton>
+                  </Box>
 
-            <Typography variant="h4" fontWeight={700} mt={3}>
-              {fullName}
-            </Typography>
-            <Typography variant="h6" color="textSecondary" mt={1}>
-              Role:{' '}
-              <span style={{ color: '#FF6B00' }}>{profile?.role}</span>
-            </Typography>
+                  {/* Upload Section */}
+                  {isUploading ? (
+                    <Box sx={{ mt: 2 }}>
+                      <CircularProgress size={24} />
+                      <Typography variant="body2" color="text.secondary" mt={1}>
+                        Uploading...
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <AutoFileUploader
+                        name="file"
+                        label="Update Profile Photo"
+                        icon={<CloudUploadIcon />}
+                        onFileUpload={fileUploadHandler}
+                        variant="contained"
+                        // size="small"
+                        sx={{
+                          borderColor: '#4ECDC4',
+                          color: '#4ECDC4',
+                          '&:hover': {
+                            borderColor: '#36B5B0',
+                            bgcolor: 'rgba(78, 205, 196, 0.04)'
+                          }
+                        }}
+                      />
+                    </Box>
+                  )}
+
+                  <Box textAlign="center">
+                    <Typography variant="h4" fontWeight="bold" color="#2C3E50">
+                      {fullName}
+                    </Typography>
+                    <Chip
+                      icon={<BadgeIcon />}
+                      label={`${profile?.role} Publisher`}
+                      sx={{
+                        bgcolor: '#E8F5E8',
+                        color: '#4CAF50',
+                        fontWeight: 600,
+                        mt: 1,
+                        px: 2
+                      }}
+                    />
+                  </Box>
+
+                  <Divider sx={{ width: '100%' }} />
+
+                  {/* Quick Stats */}
+                  <Box sx={{ width: '100%' }}>
+                    <Typography variant="h6" fontWeight="bold" color="#2C3E50" mb={2}>
+                      Account Overview
+                    </Typography>
+                    <Stack spacing={2}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          Account Status
+                        </Typography>
+                        <Chip
+                          label={profile?.status}
+                          size="small"
+                          sx={{
+                            bgcolor: profile?.status === 'ACTIVE' ? '#E8F5E8' : '#FFEBEE',
+                            color: profile?.status === 'ACTIVE' ? '#4CAF50' : '#F44336',
+                            fontWeight: 600
+                          }}
+                        />
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2" color="text.secondary">
+                          Member Since
+                        </Typography>
+                        <Typography variant="body2" fontWeight={600}>
+                          {createdAt}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Box>
+
+                  {/* Update Button */}
+                  <Button
+                    onClick={() => setIsModalOpen(true)}
+                    variant="contained"
+                    fullWidth
+                    startIcon={<EditIcon />}
+                    sx={{
+                      background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                      borderRadius: 3,
+                      py: 1.5,
+                      fontWeight: 600,
+                      fontSize: 16,
+                      boxShadow: '0 4px 12px rgba(255, 107, 107, 0.3)',
+                      '&:hover': {
+                        boxShadow: '0 6px 16px rgba(255, 107, 107, 0.4)',
+                        transform: 'translateY(-2px)'
+                      },
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    Update Profile
+                  </Button>
+                </Stack>
+              </CardContent>
+            </Card>
           </Grid>
 
           {/* Profile Details */}
           <Grid item xs={12} md={8}>
-            <Grid container spacing={3}>
-              {[ 
-                { label: 'Email', value: profile?.email },
-                { label: 'Contact Number', value: profile?.publisher?.contactNumber },
-                { label: 'Gender', value: profile?.publisher?.gender },
-                { label: 'Birth Date', value: birthDate },
-                { label: 'Address', value: profile?.publisher?.address },
-                {
-                  label: 'Account Status',
-                  value: profile?.status,
-                  color: profile?.status === 'ACTIVE' ? 'green' : 'red',
-                },
-                { label: 'Created At', value: createdAt },
-                { label: 'Last Updated', value: updatedAt },
-              ].map((item, i) => (
-                <Grid item xs={12} sm={6} key={i}>
-                  <Box
+            <Card
+              elevation={8}
+              sx={{
+                borderRadius: 4,
+                background: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h5" fontWeight="bold" color="#2C3E50" mb={4}>
+                  Profile Information
+                </Typography>
+                
+                <Grid container spacing={3}>
+                  {profileDetails.map((item, index) => (
+                    <Grid item xs={12} sm={6} key={index}>
+                      <Card
+                        elevation={2}
+                        sx={{
+                          borderRadius: 3,
+                          transition: 'all 0.3s ease',
+                          border: '1px solid',
+                          borderColor: 'rgba(0,0,0,0.08)',
+                          '&:hover': {
+                            boxShadow: 4,
+                            borderColor: item.color,
+                            transform: 'translateY(-2px)'
+                          },
+                        }}
+                      >
+                        <CardContent sx={{ p: 3 }}>
+                          <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+                            <Box
+                              sx={{
+                                width: 40,
+                                height: 40,
+                                borderRadius: '50%',
+                                bgcolor: `${item.color}15`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                              }}
+                            >
+                              {item.icon}
+                            </Box>
+                            <Typography
+                              variant="subtitle2"
+                              color="text.secondary"
+                              fontWeight={600}
+                              sx={{ textTransform: 'uppercase', letterSpacing: 0.5 }}
+                            >
+                              {item.label}
+                            </Typography>
+                          </Stack>
+                          
+                          {item.isStatus ? (
+                            <Chip
+                              label={item.value || 'N/A'}
+                              sx={{
+                                bgcolor: `${item.color}15`,
+                                color: item.color,
+                                fontWeight: 600,
+                                fontSize: '0.875rem'
+                              }}
+                            />
+                          ) : (
+                            <Typography
+                              variant="h6"
+                              fontWeight={600}
+                              color="#2C3E50"
+                              sx={{
+                                wordBreak: 'break-word',
+                                minHeight: '1.5em'
+                              }}
+                            >
+                              {item.value || 'Not provided'}
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+
+                {/* Additional Actions */}
+                <Divider sx={{ my: 4 }} />
+                
+                <Box>
+                  <Typography variant="h6" fontWeight="bold" color="#2C3E50" mb={3}>
+                    Quick Actions
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    startIcon={<EditIcon />}
+                    onClick={() => setIsModalOpen(true)}
                     sx={{
-                      border: '1px solid #e0e0e0',
-                      borderRadius: 2,
-                      p: 2,
-                      transition: '0.3s',
+                      borderColor: '#4ECDC4',
+                      color: '#4ECDC4',
+                      borderRadius: 3,
+                      py: 1,
                       '&:hover': {
-                        boxShadow: 3,
-                        borderColor: '#FF6B00',
-                      },
+                        borderColor: '#36B5B0',
+                        bgcolor: 'rgba(78, 205, 196, 0.04)'
+                      }
                     }}
                   >
-                    <Typography
-                      variant="subtitle2"
-                      color="textSecondary"
-                      fontWeight={600}
-                      gutterBottom
-                    >
-                      {item.label}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      fontWeight={600}
-                      color={item.color || '#1e293b'}
-                    >
-                      {item.value || 'N/A'}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+                    Edit Information
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
 
-        {/* Update Button */}
-        <Box textAlign="center" mt={6}>
-          <Button
-          onClick={() => setIsModalOpen(true)}
-            variant="contained"
-            size="large"
-            startIcon={<EditIcon />}
-            sx={{
-              backgroundColor: '#FF6B00',
-              fontWeight: 600,
-              fontSize: 16,
-              px: 3,
-              py: 1.4,
-              borderRadius: 3,
-              boxShadow: '0 4px 12px rgba(255, 107, 0, 0.3)',
-              '&:hover': {
-                backgroundColor: '#e45f00',
-              },
-            }}
-          >
-            Update Profile
-          </Button>
-          <PublisherUpdateModal open={isModalOpen} setOpen={setIsModalOpen} id={profile?.publisher?.id}
-           data={profile?.publisher}  refetch={refetch}/>
-        </Box>
+        {/* Update Modal */}
+        <PublisherUpdateModal 
+          open={isModalOpen} 
+          setOpen={setIsModalOpen} 
+          id={profile?.publisher?.id}
+          data={profile?.publisher}  
+          refetch={refetch}
+        />
       </Box>
     </Box>
   );
